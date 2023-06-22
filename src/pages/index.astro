@@ -16,16 +16,20 @@ import Calculator from '../components/Calculator.astro';
 </Layout>
 
 <style>
-	section:last-of-type {
-    max-inline-size: 300px;
-  }
+	section:first-child {
+		flex-basis: 60%;
+	}
+	section:last-child {
+		flex-basis: 40%;
+	}
 	main {
 		padding: 4rem;
 		display: flex;
-		justify-content: center;
+		justify-content: flex-end;
 		gap: 2rem;
 		flex-grow: 1;
 	}
+	/* sm and down */
 	@media (max-width: 764px) {
 		main {
 			padding: 1rem;

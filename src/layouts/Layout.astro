@@ -31,11 +31,16 @@ const { title } = Astro.props;
 	</body>
 </html>
 <style is:global>
+	:root {
+		--text-color: hsl(275, 25%, 35%);
+		--border-color: hsl(295, 35%, 75%);
+		--border-radius: 0.5rem;
+	}
 	html {
   	font-family: 'Quicksand Variable', sans-serif;
 		font-size: 1rem;
 		line-height: calc(1rem * 1.5);
-		color: hsl(275, 25%, 35%);
+		color: var(--text-color);
 		background: 
 			linear-gradient(
 				to bottom,
