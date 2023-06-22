@@ -155,4 +155,8 @@ const calculate = () => salt.innerText = ((brinePercent.value * weight.value) / 
 
 calculator.addEventListener("input", () => calculate());
 document.addEventListener("DOMContentLoaded", () => calculate());
+document.addEventListener("click", e => {
+  if (!e.target.matches("input[type=number]")) return;
+  e.target.select();
+})
 </script>
