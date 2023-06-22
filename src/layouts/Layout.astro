@@ -1,0 +1,77 @@
+---
+// Supports weights 300-700
+import '@fontsource-variable/quicksand';
+
+export interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="Astro description">
+		<meta name="viewport" content="width=device-width" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/lacto-calculator/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/lacto-calculator/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/lacto-calculator/favicon-16x16.png">
+		<link rel="manifest" href="/lacto-calculator/site.webmanifest">
+		<meta name="msapplication-TileColor" content="#da532c">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+	</head>
+	<body>
+		<slot />
+	</body>
+</html>
+<style is:global>
+	html {
+  	font-family: 'Quicksand Variable', sans-serif;
+		font-size: 1rem;
+		line-height: calc(1rem * 1.5);
+		color: hsl(275, 25%, 35%);
+		background: 
+			linear-gradient(
+				to bottom,
+				hsl(332, 100%, 97.06%) 0%,
+				hsl(332, 100%, 97.06%) 8.1%,
+				hsl(332, 100%, 97.06%) 15.5%,
+				hsl(326.25, 100%, 96.86%) 22.5%,
+				hsl(322.5, 100%, 96.86%) 29%,
+				hsl(322.5, 100%, 96.86%) 35.3%,
+				hsl(317.65, 100%, 96.67%) 41.2%,
+				hsl(314.12, 100%, 96.67%) 47.1%,
+				hsl(306.67, 100%, 96.47%) 52.9%,
+				hsl(303.33, 100%, 96.47%) 58.8%,
+				hsl(300, 100%, 96.27%) 64.7%,
+				hsl(296.84, 100%, 96.27%) 71%,
+				hsl(293.68, 100%, 96.27%) 77.5%,
+				hsl(291, 100%, 96.08%) 84.5%,
+				hsl(288, 100%, 96.08%) 91.9%,
+				hsl(288, 100%, 96.08%) 100%
+			);
+	}
+	body {
+		margin: 0;
+		min-block-size: 100svh;
+	}
+	p {
+		max-inline-size: 60ch;
+	}
+	abbr[title] {
+		cursor: help;
+	}
+	@media (max-width: 1300px) {
+		abbr[title] {
+			text-decoration: none;
+			pointer-events: none;
+		}
+		abbr[title]::after {
+			content: " (" attr(title) ")";
+		}
+	}
+</style>

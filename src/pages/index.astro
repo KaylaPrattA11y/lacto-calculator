@@ -1,0 +1,36 @@
+---
+import Layout from '../layouts/Layout.astro';
+import About from '../components/About.astro';
+import Calculator from '../components/Calculator.astro';
+---
+
+<Layout title="Brine Calculator | Lacto-fermentation">
+	<main>
+		<section aria-labelledby="pageHeading">
+			<About />
+		</section>
+		<section aria-labelledby="calculatorLegend">
+			<Calculator />
+		</section>
+	</main>
+</Layout>
+
+<style>
+	section:last-of-type {
+    max-inline-size: 300px;
+  }
+	main {
+		padding: 4rem;
+		display: flex;
+		justify-content: center;
+		gap: 2rem;
+	}
+	@media (max-width: 764px) {
+		main {
+			padding: 1rem;
+			display: flex;
+			align-items: center;
+			flex-direction: column-reverse;
+		}
+}
+</style>

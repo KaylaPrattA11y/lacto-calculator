@@ -1,0 +1,133 @@
+<form id="calculator">
+  <fieldset>
+    <legend id="calculatorLegend">Brine Calculator</legend>
+    <div>
+      <label for="brinePercentage">Brine percentage</label>
+      <input 
+      id="brinePercentage" 
+      type="number" 
+      name="brinePercentage" 
+      value="2.2" 
+      min="2" 
+      max="5" /> %
+      <span data-validate="field" aria-live="polite" role="alert">For safest results, choose a value between 2-5%.</span>
+    </div>
+    <div>
+      <label for="weight">Weight</label>
+      <input 
+      id="weight" 
+      type="number" 
+      name="weight" 
+      value="682" 
+      aria-describedby="weightHelper" /> grams/ounces
+      <span id="weightHelper">(Combined weight of vegetables and water)</span>
+    </div>
+    <div>
+      <label for="salt">Salt required</label>
+      <output id="salt" for="brinePercentage weight" name="result">1</output>
+      <span>grams/ounces</span>
+    </div>
+  </fieldset>
+</form>
+
+<style>
+  fieldset {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    display: grid;
+    gap: 1rem;
+  }
+  legend {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+  }
+  fieldset > div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    align-items: center;
+  }
+  fieldset > div:last-child {
+    text-align: center;
+    padding: 2rem 1rem;
+    border-radius: 0.5rem;
+    display: grid;
+    gap: 1rem;
+    background: 
+      linear-gradient(
+        to bottom right,
+        hsl(329.03, 100%, 93.92%) 0%,
+        hsl(329.03, 100%, 93.92%) 8.1%,
+        hsl(327.1, 100%, 93.92%) 15.5%,
+        hsl(324.38, 100%, 93.73%) 22.5%,
+        hsl(322.5, 100%, 93.73%) 29%,
+        hsl(318.75, 100%, 93.73%) 35.3%,
+        hsl(314.55, 100%, 93.53%) 41.2%,
+        hsl(310.91, 100%, 93.53%) 47.1%,
+        hsl(307.06, 100%, 93.33%) 52.9%,
+        hsl(303.53, 100%, 93.33%) 58.8%,
+        hsl(298.29, 100%, 93.14%) 64.7%,
+        hsl(294.86, 100%, 93.14%) 71%,
+        hsl(293.14, 100%, 93.14%) 77.5%,
+        hsl(290, 100%, 92.94%) 84.5%,
+        hsl(288.33, 100%, 92.94%) 91.9%,
+        hsl(288.33, 100%, 92.94%) 100%
+      );
+  }
+  fieldset > div:last-child label {
+    font-size: clamp(1.25rem, 4vw, 1.5rem);
+  }
+  fieldset > div:not(:last-child) {
+    order: 2;
+  }
+  fieldset > div:not(:last-child) label,
+  fieldset > div:not(:last-child) input {
+    font-size: clamp(1.15rem, 4vw, 1.35rem);
+  }
+  fieldset > div:not(:last-child) label,
+  fieldset > div:not(:last-child) span {
+    flex-basis: 100%;
+  }
+  fieldset > div:not(:last-child) span {
+    font-size: clamp(0.75rem, 4vw, 0.8rem);
+  }
+  output {
+    font-weight: 500;
+    font-size: clamp(2.75rem, 4vw, 4rem);
+  }
+  input {
+    padding: 0.45rem 0.5rem;
+    border-radius: 3px;
+    border: 1px solid hsl(295, 35%, 75%);
+    background-color: hsl(295, 75%, 97%);
+    inline-size: 5rem;
+  }
+  input:out-of-range:not(:focus) {
+    border-color: hsl(0, 100%, 35%);
+  }
+  input:out-of-range:not(:focus) ~ [data-validate="field"] {
+    display: block;
+  }
+  [data-validate="field"] {
+    display: none;
+    color: hsl(0, 100%, 35%);
+  }
+</style>
+
+<script>
+const calculator = document.getElementById("calculator");
+const brinePercentage = document.getElementById("brinePercentage");
+const weight = document.getElementById("weight");
+const salt = document.getElementById("salt");
+const calculate = () => salt.innerText = ((brinePercentage.value * weight.value) / 100).toFixed(2);
+
+calculator.addEventListener("input", () => calculate());
+document.addEventListener("DOMContentLoaded", () => calculate());
+</script>
