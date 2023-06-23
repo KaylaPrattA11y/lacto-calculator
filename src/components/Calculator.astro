@@ -49,26 +49,7 @@
     border-radius: 0.5rem;
     display: grid;
     gap: 1rem;
-    background: 
-      linear-gradient(
-        to bottom right,
-        hsl(329.03, 100%, 93.92%) 0%,
-        hsl(329.03, 100%, 93.92%) 8.1%,
-        hsl(327.1, 100%, 93.92%) 15.5%,
-        hsl(324.38, 100%, 93.73%) 22.5%,
-        hsl(322.5, 100%, 93.73%) 29%,
-        hsl(318.75, 100%, 93.73%) 35.3%,
-        hsl(314.55, 100%, 93.53%) 41.2%,
-        hsl(310.91, 100%, 93.53%) 47.1%,
-        hsl(307.06, 100%, 93.33%) 52.9%,
-        hsl(303.53, 100%, 93.33%) 58.8%,
-        hsl(298.29, 100%, 93.14%) 64.7%,
-        hsl(294.86, 100%, 93.14%) 71%,
-        hsl(293.14, 100%, 93.14%) 77.5%,
-        hsl(290, 100%, 92.94%) 84.5%,
-        hsl(288.33, 100%, 92.94%) 91.9%,
-        hsl(288.33, 100%, 92.94%) 100%
-      );
+    background: var(--calc-output-background-color);
   }
   .calc-output label {
     font-size: clamp(1.25rem, 4vw, 1.5rem);
@@ -96,7 +77,7 @@
     padding: 0.45rem 0.5rem;
     border-radius: 3px;
     border: 1px solid var(--border-color);
-    background-color: hsl(295, 75%, 97%);
+    background-color: var(--calc-group-background-color);
   }
   .calc-group:focus-within {
     outline: auto;
@@ -104,7 +85,7 @@
   .calc-type {
     font-size: clamp(1rem, 4vw, 1.25rem);
     font-weight: 700;
-    color: hsl(295, 22%, 59%);
+    color: var(--text-muted-color);
   }
   output {
     font-weight: 500;
@@ -125,14 +106,14 @@
   }
   .calc-group:has(:out-of-range:not(:focus)),
   input:out-of-range:not(:focus) {
-    border-color: hsl(0, 100%, 35%);
+    border-color: var(--error-color);
   }
   input:out-of-range:not(:focus) ~ [data-validate="field"] {
     display: block;
   }
   [data-validate="field"] {
     display: none;
-    color: hsl(0, 100%, 35%);
+    color: var(--error-color);
   }
 </style>
 

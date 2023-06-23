@@ -32,16 +32,17 @@ const { title } = Astro.props;
 </html>
 <style is:global>
 	:root {
-		--text-color: hsl(275, 25%, 35%);
-		--border-color: hsl(295, 35%, 75%);
+		--font-family: 'Quicksand Variable', sans-serif;
 		--border-radius: 0.5rem;
-	}
-	html {
-  	font-family: 'Quicksand Variable', sans-serif;
-		font-size: 1rem;
-		line-height: calc(1rem * 1.5);
-		color: var(--text-color);
-		background: 
+		--selection-color: #fff;
+		--text-muted-color: hsl(295, 22%, 59%);
+		
+		--image-invert: 0;
+		--text-color: hsl(275, 25%, 35%);
+		--link-color: hsl(275, 41%, 41%);
+		--error-color: hsl(0, 100%, 35%);
+		--border-color: hsl(295, 35%, 75%);
+		--main-background-color: 
 			linear-gradient(
 				to bottom,
 				hsl(332, 100%, 97.06%) 0%,
@@ -61,12 +62,97 @@ const { title } = Astro.props;
 				hsl(288, 100%, 96.08%) 91.9%,
 				hsl(288, 100%, 96.08%) 100%
 			);
+		--calc-output-background-color: 
+			linear-gradient(
+				to bottom right,
+				hsl(329.03, 100%, 93.92%) 0%,
+				hsl(329.03, 100%, 93.92%) 8.1%,
+				hsl(327.1, 100%, 93.92%) 15.5%,
+				hsl(324.38, 100%, 93.73%) 22.5%,
+				hsl(322.5, 100%, 93.73%) 29%,
+				hsl(318.75, 100%, 93.73%) 35.3%,
+				hsl(314.55, 100%, 93.53%) 41.2%,
+				hsl(310.91, 100%, 93.53%) 47.1%,
+				hsl(307.06, 100%, 93.33%) 52.9%,
+				hsl(303.53, 100%, 93.33%) 58.8%,
+				hsl(298.29, 100%, 93.14%) 64.7%,
+				hsl(294.86, 100%, 93.14%) 71%,
+				hsl(293.14, 100%, 93.14%) 77.5%,
+				hsl(290, 100%, 92.94%) 84.5%,
+				hsl(288.33, 100%, 92.94%) 91.9%,
+				hsl(288.33, 100%, 92.94%) 100%
+		);
+		--calc-group-background-color: hsl(295, 75%, 97%);
+		--selection-background-color: hsl(310, 55%, 45%);
+	}
+	@media (prefers-color-scheme: dark) {
+		:root {
+			--text-color: hsl(276, 38%, 85%);
+			--link-color: hsl(295, 22%, 59%);
+			--error-color: hsl(0, 72%, 60%);
+			--border-color: hsl(305, 22%, 32%);
+			--image-invert: 100%;
+			--main-background-color: 
+			linear-gradient(
+				to bottom,
+				hsl(330, 15.22%, 18.04%) 0%,
+				hsl(329.85, 15.23%, 17.96%) 8.1%,
+				hsl(329.42, 15.25%, 17.73%) 15.5%,
+				hsl(328.71, 15.3%, 17.38%) 22.5%,
+				hsl(327.72, 15.37%, 16.91%) 29%,
+				hsl(326.42, 15.45%, 16.34%) 35.3%,
+				hsl(324.78, 15.56%, 15.69%) 41.2%,
+				hsl(322.77, 15.7%, 14.97%) 47.1%,
+				hsl(320.35, 15.88%, 14.19%) 52.9%,
+				hsl(317.5, 16.09%, 13.39%) 58.8%,
+				hsl(314.22, 16.35%, 12.59%) 64.7%,
+				hsl(310.61, 16.65%, 11.81%) 71%,
+				hsl(306.9, 16.98%, 11.11%) 77.5%,
+				hsl(303.48, 17.3%, 10.53%) 84.5%,
+				hsl(300.96, 17.55%, 10.14%) 91.9%,
+				hsl(300, 17.65%, 10%) 100%
+			);
+			--calc-output-background-color: 
+			linear-gradient(
+				to bottom right,
+				hsl(331.2, 17.48%, 28.04%) 0%,
+				hsl(330.78, 17.55%, 28%) 8.1%,
+				hsl(329.61, 17.75%, 27.9%) 15.5%,
+				hsl(327.83, 18.06%, 27.73%) 22.5%,
+				hsl(325.59, 18.47%, 27.52%) 29%,
+				hsl(323.04, 18.97%, 27.27%) 35.3%,
+				hsl(320.31, 19.54%, 26.99%) 41.2%,
+				hsl(317.54, 20.18%, 26.69%) 47.1%,
+				hsl(314.82, 20.86%, 26.38%) 52.9%,
+				hsl(312.25, 21.56%, 26.07%) 58.8%,
+				hsl(309.92, 22.26%, 25.77%) 64.7%,
+				hsl(307.89, 22.92%, 25.49%) 71%,
+				hsl(306.22, 23.51%, 25.25%) 77.5%,
+				hsl(304.95, 23.98%, 25.07%) 84.5%,
+				hsl(304.15, 24.3%, 24.95%) 91.9%,
+				hsl(303.87, 24.41%, 24.9%) 100%
+			);
+			--calc-group-background-color: hsl(318, 15%, 17%);
+			--selection-background-color: hsl(292, 47%, 51%);
+		}
+	}
+	html {
+  	font-family: var(--font-family);
+		font-size: 1rem;
+		line-height: calc(1rem * 1.5);
+		color: var(--text-color);
+		background: var(--main-background-color);
+	}
+	@keyframes fadeIn {
+		from { opacity: 0 }
+		to { opacity: 1 }
 	}
 	body {
 		display: flex;
 		flex-direction: column;
 		margin: 0;
 		min-block-size: 100svh;
+		animation: fadeIn 100ms;
 	}
 	:where(p, h1, h2, li) {
 		max-inline-size: 60ch;
@@ -83,8 +169,11 @@ const { title } = Astro.props;
 			content: " (" attr(title) ")";
 		}
 	}
+	:any-link {
+		color: var(--link-color);
+	}
 	::selection {
-		background-color: hsl(310, 55%, 45%);
-		color: #fff;
+		background-color: var(--selection-background-color);
+		color: var(--selection-color);
 	}
 </style>
