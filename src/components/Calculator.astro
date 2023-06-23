@@ -1,60 +1,49 @@
-<form id="calculator">
-  <fieldset>
-    <legend id="calculatorLegend">Brine Calculator</legend>
-    <div class="form-inputs">
-      <div class="form-group">
-        <label for="brinePercent">Brine percent</label>
-        <input 
-        id="brinePercent" 
-        type="number" 
-        name="brinePercent" 
-        value="2.2" 
-        min="2" 
-        max="5" 
-        aria-describedby="brinePercentHelper" />
-        <span class="form-type" aria-hidden="true">%</span>
-        <p class="form-text" data-validate="field" aria-live="polite" role="alert">For your safety, choose a value between 2-5%.</p>
-        <p class="form-text" id="brinePercentHelper">Determine the strength of the brine. Varies per recipe and personal taste.</p>
-      </div>
-      <div class="form-group">
-        <label for="weight">Weight</label>
-        <input 
-        id="weight" 
-        type="number" 
-        name="weight" 
-        value="682" 
-        aria-describedby="weightHelper" />
-        <span class="form-type" aria-hidden="true">g/oz</span>
-        <p class="form-text" id="weightHelper">Combined weight of vegetables and water in grams or ounces.</p>
-      </div>
+<div class="calc">
+  <div class="calc-inputs">
+    <div class="calc-group">
+      <label for="brine">Brine percent</label>
+      <input 
+      id="brine" 
+      type="number" 
+      name="brine" 
+      value="2.2" 
+      min="2" 
+      max="5" 
+      aria-describedby="brineHelper" />
+      <span class="calc-type" aria-hidden="true">%</span>
+      <p class="calc-text" data-validate="field" aria-live="polite" role="alert">For a safer ferment, please choose a value between 2-5%.</p>
+      <p class="calc-text" id="brineHelper">Determine the strength of the brine. Varies per recipe and personal taste.</p>
     </div>
-    <div class="form-output">
-      <label for="salt">Salt required</label>
-      <output id="salt" for="brinePercent weight" name="result">1</output>
-      <span>grams / ounces</span>
+    <div class="calc-group">
+      <label for="weight">Weight</label>
+      <input 
+      id="weight" 
+      type="number" 
+      name="weight" 
+      value="682" 
+      min="1" 
+      aria-describedby="weightHelper" />
+      <span class="calc-type" aria-hidden="true">g/oz</span>
+      <p class="calc-text" id="weightHelper">Combined weight of vegetables and water in grams or ounces.</p>
     </div>
-  </fieldset>
-</form>
+  </div>
+  <div class="calc-output">
+    <label for="salt">Salt required</label>
+    <output id="salt" for="brine weight" name="salt">1</output>
+    <span>grams / ounces</span>
+  </div>
+</div>
+
 
 <style>
-  fieldset {
+  .calc {
     margin: 0;
     padding: 0;
     border: 0;
     display: grid;
     gap: 1rem;
   }
-  legend {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0,0,0,0);
-    white-space: nowrap;
-  }
-  .form-output {
+  .calc-output {
     text-align: center;
     padding: 2rem 1rem;
     border-radius: 0.5rem;
@@ -81,38 +70,38 @@
         hsl(288.33, 100%, 92.94%) 100%
       );
   }
-  .form-output label {
+  .calc-output label {
     font-size: clamp(1.25rem, 4vw, 1.5rem);
   }
-  .form-inputs {
+  .calc-inputs {
     order: 2;
     display: flex;
     gap: 0.5rem;
   }
   /* tablet range */
   @media (min-width: 764px) and (max-width: 1000px) {
-    .form-inputs {
+    .calc-inputs {
       flex-direction: column;
     }
   }
-  .form-inputs label {
+  .calc-inputs label {
     font-size: clamp(1rem, 2vw, 1.15rem);
     display: block;
   }
-  .form-text {
+  .calc-text {
     font-size: clamp(0.75rem, 4vw, 0.8rem);
   }
-  .form-group {
+  .calc-group {
     flex-basis: 50%;
     padding: 0.45rem 0.5rem;
     border-radius: 3px;
     border: 1px solid var(--border-color);
     background-color: hsl(295, 75%, 97%);
   }
-  .form-group:focus-within {
+  .calc-group:focus-within {
     outline: auto;
   }
-  .form-type {
+  .calc-type {
     font-size: clamp(1rem, 4vw, 1.25rem);
     font-weight: 700;
     color: hsl(295, 22%, 59%);
@@ -134,6 +123,7 @@
   input:focus-visible {
     outline: 0;
   }
+  .calc-group:has(:out-of-range:not(:focus)),
   input:out-of-range:not(:focus) {
     border-color: hsl(0, 100%, 35%);
   }
@@ -147,16 +137,12 @@
 </style>
 
 <script>
-const calculator = document.getElementById("calculator");
-const brinePercent = document.getElementById("brinePercent");
+const brine = document.getElementById("brine");
 const weight = document.getElementById("weight");
 const salt = document.getElementById("salt");
-const calculate = () => salt.innerText = ((brinePercent.value * weight.value) / 100).toFixed(2);
+const calculate = () => salt.value = ((brine.value * weight.value) / 100).toFixed(2);
 
-calculator.addEventListener("input", () => calculate());
+[brine, weight].forEach(input => input.addEventListener("input", () => calculate()));
+[brine, weight].forEach(input => input.addEventListener("click", e => e.target.select()));
 document.addEventListener("DOMContentLoaded", () => calculate());
-document.addEventListener("click", e => {
-  if (!e.target.matches("input[type=number]")) return;
-  e.target.select();
-})
 </script>
