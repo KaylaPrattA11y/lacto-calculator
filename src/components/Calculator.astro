@@ -8,10 +8,10 @@
       name="brine" 
       value="2.2" 
       min="2" 
-      max="5" 
+      max="10" 
       aria-describedby="brineHelper" />
       <span class="calc-type" aria-hidden="true">%</span>
-      <p class="calc-text" data-validate="field" aria-live="polite" role="alert">For a safer ferment, please choose a value between 2-5%.</p>
+      <p class="calc-text" data-validate="field" aria-live="polite" role="alert">For a safer ferment, please choose a value between 2-10%.</p>
       <p class="calc-text" id="brineHelper">Determine the strength of the brine. Varies per recipe and personal taste.</p>
     </div>
     <div class="calc-group">
@@ -27,6 +27,18 @@
       <p class="calc-text" id="weightHelper">Combined weight of vegetables and water in grams or ounces.</p>
     </div>
   </div>
+  <div class="calc-select">
+    <label for="category">Choose a food category (optional):</label>
+    <select name="category" id="category">
+      <option value="">Select...</option>  
+      <option value="2">Green Beans, Cauliflower, Potatoes, Tomatoes 2%</option>  
+      <option value="2.2">Beets, Broccoli, Cabbage, Carrots 2.2%</option>  
+      <option value="3">Garlic 3%</option>  
+      <option value="4">Pepper 4%</option>
+      <option value="5">Cucumber, Radish 5%</option>
+      <option value="10">Olives 10%</option>
+    </select>
+  </div>
   <div class="calc-output">
     <label for="salt">Salt required</label>
     <output id="salt" for="brine weight" name="salt">1</output>
@@ -34,14 +46,16 @@
   </div>
 </div>
 
-
 <style>
   .calc {
     margin: 0;
     padding: 0;
     border: 0;
     display: grid;
-    gap: 1rem;
+    gap: 0.5rem;
+  }
+  :where(.calc-inputs, .calc-select) {
+    order: 2;
   }
   .calc-output {
     text-align: center;
@@ -50,27 +64,32 @@
     display: grid;
     gap: 1rem;
     background: var(--calc-output-background-color);
+    margin-block-end: 0.5rem;
   }
   .calc-output label {
     font-size: clamp(1.25rem, 4vw, 1.5rem);
   }
   .calc-inputs {
-    order: 2;
     display: flex;
     gap: 0.5rem;
   }
-  /* tablet range */
-  @media (min-width: 764px) and (max-width: 1000px) {
-    .calc-inputs {
-      flex-direction: column;
-    }
+  select {
+    padding: 0.45rem 0;
+    border: 0;
+    border-bottom: 1px solid var(--border-color);
+    background: var(--calc-group-background-color);
+    color: var(--text-color);
+    inline-size: 100%;
+    font-size: clamp(1rem,4vw,1.15rem);
   }
-  .calc-inputs label {
-    font-size: clamp(1rem, 2vw, 1.15rem);
-    display: block;
+  option {
+    font-size: 0.85rem;
   }
-  .calc-text {
-    font-size: clamp(0.75rem, 4vw, 0.8rem);
+  .calc-select {
+    padding: 0.45rem 0.5rem;
+    border-radius: 3px;
+    border: 1px solid var(--border-color);
+    background-color: var(--calc-group-background-color);
   }
   .calc-group {
     flex-basis: 50%;
@@ -87,10 +106,6 @@
     font-weight: 700;
     color: var(--text-muted-color);
   }
-  output {
-    font-weight: 500;
-    font-size: clamp(2.75rem, 4vw, 4rem);
-  }
   input {
     background: none;
     border: 0;
@@ -104,8 +119,19 @@
   input:focus-visible {
     outline: 0;
   }
+  label {
+    font-size: clamp(1rem, 2vw, 1.15rem);
+    display: block;
+  }
+  output {
+    font-weight: 500;
+    font-size: clamp(2.75rem, 4vw, 4rem);
+  }
+  .calc-text {
+    font-size: clamp(0.75rem, 4vw, 0.8rem);
+  }
   .calc-group:has(:out-of-range:not(:focus)),
-  input:out-of-range:not(:focus) {
+    input:out-of-range:not(:focus) {
     border-color: var(--error-color);
   }
   input:out-of-range:not(:focus) ~ [data-validate="field"] {
@@ -115,15 +141,39 @@
     display: none;
     color: var(--error-color);
   }
+  /* sm and down */
+	@media (max-width: 764px) {
+    .calc-inputs {
+      padding-inline: 1rem;
+    }
+    .calc-select {
+      margin-inline: 1rem;
+    }
+    .calc-output {
+      border-radius: 0;
+    }
+  }
+  /* tablet range */
+  @media (min-width: 764px) and (max-width: 1000px) {
+    .calc-inputs {
+      flex-direction: column;
+    }
+  }
 </style>
 
 <script>
 const brine = document.getElementById("brine");
 const weight = document.getElementById("weight");
 const salt = document.getElementById("salt");
+const category = document.getElementById("category");
 const calculate = () => salt.value = ((brine.value * weight.value) / 100).toFixed(2);
 
 [brine, weight].forEach(input => input.addEventListener("input", () => calculate()));
 [brine, weight].forEach(input => input.addEventListener("click", e => e.target.select()));
+category.addEventListener("change", e => {
+  if (e.target.value === "") return;
+  brine.value = e.target.value;
+  calculate();
+});
 document.addEventListener("DOMContentLoaded", () => calculate());
 </script>

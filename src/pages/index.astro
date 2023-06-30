@@ -34,10 +34,13 @@ import GithubStar from '../components/GithubStar.astro';
 	/* sm and down */
 	@media (max-width: 764px) {
 		main {
-			padding: 1rem;
+			padding: 0;
 			display: flex;
 			align-items: center;
 			flex-direction: column-reverse;
+		}
+		section:first-child {
+			padding-inline: 1rem;
 		}
 }
 </style>
