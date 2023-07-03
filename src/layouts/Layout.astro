@@ -189,3 +189,12 @@ const { title } = Astro.props;
 		}
 	}
 </style>
+
+<script>
+	if (navigator.serviceWorker) {
+		navigator.serviceWorker.register (
+			'/lacto-calculator/sw.js',
+			{ scope: '/lacto-calculator/' }
+		)
+	}
+</script>
