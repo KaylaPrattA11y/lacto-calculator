@@ -1,6 +1,7 @@
 {
-    "name": "",
-    "short_name": "",
+    "name": "Brine Calculator | Lacto-fermentation",
+    "short_name": "Brine Calc",
+    "description": "This calculates the brine ratio so you don't have to math.",
     "icons": [
         {
             "src": "/lacto-calculator/android-chrome-192x192.png",
@@ -15,5 +16,7 @@
     ],
     "theme_color": "#4f304d",
     "background_color": "#4f304d",
-    "display": "standalone"
+    "display": "standalone",
+    "scope": "/lacto-calculator/",
+    "start_url": "/lacto-calculator/"
 }
