@@ -4,6 +4,20 @@ import InstallPwa from "./InstallPwa.astro";
 
 <h1 id="pageHeading">What is <abbr title="Lactobacillus">Lacto</abbr>-fermentation?</h1>
 <p>Lacto-fermentation is the process of taking beneficial bacteria that are naturally occurring on fruits and vegetables and converting them to lactic acid.</p>
+<div class="hide-for-pwa">
+	<h2>Why ferment?</h2>
+	<p>Fermented foods are...</p>
+	<ul>
+		<li>...easier on digestive system</li>
+		<li>...richer in nutrients</li>
+	</ul>
+	<p>Lacto-fermentation...</p>
+	<ul>
+		<li>...preserves food safely</li>
+		<li>...is easy</li>
+		<li>...is fun</li>
+	</ul>
+</div>
 <div id="installPwa" class="has-pwa">
 	<h2>Like this calculator?</h2>
 	<p>Try the app. It's fast, simple, and <strong>no sign-in</strong> is required.</p>
@@ -22,7 +36,7 @@ h2 {
 	font-size: clamp(1.15rem, 2vw, 1.5rem);
 }
 .has-pwa {
-	display: none;
+	display: none !important;
 }
 </style>
 

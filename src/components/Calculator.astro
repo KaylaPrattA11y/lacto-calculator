@@ -62,6 +62,7 @@
     padding: 2rem 1rem;
     border-radius: 0.5rem;
     display: grid;
+    align-content: center;
     gap: 1rem;
     background: var(--calc-output-background-color);
     margin-block-end: 0.5rem;
@@ -154,9 +155,26 @@
     }
   }
   /* tablet range */
-  @media (min-width: 764px) and (max-width: 1000px) {
+  @media (min-width: 764px) and (max-width: 1000px) and (display-mode: browser) {
     .calc-inputs {
       flex-direction: column;
+    }
+  }
+  /* pwa view */
+	@media all and (display-mode: standalone) {
+    .calc-inputs {
+      padding-inline: 1rem;
+    }
+    .calc-select {
+      margin-inline: 1rem;
+    }
+		.calc-output {
+      padding: 1rem;
+      border-radius: 0;
+      block-size: 25svh;
+    }
+    output {
+      font-size: clamp(4rem, 5vw, 4.55rem);
     }
   }
 </style>

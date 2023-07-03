@@ -43,5 +43,18 @@ import GithubStar from '../components/GithubStar.astro';
 		section:first-child {
 			padding-inline: 1rem;
 		}
-}
+	}
+	/* pwa view */
+	@media all and (display-mode: standalone) {
+		main {
+			padding: 0;
+			display: block;
+		}
+		section {
+			margin-inline: auto;
+		}
+		section:first-child {
+			display: none;
+		}
+	}
 </style>
