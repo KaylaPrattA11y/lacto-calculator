@@ -1,3 +1,7 @@
+---
+import Share from '../components/Share.astro';
+---
+
 <div class="calc">
   <div class="calc-inputs">
     <div class="calc-group">
@@ -43,6 +47,7 @@
     <label for="salt">Salt required</label>
     <output id="salt" for="brine weight" name="salt">1</output>
     <span>grams / ounces</span>
+    <Share />
   </div>
 </div>
 
@@ -58,6 +63,7 @@
     order: 2;
   }
   .calc-output {
+    position: relative;
     text-align: center;
     padding: 2rem 1rem;
     border-radius: 0.5rem;

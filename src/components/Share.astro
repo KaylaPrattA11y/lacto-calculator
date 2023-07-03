@@ -1,0 +1,47 @@
+<button type="button" id="share">Share</button>
+
+<style>
+  button {
+    position: absolute;
+    inset: auto 0.25rem 0.25rem auto;
+		border: 0;
+    font-size: 1rem;
+		color: var(--text-color);
+		background: transparent;
+    cursor: pointer;
+    padding-inline-start: 1.25rem;
+	}
+  button::before {
+    position: absolute;
+    inset: 0.16rem auto auto 0;
+    display: inline-block;
+    content: url("/lacto-calculator/img/share-nodes.svg");
+    width: 0.8rem;
+    filter: invert(var(--svg-invert));
+  }
+</style>
+
+<script>
+  const shareBtn = document.getElementById("share");
+  const brine = document.getElementById("brine").value;
+
+  const shareData = {
+    title: "Brince Calculator | Lacto-fermentation",
+    text: `Making a ${brine}% brine for lacto-fermenting is way easier with this calculator.`,
+    url: "https://kaylapratta11y.github.io/lacto-calculator/",
+  };
+
+  if (!navigator.canShare) {
+    shareBtn.remove();
+  } else {
+    shareBtn.addEventListener("click", async () => {
+      try {
+        await navigator.share(shareData);
+      } catch (err) {
+        console.log(err)
+      }
+    });
+  }
+
+  
+</script>

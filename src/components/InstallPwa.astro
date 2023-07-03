@@ -10,4 +10,11 @@
 		background: var(--calc-output-background-color);
     cursor: pointer;
 	}
+  button::before {
+    display: inline-block;
+    margin-inline-end: 0.5rem;
+    content: url("/lacto-calculator/img/download.svg");
+    width: clamp(1.15rem, 2vw, 1.5rem);
+    filter: invert(var(--svg-invert));
+  }
 </style>
