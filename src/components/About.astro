@@ -1,12 +1,14 @@
+---
+import InstallPwa from "./InstallPwa.astro";
+---
+
 <h1 id="pageHeading">What is <abbr title="Lactobacillus">Lacto</abbr>-fermentation?</h1>
-<p>Lacto-fermentation is the process of taking beneficial bacteria that are naturally occurring on fruits and vegetables and converting them to lactic acid using a salt brine.</p>
-<h2>Examples of lacto-fermented foods</h2>
-<ul>
-	<li>sauerkraut</li>
-	<li>coffee</li>
-	<li>chocolate</li>
-	<li>salami</li>
-</ul>
+<p>Lacto-fermentation is the process of taking beneficial bacteria that are naturally occurring on fruits and vegetables and converting them to lactic acid.</p>
+<div id="installPwa" class="has-pwa">
+	<h2>Like this calculator?</h2>
+	<p>Try the app. It's fast, simple, and <strong>no sign-in</strong> is required.</p>
+	<InstallPwa />
+</div>
 
 <style>
 section > * {
@@ -19,4 +21,37 @@ h1 {
 h2 {
 	font-size: clamp(1.15rem, 2vw, 1.5rem);
 }
+.has-pwa {
+	display: none;
+}
 </style>
+
+<script>
+	// Initialize deferredPrompt for use later to show browser install prompt.
+  let deferredPrompt;
+	
+  window.addEventListener('beforeinstallprompt', (e) => {
+		// Prevent the mini-infobar from appearing on mobile
+    // e.preventDefault();
+
+    deferredPrompt = e;
+
+    document.getElementById("installPwa").classList.remove("has-pwa");
+  });
+	
+	const pwaButton = document?.getElementById("pwaButton");
+
+	pwaButton.addEventListener("click", async () => {
+		// Show the install prompt
+		deferredPrompt.prompt();
+
+		// Wait for the user to respond to the prompt
+		const { outcome } = await deferredPrompt.userChoice;
+
+		document.getElementById("installPwa").classList.toggle("has-pwa", outcome === "accepted" ? true : false);
+
+		deferredPrompt = null;
+	});
+		
+
+</script>
