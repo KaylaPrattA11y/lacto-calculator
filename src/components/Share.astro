@@ -1,4 +1,4 @@
-<button type="button" id="share">Share</button>
+<button type="button" id="share"class="hidden">Share</button>
 
 <style>
   button {
@@ -23,18 +23,17 @@
 
 <script>
   const shareBtn = document.getElementById("share");
-  const brine = document.getElementById("brine").value;
-
-  const shareData = {
-    title: "Brince Calculator | Lacto-fermentation",
-    text: `Making a ${brine}% brine for lacto-fermenting is way easier with this calculator.`,
-    url: "https://kaylapratta11y.github.io/lacto-calculator/",
-  };
-
-  if (!navigator.canShare) {
-    shareBtn.remove();
-  } else {
+  
+  if (navigator.canShare)  {
+    shareBtn.classList.remove("hidden");
     shareBtn.addEventListener("click", async () => {
+      const brine = document.getElementById("brine").value;
+      const shareData = {
+        title: "Brince Calculator | Lacto-fermentation",
+        text: `Making a ${brine}% brine for lacto-fermenting is way easier with this calculator.`,
+        url: "https://kaylapratta11y.github.io/lacto-calculator/",
+      };
+
       try {
         await navigator.share(shareData);
       } catch (err) {
@@ -43,5 +42,4 @@
     });
   }
 
-  
 </script>
