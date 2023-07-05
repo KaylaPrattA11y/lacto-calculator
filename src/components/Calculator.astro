@@ -5,7 +5,7 @@ import Share from '../components/Share.astro';
 <div class="calc">
   <div class="calc-inputs">
     <div class="calc-group">
-      <label for="brine">Brine percent</label>
+      <label for="brine">Brine</label>
       <input 
       id="brine" 
       type="number" 
@@ -14,7 +14,7 @@ import Share from '../components/Share.astro';
       min="2" 
       max="10" 
       aria-describedby="brineHelper" />
-      <span class="calc-type" aria-hidden="true">%</span>
+      <span class="calc-unit" aria-hidden="true">%</span>
       <p class="calc-text" data-validate="field" aria-live="polite" role="alert">For a safer ferment, please choose a value between 2-10%.</p>
       <p class="calc-text" id="brineHelper">Determine the strength of the brine. Varies per recipe and personal taste.</p>
     </div>
@@ -27,31 +27,56 @@ import Share from '../components/Share.astro';
       value="682" 
       min="1" 
       aria-describedby="weightHelper" />
-      <span class="calc-type" aria-hidden="true">g/oz</span>
-      <p class="calc-text" id="weightHelper">Combined weight of vegetables and water in grams or ounces.</p>
+      <span class="calc-unit" aria-hidden="true"><span data-unit>grams</span></span>
+      <p class="calc-text" id="weightHelper">Combined weight of vegetables and water in <span data-unit>grams</span>.</p>
     </div>
   </div>
-  <div class="calc-select">
-    <label for="category">Choose a food category (optional):</label>
-    <select name="category" id="category">
-      <option value="">Select...</option>  
-      <option value="2">Green Beans, Cauliflower, Potatoes, Tomatoes - 2%</option>  
-      <option value="2.2">Beets, Broccoli, Cabbage, Carrots - 2.2%</option>  
-      <option value="3">Garlic - 3%</option>  
-      <option value="4">Pepper - 4%</option>
-      <option value="5">Cucumber, Radish - 5%</option>
-      <option value="10">Olives - 10%</option>
-    </select>
+  <div class="calc-inputs">
+    <div class="calc-group">
+      <label for="category">Choose a food category <small>(optional)</small></label>
+      <select name="category" id="category">
+        <option value="">Select...</option>  
+        <option value="2">Green Beans, Cauliflower, Potatoes, Tomatoes - 2%</option>  
+        <option value="2.2">Beets, Broccoli, Cabbage, Carrots - 2.2%</option>  
+        <option value="3">Garlic - 3%</option>  
+        <option value="4">Pepper - 4%</option>
+        <option value="5">Cucumber, Radish - 5%</option>
+        <option value="10">Olives - 10%</option>
+      </select>
+    </div>
+    <div class="calc-group" role="group" aria-labelledby="unitLegend">
+      <div class="label" id="unitLegend">Unit <small>(optional)</small></div>
+      <div class="radio-group">
+        <input 
+        id="unitGrams" 
+        type="radio" 
+        name="unit"
+        value="grams" 
+        checked />
+        <label for="unitGrams">Grams</label>
+      </div>
+      <div class="radio-group">
+        <input 
+        id="unitOunces" 
+        type="radio" 
+        name="unit" 
+        value="ounces" />
+        <label for="unitOunces">Ounces</label>
+      </div>
+    </div>
   </div>
   <div class="calc-output">
     <label for="salt">Salt required</label>
     <output id="salt" for="brine weight" name="salt">1</output>
-    <span>grams / ounces</span>
+    <span data-unit>grams</span>
     <Share />
   </div>
 </div>
 
 <style>
+  [type="radio"] {
+    accent-color: var(--link-color);
+  }
   .calc {
     margin: 0;
     padding: 0;
@@ -59,7 +84,7 @@ import Share from '../components/Share.astro';
     display: grid;
     gap: 0.5rem;
   }
-  :where(.calc-inputs, .calc-select) {
+  .calc-inputs {
     order: 2;
   }
   .calc-output {
@@ -87,16 +112,17 @@ import Share from '../components/Share.astro';
     background: var(--calc-group-background-color);
     color: var(--text-color);
     inline-size: 100%;
-    font-size: clamp(1rem,4vw,1.15rem);
   }
   option {
     font-size: 0.85rem;
   }
-  .calc-select {
-    padding: 0.45rem 0.5rem;
-    border-radius: 3px;
-    border: 1px solid var(--border-color);
-    background-color: var(--calc-group-background-color);
+  .radio-group {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  input[type="radio"] {
+    margin: 0;
   }
   .calc-group {
     flex-basis: 50%;
@@ -108,12 +134,12 @@ import Share from '../components/Share.astro';
   .calc-group:focus-within {
     outline: auto;
   }
-  .calc-type {
+  .calc-unit {
     font-size: clamp(1rem, 4vw, 1.25rem);
     font-weight: 700;
     color: var(--text-muted-color);
   }
-  input {
+  input[type="number"] {
     background: none;
     border: 0;
     margin: 0;
@@ -126,7 +152,7 @@ import Share from '../components/Share.astro';
   input:focus-visible {
     outline: 0;
   }
-  label {
+  :where(label, .label) {
     font-size: clamp(1rem, 2vw, 1.15rem);
     display: block;
   }
@@ -134,7 +160,7 @@ import Share from '../components/Share.astro';
     font-weight: 500;
     font-size: clamp(2.75rem, 4vw, 4rem);
   }
-  .calc-text {
+  :where(.calc-text, .radio-group label, select, small) {
     font-size: clamp(0.75rem, 4vw, 0.8rem);
   }
   .calc-group:has(:out-of-range:not(:focus)),
@@ -153,9 +179,6 @@ import Share from '../components/Share.astro';
     .calc-inputs {
       padding-inline: 1rem;
     }
-    .calc-select {
-      margin-inline: 1rem;
-    }
     .calc-output {
       border-radius: 0;
     }
@@ -170,9 +193,6 @@ import Share from '../components/Share.astro';
 	@media all and (display-mode: standalone) {
     .calc-inputs {
       padding-inline: 1rem;
-    }
-    .calc-select {
-      margin-inline: 1rem;
     }
 		.calc-output {
       padding: 1rem;
@@ -190,8 +210,17 @@ const brine = document.getElementById("brine");
 const weight = document.getElementById("weight");
 const salt = document.getElementById("salt");
 const category = document.getElementById("category");
-const calculate = () => salt.value = ((brine.value * weight.value) / 100).toFixed(2);
+const unitLabels = document.querySelectorAll("[data-unit]");
+const unitRadios = document.querySelectorAll("input[type=radio][name=unit]");
 
+const calculate = () => salt.value = ((brine.value * weight.value) / 100).toFixed(2);
+const updateUnitLabels = () => {
+  const selectedUnit = document.querySelector("[name=unit]:checked");
+
+  unitLabels.forEach(label => label.innerText = selectedUnit.value);
+}
+
+unitRadios.forEach(radio => radio.addEventListener("change", () => updateUnitLabels()));
 [brine, weight].forEach(input => input.addEventListener("input", () => calculate()));
 [brine, weight].forEach(input => input.addEventListener("click", e => e.target.select()));
 category.addEventListener("change", e => {
