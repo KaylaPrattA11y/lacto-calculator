@@ -1,4 +1,4 @@
-<button type="button" id="share"class="hidden">Share</button>
+<button type="button" id="share" hidden>Share</button>
 
 <style>
   button {
@@ -25,11 +25,11 @@
   const shareBtn = document.getElementById("share");
   
   if (navigator.canShare)  {
-    shareBtn.classList.remove("hidden");
+    shareBtn.removeAttribute("hidden");
     shareBtn.addEventListener("click", async () => {
       const brine = document.getElementById("brine").value;
       const shareData = {
-        title: "Brince Calculator | Lacto-fermentation",
+        title: "Brine Calculator | Lacto-fermentation",
         text: `Making a ${brine}% brine for lacto-fermenting is way easier with this calculator.`,
         url: "https://kaylapratta11y.github.io/lacto-calculator/",
       };

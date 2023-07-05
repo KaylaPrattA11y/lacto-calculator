@@ -18,3 +18,30 @@
     filter: invert(var(--svg-invert));
   }
 </style>
+
+<script>
+	// Initialize deferredPrompt for use later to show browser install prompt.
+  let deferredPrompt;
+	
+  window.addEventListener('beforeinstallprompt', (e) => {
+
+    deferredPrompt = e;
+
+    document.getElementById("installPwa").removeAttribute("hidden");
+  });
+	
+	const pwaButton = document?.getElementById("pwaButton");
+
+	pwaButton.addEventListener("click", async () => {
+		// Show the install prompt
+		deferredPrompt.prompt();
+
+		// Wait for the user to respond to the prompt
+		const { userChoice } = await deferredPrompt;
+
+		document.getElementById("installPwa").classList.toggle("has-pwa", userChoice === "accepted" ? true : false);
+
+		deferredPrompt = null;
+	});
+		
+</script>

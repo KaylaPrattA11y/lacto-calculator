@@ -18,7 +18,7 @@ import InstallPwa from "./InstallPwa.astro";
 		<li>...is fun</li>
 	</ul>
 </div>
-<div id="installPwa" class="has-pwa">
+<div id="installPwa" class="has-pwa" hidden>
 	<h2>Like this calculator?</h2>
 	<p>Try the app. It's fast, simple, and <strong>no sign-in</strong> is required.</p>
 	<InstallPwa />
@@ -35,37 +35,4 @@ h1 {
 h2 {
 	font-size: clamp(1.15rem, 2vw, 1.5rem);
 }
-.has-pwa {
-	display: none !important;
-}
 </style>
-
-<script>
-	// Initialize deferredPrompt for use later to show browser install prompt.
-  let deferredPrompt;
-	
-  window.addEventListener('beforeinstallprompt', (e) => {
-		// Prevent the mini-infobar from appearing on mobile
-    // e.preventDefault();
-
-    deferredPrompt = e;
-
-    document.getElementById("installPwa").classList.remove("has-pwa");
-  });
-	
-	const pwaButton = document?.getElementById("pwaButton");
-
-	pwaButton.addEventListener("click", async () => {
-		// Show the install prompt
-		deferredPrompt.prompt();
-
-		// Wait for the user to respond to the prompt
-		const { outcome } = await deferredPrompt.userChoice;
-
-		document.getElementById("installPwa").classList.toggle("has-pwa", outcome === "accepted" ? true : false);
-
-		deferredPrompt = null;
-	});
-		
-
-</script>
