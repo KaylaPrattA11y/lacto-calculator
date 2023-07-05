@@ -33,7 +33,7 @@ import Share from '../components/Share.astro';
   </div>
   <div class="calc-inputs">
     <div class="calc-group">
-      <label for="category">Choose a food category <small>(optional)</small></label>
+      <label for="category">Food category <small>(optional)</small></label>
       <select name="category" id="category">
         <option value="">Select...</option>  
         <option value="2">Green Beans, Cauliflower, Potatoes, Tomatoes - 2%</option>  
@@ -76,6 +76,8 @@ import Share from '../components/Share.astro';
 <style>
   [type="radio"] {
     accent-color: var(--link-color);
+    width: 1rem;
+    height: 1rem;
   }
   .calc {
     margin: 0;
@@ -112,14 +114,12 @@ import Share from '../components/Share.astro';
     background: var(--calc-group-background-color);
     color: var(--text-color);
     inline-size: 100%;
-  }
-  option {
-    font-size: 0.85rem;
+    font-size: clamp(1rem, 3vw, 1.15rem);
   }
   .radio-group {
     display: flex;
     align-items: center;
-    gap: 0.25rem;
+    gap: 0.5rem;
   }
   input[type="radio"] {
     margin: 0;
@@ -146,8 +146,8 @@ import Share from '../components/Share.astro';
     padding: 0;
     border-bottom: 1px solid var(--border-color);
     inline-size: 5rem;
-    font-size: clamp(1.35rem, 4vw, 1.75rem);
     color: var(--text-color);
+    font-size: clamp(1.35rem, 4vw, 1.75rem);
   }
   input:focus-visible {
     outline: 0;
@@ -160,7 +160,7 @@ import Share from '../components/Share.astro';
     font-weight: 500;
     font-size: clamp(2.75rem, 4vw, 4rem);
   }
-  :where(.calc-text, .radio-group label, select, small) {
+  :where(.calc-text, small) {
     font-size: clamp(0.75rem, 4vw, 0.8rem);
   }
   .calc-group:has(:out-of-range:not(:focus)),
