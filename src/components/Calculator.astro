@@ -2,7 +2,7 @@
 import Share from '../components/Share.astro';
 ---
 
-<div class="calc">
+<div class="calc" id="calculator">
   <div class="calc-inputs">
     <div class="calc-group">
       <label for="brine">Brine</label>
@@ -206,27 +206,90 @@ import Share from '../components/Share.astro';
 </style>
 
 <script>
-const brine = document.getElementById("brine");
-const weight = document.getElementById("weight");
-const salt = document.getElementById("salt");
-const category = document.getElementById("category");
-const unitLabels = document.querySelectorAll("[data-unit]");
-const unitRadios = document.querySelectorAll("input[type=radio][name=unit]");
 
-const calculate = () => salt.value = ((brine.value * weight.value) / 100).toFixed(2);
-const updateUnitLabels = () => {
-  const selectedUnit = document.querySelector("[name=unit]:checked");
+class Calculator {
+  constructor() {
+    this.calculator = document.getElementById("calculator");
+    this.brine = document.getElementById("brine");
+    this.weight = document.getElementById("weight");
+    this.salt = document.getElementById("salt");
+    this.category = document.getElementById("category");
+    this.unitLabels = document.querySelectorAll("[data-unit]");
+    this.unitRadios = document.querySelectorAll("input[type=radio][name=unit]");
+  }
 
-  unitLabels.forEach(label => label.innerText = selectedUnit.value);
+  init() {
+    this.localStorageCheck();
+    this.calculate();
+    this.updateUnitLabels();
+    this.addEventListeners();
+  }
+  
+  calculate() {
+    this.salt.value = ((this.brine.value * this.weight.value) / 100).toFixed(2);
+    localStorage.setItem("state", JSON.stringify(this.state));
+  }
+
+  updateUnitLabels() {
+    this.unitLabels.forEach(label => label.innerText = this.unit);
+    localStorage.setItem("state", JSON.stringify(this.state));
+  }
+
+  addEventListeners = () => {
+    // update selected unit text
+    this.unitRadios.forEach(radio => radio.addEventListener("change", () => this.updateUnitLabels()));
+    
+    // calculate on user input
+    [this.brine, this.weight].forEach(input => input.addEventListener("input", () => this.calculate()));
+    
+    // select all text on user click
+    [this.brine, this.weight].forEach(input => input.addEventListener("click", e => e.target.select()));
+    
+    // update brine percentage when food category is changed
+    this.category.addEventListener("change", () => {
+      if (this.category.value !== "") {
+        this.brine.value = this.category.value;
+      }
+      this.calculate();
+    });
+  }
+
+  localStorageCheck = () => {
+    if (localStorage.getItem("state")) {
+      this.state = JSON.parse(localStorage.getItem("state"));
+    } else {
+      localStorage.setItem("state", JSON.stringify(this.state));
+    }
+  }
+
+  get unit() {
+    return document.querySelector("[name=unit]:checked").value;
+  }
+
+  get state() {
+    return {
+      brine: this.brine.value,
+      weight: this.weight.value,
+      category: this.category.value,
+      unit: this.unit
+    }
+  }
+
+  set state(s) {
+    const { brine, weight, category, unit} = s;
+    console.log(s)
+
+    this.brine.value = brine;
+    this.weight.value = weight;
+    this.category.value = category;
+    this.category.querySelector(`option[value="${category}"]`).toggleAttribute("selected", true);
+    this.calculator.querySelector(`input[name="unit"][value="${unit}"]`).toggleAttribute("checked", true);
+  }
 }
 
-unitRadios.forEach(radio => radio.addEventListener("change", () => updateUnitLabels()));
-[brine, weight].forEach(input => input.addEventListener("input", () => calculate()));
-[brine, weight].forEach(input => input.addEventListener("click", e => e.target.select()));
-category.addEventListener("change", e => {
-  if (e.target.value === "") return;
-  brine.value = e.target.value;
-  calculate();
-});
-document.addEventListener("DOMContentLoaded", () => calculate());
+document.addEventListener("DOMContentLoaded", () => {
+  const calculator = new Calculator();
+  
+  calculator.init();
+})
 </script>
