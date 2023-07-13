@@ -20,7 +20,7 @@ import InstallPwa from "./InstallPwa.astro";
 </div>
 <div id="installPwa" class="has-pwa" hidden>
 	<h2>Like this calculator?</h2>
-	<p>Try the app. It's fast, simple, and <strong>no sign-in</strong> is required.</p>
+	<p>Try the app. It's fast, simple, <strong>does not track your data</strong>, and <strong>no sign-in</strong> is required.</p>
 	<InstallPwa />
 </div>
 
@@ -29,10 +29,10 @@ section > * {
 	margin-block-start: 1em;
 }
 h1 {
-	font-size: clamp(1.75rem, 4vw, 2.25rem);
+	font-size: var(--font-size-xl);
 	line-height: 1.1;
 }
 h2 {
-	font-size: clamp(1.15rem, 2vw, 1.5rem);
+	font-size: var(--font-size-lg);
 }
 </style>

@@ -25,6 +25,12 @@ const { title } = Astro.props;
 		<meta name="msapplication-TileColor" content="#9f00a7">
 		<meta name="theme-color" content="#4f304d">
 		<meta name="generator" content={Astro.generator} />
+		<link rel="stylesheet" href="/lacto-calculator/iconfont/index.css" />
+		<link rel="stylesheet" href="/lacto-calculator/css/dialog.css" />
+		<link rel="stylesheet" href="/lacto-calculator/css/ferment.css" />
+		<script defer src="/lacto-calculator/js/calculator.js"></script>
+		<script defer src="/lacto-calculator/js/dialog.js"></script>
+		<script defer src="/lacto-calculator/js/ferment.js"></script>
 		<script async defer src="https://buttons.github.io/buttons.js"></script>
 		<title>{title}</title>
 	</head>
@@ -36,11 +42,17 @@ const { title } = Astro.props;
 <style is:global>
 	:root {
 		--font-family: 'Quicksand Variable', sans-serif;
+		--font-size-sm: 0.85rem;
+		--font-size-md: 1rem;
+		--font-size-lg: clamp(1.35rem, 4vw, 1.75rem);
+		--font-size-xl: clamp(2.15rem, 4vw, 2.5rem);
+		--font-size-xxl: clamp(2.75rem, 4vw, 4rem);
 		--border-radius: 0.5rem;
 		--selection-color: #fff;
 		--text-muted-color: hsl(295, 22%, 59%);
 		
 		--svg-invert: 0;
+		--filter-invert: invert(0%);
 		--text-color: hsl(275, 25%, 35%);
 		--link-color: hsl(275, 41%, 41%);
 		--error-color: hsl(0, 100%, 35%);
@@ -91,10 +103,12 @@ const { title } = Astro.props;
 	@media (prefers-color-scheme: dark) {
 		:root {
 			--text-color: hsl(276, 38%, 85%);
-			--link-color: hsl(295, 22%, 59%);
-			--error-color: hsl(0, 72%, 60%);
+			--link-color: hsl(295, 23.73%, 60.8%);
+			--error-color: hsl(0, 86.99%, 65.78%);
 			--border-color: hsl(305, 22%, 32%);
 			--svg-invert: 100%;
+			--filter-invert: invert(100%);
+
 			--main-background-color: 
 			linear-gradient(
 				to bottom,
@@ -141,24 +155,28 @@ const { title } = Astro.props;
 	}
 	html {
   	font-family: var(--font-family);
-		font-size: 1rem;
+		font-size: var(--font-size-md);
 		line-height: calc(1rem * 1.5);
 		color: var(--text-color);
 		background: var(--main-background-color);
 	}
 	button {
+		display: flex;
+		align-items: center;
+		gap: 0.25rem;
 		font-family: var(--font-family);
 	}
-	@keyframes fadeIn {
-		from { opacity: 0 }
-		to { opacity: 1 }
+	button > * {
+		pointer-events: none;
+	}
+	textarea {
+		font-family: var(--font-family);
 	}
 	body {
 		display: flex;
 		flex-direction: column;
 		margin: 0;
 		min-block-size: 100svh;
-		animation: fadeIn 100ms;
 	}
 	:where(p, h1, h2, li) {
 		max-inline-size: 60ch;
@@ -191,6 +209,32 @@ const { title } = Astro.props;
 			display: none !important;
 		}
 	}
+	.btn-default {
+		border: 0;
+		color: var(--text-color);
+		background: transparent;
+    cursor: pointer;
+	}
+	.btn-primary {
+		border: 0;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+		color: var(--text-color);
+		background: var(--calc-output-background-color);
+    cursor: pointer;
+	}
+	::-webkit-calendar-picker-indicator {
+		filter: var(--filter-invert);
+		opacity: 0.5;
+	}
+	input[type="number"]:out-of-range:not(:focus) ~ [data-validate="field"],
+	input[type="text"]:invalid:not(:focus) ~ [data-validate="field"] {
+    display: block;
+  }
+  [data-validate="field"] {
+    display: none;
+    color: var(--error-color);
+  }
 </style>
 
 <script>
@@ -200,4 +244,9 @@ const { title } = Astro.props;
 			{ scope: '/lacto-calculator/' }
 		)
 	}
+	if (navigator.canShare)  {
+		const shareButtons = document.querySelectorAll("button[data-share]");
+    shareButtons.forEach(button => button.removeAttribute("hidden"));
+	}
+	
 </script>

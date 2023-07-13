@@ -1,23 +1,6 @@
-<button type="button" id="pwaButton">Install App</button>
-
-<style>
-  button {
-		border: 0;
-    border-radius: 0.5rem;
-    padding: 0.5rem 1rem;
-    font-size: clamp(1.15rem, 2vw, 1.5rem);
-		color: var(--text-color);
-		background: var(--calc-output-background-color);
-    cursor: pointer;
-	}
-  button::before {
-    display: inline-block;
-    margin-inline-end: 0.5rem;
-    content: url("/lacto-calculator/img/download.svg");
-    width: clamp(1.15rem, 2vw, 1.5rem);
-    filter: invert(var(--svg-invert));
-  }
-</style>
+<button type="button" id="pwaButton" class="btn-primary">
+  <kay-icon class="carbon:download" aria-hidden="true"></kay-icon> Install App
+</button>
 
 <script>
 	// Initialize deferredPrompt for use later to show browser install prompt.

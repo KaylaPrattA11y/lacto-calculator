@@ -1,0 +1,31 @@
+<div class="button-group">
+  <button type="button" aria-controls="viewFermentsDialog" aria-haspopup="dialog" class="btn-primary">
+    <kay-icon class="carbon:star" aria-hidden="true"></kay-icon> 
+    View my ferments
+  </button>
+</div>
+<dialog id="viewFermentsDialog">
+  <div class="dialog-header">
+    <h2 id="myFermentsHeading">My ferments</h2>
+    <button aria-controls="viewFermentsDialog" aria-haspopup="dialog" aria-label="Close" class="btn-default">
+      <kay-icon class="carbon:close" aria-hidden="true"></kay-icon>
+    </button>
+  </div>
+  <div class="dialog-main">
+    <ul id="savedFermentsList"></ul>
+  </div>
+</dialog>
+
+<style>
+  .btn-primary {
+    margin: 1rem auto 0
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  ul:empty::after {
+    content: "No ferments saved.";
+  }
+</style>

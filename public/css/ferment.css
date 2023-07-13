@@ -1,0 +1,77 @@
+.ferment:first-of-type {
+  padding-block-end: 1.5rem;
+}
+.ferment:last-of-type {
+  padding-block-start: 1.5rem;
+}
+.ferment:not(:last-of-type) {
+  border-bottom: 1px solid var(--border-color);
+}
+.ferment:not(:last-of-type, :first-of-type) {
+  padding-block: 1.5rem;
+}
+.ferment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+}
+.ferment-header > div,
+.ferment-date {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem;
+}
+.ferment-header h3 {
+  padding: 0.25rem 1rem;
+  background: var(--calc-output-background-color);
+  margin: 0;
+}
+.ferment button,
+.ferment-header h3:empty + button {
+  margin-inline: auto 0;
+}
+.ferment-details {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  display: flex;
+  justify-content: space-around;
+  gap: 1rem;
+}
+.ferment-date {
+  font-size: var(--font-size-sm);
+}
+.ferment button,
+.ferment-date > div,
+.ferment-notes {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.ferment {
+  position: relative;
+}
+.ferment-details li > div > span:first-child {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+}
+.ferment-details {
+  padding-block: 1rem;
+}
+.ferment-header h3:empty,
+.ferment-notes:empty {
+  display: none;
+}
+.ferment-notes {
+  margin: 0;
+}
+.ferment-notes:not(:empty)::before {
+  content: "Notes: ";
+  font-weight: 700;
+}
+.ferment-unit {
+  color: var(--link-color);
+}

@@ -1,0 +1,110 @@
+<dialog id="saveFermentDialog">
+  <div class="dialog-header">
+    <h2>Save this ferment</h2>
+    <button aria-controls="saveFermentDialog" aria-haspopup="dialog" aria-label="Close" class="btn-default">
+      <kay-icon class="carbon:close" aria-hidden="true"></kay-icon>
+    </button>
+  </div>
+  <form class="dialog-main" id="saveFermentForm">
+    <ul class="input-group ferment-details">
+      <li>
+        <label for="currentBrine">Brine: </label>
+        <output id="currentBrine" data-label="brine"></output>
+        <span class="ferment-unit">%</span>
+      </li>
+      <li>
+        <label for="currentWeight">Weight: </label>
+        <output id="currentWeight" data-label="weight"></output>
+        <span data-label="unit" class="ferment-unit"></span>
+      </li>
+      <li>
+        <label for="currentSalt">Salt: </label>
+        <output id="currentSalt" data-label="salt"></output>
+        <span data-label="unit" class="ferment-unit"></span>
+      </li>
+    </ul>
+    <div class="input-group">
+      <label for="fermentName">Name</label>
+      <input 
+      type="text" 
+      id="fermentName" 
+      maxlength="30" 
+      placeholder="My Sauerkraut" 
+      pattern="^[a-zA-Z0-9 ]{1,30}$" 
+      title="Please use only letters, numbers, and spaces." 
+      name="fermentName" />
+      <p data-validate="field">Please use only letters, numbers, and spaces.</p>
+    </div>
+    <div class="input-group">
+      <label for="dateStart">Start date</label>
+      <input type="date" id="dateStart" name="dateStart" />
+    </div>
+    <div class="input-group">
+      <label for="notes">Notes (optional)</label>
+      <textarea id="notes" name="notes" maxlength="100"></textarea>
+    </div>
+    <div class="input-group actions">
+      <button type="submit" class="btn-primary" id="saveFermentButton">Save</button>
+      <button type="button" aria-controls="saveFermentDialog" aria-haspopup="dialog" class="btn-default">Cancel</button>
+    </div>
+  </form>
+</dialog>
+
+<style>
+  output {
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+  }
+  :where(input, textarea) {
+    background: none;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    border-bottom: 1px solid var(--border-color);
+    inline-size: 100%;
+    color: var(--text-color);
+    font-size: var(--font-size-lg);
+  }
+  :where(input, textarea):focus {
+    outline: 0;
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+  label {
+    font-size: var(--font-size-md);
+    display: block;
+  }
+  input::placeholder {
+    color: var(--text-color);
+    opacity: 0.5;
+  }
+  .input-group:not(:first-child) {
+    margin-top: 1em;
+    position: relative;
+  }
+  .actions {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+    gap: 1rem;
+  }
+  /* xs and up */
+	@media (min-width: 400px) {
+    .date-range {
+      display: flex;
+      align-items: flex-end;
+      gap: 2rem;
+    }
+    .date-range .input-group:last-child::before {
+      position: absolute;
+      inset: auto auto 0.85rem -1.5rem;
+      margin: auto;
+      content: "";
+      border-bottom: 3px solid var(--text-color);
+      border-radius: 100vmax;
+      inline-size: 1rem;
+    }
+    .date-range .input-group {
+      flex-basis: 50%;
+    }
+  }
+</style>

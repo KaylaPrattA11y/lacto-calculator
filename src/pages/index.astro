@@ -3,6 +3,8 @@ import Layout from '../layouts/Layout.astro';
 import About from '../components/About.astro';
 import Calculator from '../components/Calculator.astro';
 import GithubStar from '../components/GithubStar.astro';
+import MyFerments from '../components/MyFerments.astro';
+import Save from '../components/Save.astro';
 ---
 
 <Layout title="Brine Calculator | Lacto-fermentation">
@@ -13,8 +15,10 @@ import GithubStar from '../components/GithubStar.astro';
 		</section>
 		<section aria-label="Brine Calculator">
 			<Calculator />
+			<MyFerments />
 		</section>
 	</main>
+	<Save />
 </Layout>
 
 <style>

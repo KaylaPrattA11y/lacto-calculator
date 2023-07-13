@@ -1,31 +1,15 @@
-<button type="button" id="share" hidden>Share</button>
+<button type="button" id="share" data-share class="btn-default" hidden>
+  <kay-icon class="carbon:share" aria-hidden="true"></kay-icon> Share
+</button>
 
 <style>
-  button {
-    position: absolute;
-    inset: auto 0.25rem 0.25rem auto;
-		border: 0;
-    font-size: 1rem;
-		color: var(--text-color);
-		background: transparent;
-    cursor: pointer;
-    padding-inline-start: 1.25rem;
-	}
-  button::before {
-    position: absolute;
-    inset: 0.16rem auto auto 0;
-    display: inline-block;
-    content: url("/lacto-calculator/img/share-nodes.svg");
-    width: 0.8rem;
-    filter: invert(var(--svg-invert));
-  }
+
 </style>
 
 <script>
   const shareBtn = document.getElementById("share");
   
   if (navigator.canShare)  {
-    shareBtn.removeAttribute("hidden");
     shareBtn.addEventListener("click", async () => {
       const brine = document.getElementById("brine").value;
       const shareData = {

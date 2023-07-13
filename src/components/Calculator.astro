@@ -27,8 +27,8 @@ import Share from '../components/Share.astro';
       value="682" 
       min="1" 
       aria-describedby="weightHelper" />
-      <span class="calc-unit" aria-hidden="true"><span data-unit>grams</span></span>
-      <p class="calc-text" id="weightHelper">Combined weight of vegetables and water in <span data-unit>grams</span>.</p>
+      <span class="calc-unit" aria-hidden="true"><span data-label="unit">grams</span></span>
+      <p class="calc-text" id="weightHelper">Combined weight of vegetables and water in <span data-label="unit">grams</span>.</p>
     </div>
   </div>
   <div class="calc-inputs">
@@ -68,8 +68,13 @@ import Share from '../components/Share.astro';
   <div class="calc-output">
     <label for="salt">Salt required</label>
     <output id="salt" for="brine weight" name="salt">1</output>
-    <span data-unit>grams</span>
-    <Share />
+    <span data-label="unit">grams</span>
+    <div class="calc-save-share">
+      <button type="button" class="btn-default" aria-controls="saveFermentDialog" aria-haspopup="dialog">
+        <kay-icon class="carbon:star" aria-hidden="true"></kay-icon> Save
+      </button>
+      <Share />
+    </div>
   </div>
 </div>
 
@@ -86,6 +91,13 @@ import Share from '../components/Share.astro';
     display: grid;
     gap: 0.5rem;
   }
+  .calc-save-share {
+    position: absolute;
+    inset: auto auto 0.25rem auto;
+    inline-size: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
   .calc-inputs {
     order: 2;
   }
@@ -101,7 +113,7 @@ import Share from '../components/Share.astro';
     margin-block-end: 0.5rem;
   }
   .calc-output label {
-    font-size: clamp(1.25rem, 4vw, 1.5rem);
+    font-size: var(--font-size-lg);
   }
   .calc-inputs {
     display: flex;
@@ -114,7 +126,7 @@ import Share from '../components/Share.astro';
     background: var(--calc-group-background-color);
     color: var(--text-color);
     inline-size: 100%;
-    font-size: clamp(1rem, 3vw, 1.15rem);
+    font-size: var(--font-size-md);
   }
   .radio-group {
     display: flex;
@@ -135,9 +147,9 @@ import Share from '../components/Share.astro';
     outline: auto;
   }
   .calc-unit {
-    font-size: clamp(1rem, 4vw, 1.25rem);
+    font-size: var(--font-size-md);
     font-weight: 700;
-    color: var(--text-muted-color);
+    color: var(--link-color);
   }
   input[type="number"] {
     background: none;
@@ -147,32 +159,25 @@ import Share from '../components/Share.astro';
     border-bottom: 1px solid var(--border-color);
     inline-size: 5rem;
     color: var(--text-color);
-    font-size: clamp(1.35rem, 4vw, 1.75rem);
+    font-size: var(--font-size-lg);
   }
   input:focus-visible {
     outline: 0;
   }
   :where(label, .label) {
-    font-size: clamp(1rem, 2vw, 1.15rem);
+    font-size: var(--font-size-md);
     display: block;
   }
   output {
     font-weight: 500;
-    font-size: clamp(2.75rem, 4vw, 4rem);
+    font-size: var(--font-size-xxl);
   }
   :where(.calc-text, small) {
-    font-size: clamp(0.75rem, 4vw, 0.8rem);
+    font-size: var(--font-size-sm);
   }
   .calc-group:has(:out-of-range:not(:focus)),
     input:out-of-range:not(:focus) {
     border-color: var(--error-color);
-  }
-  input:out-of-range:not(:focus) ~ [data-validate="field"] {
-    display: block;
-  }
-  [data-validate="field"] {
-    display: none;
-    color: var(--error-color);
   }
   /* sm and down */
 	@media (max-width: 764px) {
@@ -200,95 +205,7 @@ import Share from '../components/Share.astro';
       block-size: 25svh;
     }
     output {
-      font-size: clamp(4rem, 5vw, 4.55rem);
+      font-size: var(--font-size-xl);
     }
   }
 </style>
-
-<script>
-
-class Calculator {
-  constructor() {
-    this.calculator = document.getElementById("calculator");
-    this.brine = document.getElementById("brine");
-    this.weight = document.getElementById("weight");
-    this.salt = document.getElementById("salt");
-    this.category = document.getElementById("category");
-    this.unitLabels = document.querySelectorAll("[data-unit]");
-    this.unitRadios = document.querySelectorAll("input[type=radio][name=unit]");
-  }
-
-  init() {
-    this.localStorageCheck();
-    this.calculate();
-    this.updateUnitLabels();
-    this.addEventListeners();
-  }
-  
-  calculate() {
-    this.salt.value = ((this.brine.value * this.weight.value) / 100).toFixed(2);
-    localStorage.setItem("state", JSON.stringify(this.state));
-  }
-
-  updateUnitLabels() {
-    this.unitLabels.forEach(label => label.innerText = this.unit);
-    localStorage.setItem("state", JSON.stringify(this.state));
-  }
-
-  addEventListeners = () => {
-    // update selected unit text
-    this.unitRadios.forEach(radio => radio.addEventListener("change", () => this.updateUnitLabels()));
-    
-    // calculate on user input
-    [this.brine, this.weight].forEach(input => input.addEventListener("input", () => this.calculate()));
-    
-    // select all text on user click
-    [this.brine, this.weight].forEach(input => input.addEventListener("click", e => e.target.select()));
-    
-    // update brine percentage when food category is changed
-    this.category.addEventListener("change", () => {
-      if (this.category.value !== "") {
-        this.brine.value = this.category.value;
-      }
-      this.calculate();
-    });
-  }
-
-  localStorageCheck = () => {
-    if (localStorage.getItem("state")) {
-      this.state = JSON.parse(localStorage.getItem("state"));
-    } else {
-      localStorage.setItem("state", JSON.stringify(this.state));
-    }
-  }
-
-  get unit() {
-    return document.querySelector("[name=unit]:checked").value;
-  }
-
-  get state() {
-    return {
-      brine: this.brine.value,
-      weight: this.weight.value,
-      category: this.category.value,
-      unit: this.unit
-    }
-  }
-
-  set state(s) {
-    const { brine, weight, category, unit} = s;
-
-    this.brine.value = brine;
-    this.weight.value = weight;
-    this.category.value = category;
-    this.category.querySelector(`option[value="${category}"]`).toggleAttribute("selected", true);
-    this.calculator.querySelector(`input[name="unit"][value="${unit}"]`).toggleAttribute("checked", true);
-  }
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  const calculator = new Calculator();
-  
-  calculator.init();
-})
-</script>
