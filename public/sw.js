@@ -15,5 +15,7 @@ var VERSION = 'version_06';
 var URLS = [    
   `${GHPATH}/`,
   `${GHPATH}/index.html`,
-  `${GHPATH}/_astro/*.css`
+  `${GHPATH}/_astro/iconfont/*.*`,
+  `${GHPATH}/_astro/css/*.css`,
+  `${GHPATH}/_astro/js/*.js`,
 ]
