@@ -50,6 +50,9 @@ const { title } = Astro.props;
 		--border-radius: 0.5rem;
 		--selection-color: #fff;
 		--text-muted-color: hsl(295, 22%, 59%);
+		--mask-waves:
+			radial-gradient(32.80px at 50% calc(100% - 46.20px),#000 99%,#0000 101%) calc(50% - 42px) 0/84px 100%,
+			radial-gradient(32.80px at 50% calc(100% + 25.20px),#0000 99%,#000 101%) 50% calc(100% - 21px)/84px 100% repeat-x;
 		
 		--svg-invert: 0;
 		--filter-invert: invert(0%);
@@ -223,6 +226,17 @@ const { title } = Astro.props;
 		background: var(--calc-output-background-color);
     cursor: pointer;
 	}
+	.visually-hidden {
+		position: absolute!important;
+    width: 1px!important;
+    height: 1px!important;
+    padding: 0!important;
+    margin: -1px!important;
+    overflow: hidden!important;
+    clip: rect(0,0,0,0)!important;
+    white-space: nowrap!important;
+    border: 0!important;
+	}
 	::-webkit-calendar-picker-indicator {
 		filter: var(--filter-invert);
 		opacity: 0.5;
@@ -238,12 +252,28 @@ const { title } = Astro.props;
 </style>
 
 <script>
+	const isStandalone = () =>  window.matchMedia('(display-mode: standalone)').matches || document.referrer.includes('android-app://');
+
+	if (isStandalone()) {
+		// Prevent the PWA from closing when user presses "back" button on Android device
+		// 1. Add previous history state
+		window.addEventListener('load', function() {
+			window.history.pushState({}, '');
+		});
+		// 2. Each time users presses 'back' to go to the first entry, we add the new entry back again
+		window.addEventListener('popstate', function() {
+			window.history.pushState({}, '');
+		});
+	}
+
+	// check for SW
 	if (navigator.serviceWorker) {
 		navigator.serviceWorker.register (
 			'/lacto-calculator/sw.js',
 			{ scope: '/lacto-calculator/' }
 		)
 	}
+	// Check if sharing is enabled
 	if (navigator.canShare)  {
 		const shareButtons = document.querySelectorAll("button[data-share]");
     shareButtons.forEach(button => button.removeAttribute("hidden"));

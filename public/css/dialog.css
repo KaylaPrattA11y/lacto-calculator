@@ -20,7 +20,9 @@ dialog::backdrop {
   align-items: center;
   gap: 1rem;
   background: var(--calc-output-background-color);
-  padding: 1rem;
+  padding: 1.5rem 1rem 3rem 1rem;
+  -webkit-mask: var(--mask-waves);
+  mask: var(--mask-waves);
 }
 .dialog-main {
   padding: 1rem 1rem 2rem 1rem;

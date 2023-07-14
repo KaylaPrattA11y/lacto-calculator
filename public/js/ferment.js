@@ -25,7 +25,7 @@ const addFerment = (f) => {
   li.id = f.id;
   li.className = "ferment";
   li.innerHTML = `
-    <div class="ferment-header">
+    <div class="ferment-header${f.color !== "transparent" ? " ferment-tagged" : ""}" style="--color: ${f.color}">
       <div>
         <h3>${f.fermentName}</h3>
         <div class="ferment-date">
@@ -132,6 +132,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const randomNumber = Math.floor(Math.random() * 9000 + 1000);
     const state = JSON.parse(localStorage.getItem("state"));
+    const color = document.querySelector("[name='color']:checked");
     const thisFerment = {
       id: `ferment-${randomNumber}-${parseInt(state.brine, 10) + parseInt(state.weight, 10) + parseInt(state.salt, 10)}`,
       brine: parseInt(state.brine, 10),
@@ -141,6 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
       fermentName: fermentName.value || "",
       dateStart: dateStart.value,
       notes: notes.value || "",
+      color: color ? color.value : "transparent",
     };
   
     savedFermentsStorage.push(thisFerment);

@@ -11,10 +11,26 @@
   padding-block: 1.5rem;
 }
 .ferment-header {
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: baseline;
   gap: 1rem;
+}
+.ferment-tagged::before {
+  position: absolute;
+  inset: -0.5rem auto auto -0.5rem;
+  display: inline-block;
+  font-family: "Iconify Explorer Font" !important;
+  font-size: 1.15rem;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  content: "\e006";
+  color: var(--color);
+}
+.ferment-tagged h3:empty + .ferment-date {
+  padding-inline-start: 0.75rem;
 }
 .ferment-header > div,
 .ferment-date {
@@ -45,8 +61,7 @@
   font-size: var(--font-size-sm);
 }
 .ferment button,
-.ferment-date > div,
-.ferment-notes {
+.ferment-date > div {
   display: flex;
   align-items: center;
   gap: 0.25rem;
@@ -67,6 +82,9 @@
 }
 .ferment-notes {
   margin: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
 }
 .ferment-notes:not(:empty)::before {
   content: "Notes: ";

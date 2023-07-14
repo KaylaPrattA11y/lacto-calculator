@@ -69,12 +69,12 @@ import Share from '../components/Share.astro';
     <label for="salt">Salt required</label>
     <output id="salt" for="brine weight" name="salt">1</output>
     <span data-label="unit">grams</span>
-    <div class="calc-save-share">
-      <button type="button" class="btn-default" aria-controls="saveFermentDialog" aria-haspopup="dialog">
-        <kay-icon class="carbon:star" aria-hidden="true"></kay-icon> Add to My Ferments
-      </button>
-      <Share />
-    </div>
+  </div>
+  <div class="calc-save-share">
+    <button type="button" class="btn-default" aria-controls="saveFermentDialog" aria-haspopup="dialog">
+      <kay-icon class="carbon:star-filled" aria-hidden="true"></kay-icon> Add to My Ferments
+    </button>
+    <Share />
   </div>
 </div>
 
@@ -92,9 +92,7 @@ import Share from '../components/Share.astro';
     gap: 0.5rem;
   }
   .calc-save-share {
-    position: absolute;
-    inset: auto auto 0.25rem auto;
-    inline-size: 100%;
+    padding-inline: 1rem;
     display: flex;
     justify-content: space-between;
   }
@@ -104,13 +102,14 @@ import Share from '../components/Share.astro';
   .calc-output {
     position: relative;
     text-align: center;
-    padding: 2rem 1rem;
+    padding: 2rem 1rem 3.5rem 1rem;
     border-radius: 0.5rem;
     display: grid;
     align-content: center;
     gap: 1rem;
     background: var(--calc-output-background-color);
-    margin-block-end: 0.5rem;
+    -webkit-mask: var(--mask-waves);
+    mask: var(--mask-waves);
   }
   .calc-output label {
     font-size: var(--font-size-lg);

@@ -1,3 +1,5 @@
+const isStandalone = () =>  window.matchMedia('(display-mode: standalone)').matches || document.referrer.includes('android-app://');
+
 document.addEventListener("DOMContentLoaded", () => {
   const dialogButtons = document.querySelectorAll("button[aria-haspopup='dialog']");
   const dialogs = document.querySelectorAll("dialog");
@@ -19,8 +21,16 @@ document.addEventListener("DOMContentLoaded", () => {
     hideBodyScrollbar(isOpen);
     if (isOpen) {
       dialog.close();
+      // adjust window history
+      if (isStandalone()) {
+        window.history.back();
+      }
     } else {
       dialog.showModal();
+      // Add to history state
+      if (isStandalone()) {
+        window.history.pushState({ isPopup: true }, 'Dialog');
+      }
     }
   }));
 
@@ -29,4 +39,14 @@ document.addEventListener("DOMContentLoaded", () => {
     
     hideBodyScrollbar(isOpen);
   }));
+
 });
+
+if (isStandalone()) {
+  window.addEventListener('popstate', event => {
+    // Close dialog when pressing "Back" button while a dialog is open
+    if (event.state?.isPopup) {
+      document.querySelector("dialog[open]")?.close();
+    }
+  });
+}

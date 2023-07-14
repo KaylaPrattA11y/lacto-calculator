@@ -24,25 +24,51 @@
       </li>
     </ul>
     <div class="input-group">
-      <label for="fermentName">Name</label>
+      <label for="dateStart">Start date</label>
+      <input type="date" id="dateStart" name="dateStart" required />
+    </div>
+    <div class="input-group">
+      <label for="fermentName">Name (optional)</label>
       <input 
       type="text" 
       id="fermentName" 
       maxlength="30" 
-      placeholder="My Sauerkraut" 
       pattern="^[a-zA-Z0-9 ]{1,30}$" 
       title="Please use only letters, numbers, and spaces." 
       name="fermentName" />
       <p data-validate="field">Please use only letters, numbers, and spaces.</p>
     </div>
     <div class="input-group">
-      <label for="dateStart">Start date</label>
-      <input type="date" id="dateStart" name="dateStart" />
-    </div>
-    <div class="input-group">
       <label for="notes">Notes (optional)</label>
       <textarea id="notes" name="notes" maxlength="100"></textarea>
     </div>
+    <fieldset class="input-group">
+      <legend>Tag with a color (optional)</legend>
+      <label class="theme-transparent">
+        <input type="radio" name="color" value="transparent" aria-label="transparent" />
+      </label>
+      <label class="theme-red">
+        <input type="radio" name="color" value="red" aria-label="red" />
+      </label>
+      <label class="theme-orange">
+        <input type="radio" name="color" value="orange" aria-label="orange" />
+      </label>
+      <label class="theme-yellow">
+        <input type="radio" name="color" value="yellow" aria-label="yellow" />
+      </label>
+      <label class="theme-green">
+        <input type="radio" name="color" value="green" aria-label="green" />
+      </label>
+      <label class="theme-blue">
+        <input type="radio" name="color" value="blue" aria-label="blue" />
+      </label>
+      <label class="theme-indigo">
+        <input type="radio" name="color" value="indigo" aria-label="indigo" />
+      </label>
+      <label class="theme-violet">
+        <input type="radio" name="color" value="violet" aria-label="violet" />
+      </label>
+    </fieldset>
     <div class="input-group actions">
       <button type="submit" class="btn-primary" id="saveFermentButton">Save</button>
       <button type="button" aria-controls="saveFermentDialog" aria-haspopup="dialog" class="btn-default">Cancel</button>
@@ -86,6 +112,86 @@
     flex-direction: row-reverse;
     justify-content: flex-start;
     gap: 1rem;
+  }
+  fieldset {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+  }
+  fieldset > label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 1.5rem;
+  }
+  fieldset > label:focus-within {
+    outline: 2px solid var(--text-color);
+  }
+  legend {
+    margin-block-end: 1rem;;
+  }
+  input[type="radio"] {
+    margin: 0;
+    padding: 0;
+    width: 0.5rem;
+    height: 0.5rem;
+  }
+  input[type="radio"]:checked {
+    scale: 4.5;
+  }
+  .theme-red {
+    background: red;
+  }
+  [aria-label="transparent"] {
+    accent-color: var(--border-color);
+  }
+  .theme-transparent {
+    border: 2px solid var(--border-color);
+  }
+  [aria-label="red"] {
+    accent-color: red;
+  }
+  .theme-orange {
+    background: orange;
+  }
+  [aria-label="orange"] {
+    accent-color: orange;
+  }
+  .theme-yellow {
+    background: yellow;
+  }
+  [aria-label="yellow"] {
+    accent-color: yellow;
+  }
+  .theme-green {
+    background: green;
+  }
+  [aria-label="green"] {
+    accent-color: green;
+  }
+  .theme-blue {
+    background: blue;
+  }
+  [aria-label="blue"] {
+    accent-color: blue;
+  }
+  .theme-indigo {
+    background: indigo;
+  }
+  [aria-label="indigo"] {
+    accent-color: indigo;
+  }
+  .theme-violet {
+    background: violet;
+  }
+  [aria-label="violet"] {
+    accent-color: violet;
   }
   /* xs and up */
 	@media (min-width: 400px) {
