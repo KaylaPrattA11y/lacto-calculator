@@ -24,8 +24,8 @@
       </li>
     </ul>
     <div class="input-group">
-      <label for="dateStart">Start date</label>
-      <input type="date" id="dateStart" name="dateStart" required />
+      <label for="dateStart">End date (optional)</label>
+      <input type="date" id="dateEnd" name="dateEnd" />
     </div>
     <div class="input-group">
       <label for="fermentName">Name (optional)</label>
@@ -193,24 +193,24 @@
   [aria-label="violet"] {
     accent-color: violet;
   }
-  /* xs and up */
-	@media (min-width: 400px) {
-    .date-range {
-      display: flex;
-      align-items: flex-end;
-      gap: 2rem;
-    }
-    .date-range .input-group:last-child::before {
-      position: absolute;
-      inset: auto auto 0.85rem -1.5rem;
-      margin: auto;
-      content: "";
-      border-bottom: 3px solid var(--text-color);
-      border-radius: 100vmax;
-      inline-size: 1rem;
-    }
-    .date-range .input-group {
-      flex-basis: 50%;
-    }
-  }
 </style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const saveFermentDialog = document.getElementById("saveFermentDialog");
+    const saveFermentForm = document.getElementById("saveFermentForm");
+    
+    saveFermentDialog.addEventListener("cancel", () => {
+      const todaysdate = new Date().toISOString().split('T')[0];
+
+      saveFermentForm.reset();
+      dateEnd.setAttribute("min", todaysdate);
+    });
+    saveFermentDialog.addEventListener("close", () => {
+      const todaysdate = new Date().toISOString().split('T')[0];
+
+      saveFermentForm.reset();
+      dateEnd.setAttribute("min", todaysdate);
+    });
+  });
+</script>

@@ -27,6 +27,22 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     } else {
       dialog.showModal();
+
+      // disallow end date to be newer than start date
+      if (dialog.id === "saveFermentDialog") {
+        const todaysdate = new Date().toISOString().split('T')[0];
+
+        dateEnd.setAttribute("min", todaysdate);
+      }
+
+      // Check if sharing is enabled
+      if (dialog.id === "viewFermentsDialog") {
+        if (navigator.canShare)  {
+          const shareButtons = document.querySelectorAll("button[data-share]");
+          shareButtons.forEach(button => button.removeAttribute("hidden"));
+        }
+      }
+
       // Add to history state
       if (isStandalone()) {
         window.history.pushState({ isPopup: true }, 'Dialog');

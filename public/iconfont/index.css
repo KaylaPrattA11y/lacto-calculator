@@ -18,24 +18,28 @@ kay-icon {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-kay-icon.carbon\:calendar::before{
-  content: "\e001";
+kay-icon.carbon\:calendar::before {
+content: "\e001";
 }
-kay-icon.carbon\:close::before{
-  content: "\e002";
+kay-icon.carbon\:close::before {
+content: "\e002";
 }
-kay-icon.carbon\:download::before{
-  content: "\e003";
+kay-icon.carbon\:download::before {
+content: "\e003";
 }
-kay-icon.carbon\:share::before{
+kay-icon.carbon\:share::before {
 content: "\e004";
 }
-kay-icon.carbon\:star::before{
-  content: "\e005";
+kay-icon.carbon\:star::before {
+content: "\e005";
 }
-kay-icon.carbon\:star-filled::before{
-  content: "\e006";
+kay-icon.carbon\:star-filled::before {
+content: "\e006";
 }
-kay-icon.carbon\:trash-can::before{
-  content: "\e007";
+kay-icon.carbon\:time::before {
+content: "\e007";
 }
+kay-icon.carbon\:trash-can::before {
+content: "\e008";
+}
+

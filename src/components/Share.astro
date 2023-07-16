@@ -9,7 +9,7 @@
 <script>
   const shareBtn = document.getElementById("share");
   
-  if (navigator.canShare)  {
+  if (navigator.canShare) {
     shareBtn.addEventListener("click", async () => {
       const brine = document.getElementById("brine").value;
       const shareData = {

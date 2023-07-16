@@ -1,7 +1,7 @@
 .ferment:first-of-type {
   padding-block-end: 1.5rem;
 }
-.ferment:last-of-type {
+.ferment:last-of-type:not(:only-child) {
   padding-block-start: 1.5rem;
 }
 .ferment:not(:last-of-type) {
@@ -29,7 +29,7 @@
   content: "\e006";
   color: var(--color);
 }
-.ferment-tagged h3:empty + .ferment-date {
+.ferment-tagged h3:empty + div {
   padding-inline-start: 0.75rem;
 }
 .ferment-header > div,
@@ -44,7 +44,7 @@
   background: var(--calc-output-background-color);
   margin: 0;
 }
-.ferment button,
+.ferment button:where([data-share], [data-delete='prompt']),
 .ferment-header h3:empty + button {
   margin-inline: auto 0;
 }
@@ -60,8 +60,15 @@
 .ferment-date {
   font-size: var(--font-size-sm);
 }
+.ferment-date time + time:not([hidden])::before {
+  display: inline-block;
+  content: "-";
+  text-align: center;
+  width: 1rem;
+}
 .ferment button,
-.ferment-date > div {
+.ferment-date > div,
+.ferment-started {
   display: flex;
   align-items: center;
   gap: 0.25rem;
@@ -76,8 +83,7 @@
 .ferment-details {
   padding-block: 1rem;
 }
-.ferment-header h3:empty,
-.ferment-notes:empty {
+.ferment-header h3:empty {
   display: none;
 }
 .ferment-notes {
@@ -86,10 +92,38 @@
   align-items: baseline;
   gap: 0.25rem;
 }
-.ferment-notes:not(:empty)::before {
-  content: "Notes: ";
+[data-ferment] {
+  font-size: var(--font-size-sm);
+}
+[data-ferment]:empty {
+  display: none;
+}
+[data-ferment]:not(:empty)::before {
+  content: attr(data-ferment);
   font-weight: 700;
 }
 .ferment-unit {
   color: var(--link-color);
+}
+.ferment-daterange {
+  display: flex;
+  gap: 1rem;
+}
+.ferment-daterange > div {
+  flex-basis: 50%;
+}
+.ferment-delete-options {
+  display: flex;
+  justify-content: flex-end;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+.ferment-delete-options p {
+  font-size: var(--font-size-sm);
+  font-style: italic;
+  margin-block: 0;
+}
+[data-delete="prompt"][aria-expanded="true"],
+[data-delete="prompt"][aria-expanded="false"] + .ferment-delete-options {
+  display: none;
 }
