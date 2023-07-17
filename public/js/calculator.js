@@ -17,20 +17,22 @@ class Calculator {
   }
   
   calculate() {
-    this.salt.value = ((this.brine.value * this.weight.value) / 100).toFixed(2);
+    this.salt.value = this.formatDecimal(((this.brine.value * this.weight.value) / 100));
     localStorage.setItem("state", JSON.stringify(this.state));
     this.updateValueLabels();
   }
+
+  formatDecimal = (number) => new Intl.NumberFormat("default", { maximumSignificantDigits: 3 }).format(number);
 
   updateValueLabels() {
     this.valueLabels.forEach(el =>{
       const { label } = el.dataset;
 
       if (label === "brine") {
-        el.innerText = this.state.brine;
+        el.innerText = this.formatDecimal(this.state.brine);
       }
       if (label === "weight") {
-        el.innerText = this.state.weight;
+        el.innerText = this.formatDecimal(this.state.weight);
       }
       if (label === "salt") {
         el.innerText = this.state.salt;

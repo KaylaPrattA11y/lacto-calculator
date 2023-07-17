@@ -8,6 +8,7 @@ const dateEnd = document.getElementById("dateEnd");
 const notes = document.getElementById("notes");
 const myFermentsList = document.getElementById("myFermentsList");
 const myFermentsStorage = JSON.parse(localStorage.getItem("saved")) || [];
+const formatDecimal = (number) => new Intl.NumberFormat("default", { maximumSignificantDigits: 3 }).format(number);
 
 const formatter = new Intl.RelativeTimeFormat(undefined, {
   numeric: "auto",
@@ -260,10 +261,11 @@ document.addEventListener("DOMContentLoaded", () => {
       const date = new Date();
       const randomNumber = Math.floor(Math.random() * 9000 + 1000);
       const state = JSON.parse(localStorage.getItem("state"));
+
       thisFerment = {
-        id: `ferment-${randomNumber}-${parseInt(state.brine, 10) + parseInt(state.weight, 10) + parseInt(state.salt, 10)}`,
-        brine: parseInt(state.brine, 10),
-        weight: parseInt(state.weight, 10),
+        id: `ferment${randomNumber}${parseInt(state.brine, 10) + parseInt(state.weight, 10) + parseInt(state.salt, 10)}`,
+        brine: formatDecimal(state.brine),
+        weight: formatDecimal(state.weight),
         salt: state.salt,
         unit: state.unit,
         fermentName: fermentName.value || "",
