@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const hideBodyScrollbar = isOpen => {
+    if (isStandalone()) return;
     if (isOpen) {
       document.body.style.overflowY = "auto";
       document.body.style.paddingInlineEnd = "0";
