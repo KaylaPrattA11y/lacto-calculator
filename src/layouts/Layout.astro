@@ -163,7 +163,7 @@ const { title } = Astro.props;
 		color: var(--text-color);
 		background: var(--main-background-color);
 	}
-	button {
+	button:not([hidden]) {
 		display: flex;
 		align-items: center;
 		gap: 0.25rem;
@@ -272,11 +272,6 @@ const { title } = Astro.props;
 			'/lacto-calculator/sw.js',
 			{ scope: '/lacto-calculator/' }
 		)
-	}
-	// Check if sharing is enabled
-	if (navigator.canShare)  {
-		const shareButtons = document.querySelectorAll("button[data-share]");
-    shareButtons.forEach(button => button.removeAttribute("hidden"));
 	}
 	
 </script>

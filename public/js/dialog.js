@@ -4,6 +4,18 @@ document.addEventListener("DOMContentLoaded", () => {
   const dialogButtons = document.querySelectorAll("button[aria-haspopup='dialog']");
   const dialogs = document.querySelectorAll("dialog");
 
+  const handleCloseAndCancel = dialog => {
+    const isOpen = dialog.hasAttribute("open");
+    
+    hideBodyScrollbar(isOpen);
+    hideDeletePrompts();
+    if (dialog.id === "myFermentsDialog") {
+      window.location.reload();
+    }
+    // saveFermentDialog.querySelector("h2").innerText = "Save this ferment";
+    // saveFermentForm.toggleAttribute("data-edit", false);
+  }
+
   const hideBodyScrollbar = isOpen => {
     if (isOpen) {
       document.body.style.overflowY = "auto";
@@ -14,9 +26,20 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  const hideDeletePrompts = () => {
+    const deletePromptButtons = document.querySelectorAll("button[data-delete='prompt']");
+
+    deletePromptButtons.forEach(button => button.setAttribute("aria-expanded", "false"));
+  }
+
   dialogButtons.forEach(button => button.addEventListener("click", e => {
     const dialog = document.getElementById(`${e.target.getAttribute("aria-controls")}`);
     const isOpen = dialog.hasAttribute("open");
+    const showModal = new CustomEvent("showModal");
+    const addOneDay = date => {
+      date.setDate(date.getDate() + 1);
+      return date;
+    }
 
     hideBodyScrollbar(isOpen);
     if (isOpen) {
@@ -26,21 +49,15 @@ document.addEventListener("DOMContentLoaded", () => {
         window.history.back();
       }
     } else {
+      dialog.dispatchEvent(showModal);
       dialog.showModal();
 
       // disallow end date to be newer than start date
       if (dialog.id === "saveFermentDialog") {
-        const todaysdate = new Date().toISOString().split('T')[0];
+        const date = new Date();
+        const todaysdate = addOneDay(date).toISOString().split('T')[0];
 
         dateEnd.setAttribute("min", todaysdate);
-      }
-
-      // Check if sharing is enabled
-      if (dialog.id === "viewFermentsDialog") {
-        if (navigator.canShare)  {
-          const shareButtons = document.querySelectorAll("button[data-share]");
-          shareButtons.forEach(button => button.removeAttribute("hidden"));
-        }
       }
 
       // Add to history state
@@ -50,11 +67,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }));
 
-  dialogs.forEach(dialog => dialog.addEventListener("cancel", () => {
-    const isOpen = dialog.hasAttribute("open");
-    
-    hideBodyScrollbar(isOpen);
-  }));
+  dialogs.forEach(dialog => dialog.addEventListener("cancel", () => handleCloseAndCancel(dialog)));
+  dialogs.forEach(dialog => dialog.addEventListener("close", () => handleCloseAndCancel(dialog)));
 
 });
 

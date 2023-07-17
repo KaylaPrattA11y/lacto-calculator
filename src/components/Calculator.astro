@@ -67,7 +67,7 @@ import Share from '../components/Share.astro';
   </div>
   <div class="calc-output">
     <label for="salt">Salt required</label>
-    <output id="salt" for="brine weight" name="salt">1</output>
+    <output id="salt" for="brine weight" name="salt"></output>
     <span data-label="unit">grams</span>
   </div>
   <div class="calc-save-share">
@@ -106,7 +106,7 @@ import Share from '../components/Share.astro';
     border-radius: 0.5rem;
     display: grid;
     align-content: center;
-    gap: 1rem;
+    gap: 0.5rem;
     background: var(--calc-output-background-color);
     -webkit-mask: var(--mask-waves);
     mask: var(--mask-waves);
@@ -168,8 +168,11 @@ import Share from '../components/Share.astro';
     display: block;
   }
   output {
+    display: block;
     font-weight: 500;
     font-size: var(--font-size-xxl);
+    line-height: var(--font-size-xxl);
+    min-block-size: var(--font-size-xxl);
   }
   :where(.calc-text, small) {
     font-size: var(--font-size-sm);

@@ -1,4 +1,4 @@
-<button type="button" id="share" data-share class="btn-default" hidden>
+<button type="button" id="share" data-share class="btn-default">
   <kay-icon class="carbon:share" aria-hidden="true"></kay-icon> Share
 </button>
 
@@ -9,21 +9,19 @@
 <script>
   const shareBtn = document.getElementById("share");
   
-  if (navigator.canShare) {
-    shareBtn.addEventListener("click", async () => {
-      const brine = document.getElementById("brine").value;
-      const shareData = {
-        title: "Brine Calculator | Lacto-fermentation",
-        text: `Making a ${brine}% brine for lacto-fermenting is way easier with this calculator.`,
-        url: "https://kaylapratta11y.github.io/lacto-calculator/",
-      };
+  shareBtn.addEventListener("click", async () => {
+    const brine = document.getElementById("brine").value;
+    const shareData = {
+      title: "Brine Calculator | Lacto-fermentation",
+      text: `Making a ${brine}% brine for lacto-fermenting is way easier with this calculator.`,
+      url: "https://kaylapratta11y.github.io/lacto-calculator/",
+    };
 
-      try {
-        await navigator.share(shareData);
-      } catch (err) {
-        console.log(err)
-      }
-    });
-  }
+    try {
+      await navigator.share(shareData);
+    } catch (err) {
+      console.log(err);
+    }
+  });
 
 </script>

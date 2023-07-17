@@ -2,12 +2,12 @@ const deleteFermentButtons = document.querySelectorAll("button[data-delete]");
 const saveFermentForm = document.getElementById("saveFermentForm");
 const saveFermentButton = document.getElementById("saveFermentButton");
 const saveFermentDialog = document.getElementById("saveFermentDialog");
-const viewFermentsDialog = document.getElementById("viewFermentsDialog");
+const myFermentsDialog = document.getElementById("myFermentsDialog");
 const fermentName = document.getElementById("fermentName");
 const dateEnd = document.getElementById("dateEnd");
 const notes = document.getElementById("notes");
-const savedFermentsList = document.getElementById("savedFermentsList");
-const savedFermentsStorage = JSON.parse(localStorage.getItem("saved")) || [];
+const myFermentsList = document.getElementById("myFermentsList");
+const myFermentsStorage = JSON.parse(localStorage.getItem("saved")) || [];
 
 const formatter = new Intl.RelativeTimeFormat(undefined, {
   numeric: "auto",
@@ -36,21 +36,10 @@ function formatTimeAgo(date) {
 const addFerment = (f) => {
   const li = document.createElement("li");
   const ds = new Date(f.dateStart);
-  const startDateTime = new Intl.DateTimeFormat("default", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  })?.format(ds);
-  let endDateTime;
   let de;
 
   if (f.dateEnd !== "") {
     de = new Date(f.dateEnd);
-    endDateTime = new Intl.DateTimeFormat("default", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    })?.format(de);
   }
 
   li.id = f.id;
@@ -59,12 +48,14 @@ const addFerment = (f) => {
     <div class="ferment-header${f.color !== "transparent" ? " ferment-tagged" : ""}" style="--color: ${f.color}">
       <div>
         <h3>${f.fermentName}</h3>
-        <time datetime="${f.dateStart}" class="ferment-started" data-ferment="Started " data-relative="start">${formatTimeAgo(ds)}.</time>
-        <time datetime="${de || ""}" class="ferment-done" data-ferment=" Finishes " data-relative="end">${formatTimeAgo(de) !== undefined ? formatTimeAgo(de) : ""}</time>
+        <time datetime="${ds}" class="ferment-started" data-ferment="Started " data-relative="start">${formatTimeAgo(ds)}.</time>
+        <time datetime="${de || ""}" class="ferment-done" data-ferment=" Finishes " data-relative="end">${formatTimeAgo(de) !== undefined ? formatTimeAgo(de)+"." : ""}</time>
       </div>
-      <button type="button" class="btn-default" aria-controls="${f.id}" data-share hidden>
-        <kay-icon class="carbon:share" aria-hidden="true"></kay-icon> Share
-      </button>
+      <div class="ferment-options">
+        <button type="button" class="btn-default" aria-controls="${f.id}" data-share="ferment">
+          <kay-icon class="carbon:share" aria-hidden="true"></kay-icon> Share
+        </button>
+      </div>
     </div>
     <div class="ferment-body">
       <ul class="ferment-details">
@@ -83,10 +74,14 @@ const addFerment = (f) => {
       </ul>
       <div class="ferment-date">
         <kay-icon class="carbon:calendar" aria-hidden="true"></kay-icon> 
-        <time datetime="${f.dateStart}">${startDateTime}</time>
-        <time datetime="${de || ""}" ${f.dateEnd === "" ? "hidden" : ""}>${endDateTime}</time>
+        <time datetime="${ds}">${formatDate(f.dateStart)}</time>
+        <time datetime="${de || ""}">${f.dateEnd === "" ? "" : formatDate(f.dateEnd)}</time>
       </div>
       <p class="ferment-notes" data-ferment="Notes: ">${f.notes}</p>
+      <div class="ferment-notify" ${f.dateEnd === "" ? "hidden" : ""} hidden>
+        <input id="${f.id}notify" type="checkbox" role="switch" aria-checked="false" data-notify />
+        <label for="${f.id}notify">Notify me when this <time datetime="${de || ""}" class="ferment-done" data-ferment=" Finishes " data-relative="end">${formatTimeAgo(de) !== undefined ? formatTimeAgo(de) : ""}</time><label>
+      </div>
       <button 
         id="${f.id}deletePrompt" 
         type="button" 
@@ -110,12 +105,12 @@ const addFerment = (f) => {
           data-delete="cancel">Cancel</button>
       </div>
     </div>`;
-  savedFermentsList.insertAdjacentElement("afterbegin", li);
+  myFermentsList.insertAdjacentElement("afterbegin", li);
 };
 
-const addFerments = (savedFermentsStorage) => {
-  if (!savedFermentsStorage) return;
-  savedFermentsStorage.forEach((f) => addFerment(f));
+const addFerments = (myFermentsStorage) => {
+  if (!myFermentsStorage) return;
+  myFermentsStorage.forEach((f) => addFerment(f));
 };
 
 const getObjectWithId = (arr, id) => {
@@ -133,27 +128,35 @@ const removeObjectWithId = (arr, id) => {
   return arr;
 }
 
+const formatDate = (date) => {
+  const d = new Date(date);
+  return new Intl.DateTimeFormat("default", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  })?.format(d);
+}
+
 const handleShare = button => {
   button.addEventListener("click", async () => {
     const id = button.getAttribute("aria-controls");
-    const { brine, weight, salt, unit, fermentName, dateEnd, notes } = getObjectWithId(savedFermentsStorage, id);
+    const { brine, weight, salt, unit, fermentName, dateStart, dateEnd, notes } = getObjectWithId(myFermentsStorage, id);
     const shareData = {
       title: "Brine Calculator | Lacto-fermentation",
-      text: `${fermentName ? fermentName+" | " : ""}Finished: ${dateEnd}, Brine: ${brine}%, Weight: ${weight} ${unit}, Salt: ${salt} ${unit}, ${notes ? "Notes: "+notes : ""}`,
+      text: `${fermentName ? fermentName+" | " : ""}Started: ${formatDate(dateStart) || ""}, Finishes: ${formatDate(dateEnd) || ""}, Brine: ${brine}%, Weight: ${weight} ${unit}, Salt: ${salt} ${unit}, ${notes ? "Notes: "+notes : ""}`,
       url: "https://kaylapratta11y.github.io/lacto-calculator/",
     };
 
     try {
       await navigator.share(shareData);
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
   });
 }
 
 const handleDeletePrompt = button => {
   const isExpanded = button.getAttribute("aria-expanded") === "true";
-  console.log(isExpanded)
 
   button.setAttribute("aria-expanded", !isExpanded);
 }
@@ -165,13 +168,40 @@ const handleDeleteCancel = button => {
 }
 
 const handleDelete = button => {
-  const savedFermentsStorage = JSON.parse(localStorage.getItem("saved"));
+  const myFermentsStorage = JSON.parse(localStorage.getItem("saved"));
   const id = button.getAttribute("aria-controls");
   
   document.getElementById(id).remove();
-  removeObjectWithId(savedFermentsStorage, id);
-  localStorage.setItem("saved", JSON.stringify(savedFermentsStorage));
+  removeObjectWithId(myFermentsStorage, id);
+  localStorage.setItem("saved", JSON.stringify(myFermentsStorage));
 }
+
+// const handleEdit = button => {
+//   const myFermentsStorage = JSON.parse(localStorage.getItem("saved"));
+//   const id = button.getAttribute("aria-controls");
+
+//   console.log(getObjectWithId(myFermentsStorage, id));
+
+//   saveFermentDialog.showModal();
+
+//   saveFermentDialog.querySelector("h2").innerText = "Edit this ferment";
+//   saveFermentForm.setAttribute("data-edit", button.dataset.edit);
+//   saveFermentForm.querySelector("[data-label='brine']").innerText = getObjectWithId(myFermentsStorage, id).brine;
+//   saveFermentForm.querySelector("[data-label='weight']").innerText = getObjectWithId(myFermentsStorage, id).weight;
+//   saveFermentForm.querySelector("[data-label='salt']").innerText = getObjectWithId(myFermentsStorage, id).salt;
+//   saveFermentForm.querySelectorAll("[data-label='unit']").forEach(unit => unit.innerText = getObjectWithId(myFermentsStorage, id).unit);
+//   dateEnd.value = getObjectWithId(myFermentsStorage, id).dateEnd;
+//   fermentName.value = getObjectWithId(myFermentsStorage, id).fermentName;
+//   notes.value = getObjectWithId(myFermentsStorage, id).notes;
+//   document.querySelector(`[name='color'][value='${ getObjectWithId(myFermentsStorage, id).color}']`).checked = true;
+  
+// }
+
+// const editFerment = id => {
+//   const fermentName = myFermentsDialog?.querySelector("h2");
+//   const dateEnd = myFermentsDialog?.querySelector("h2");
+//   const fermentName = myFermentsDialog?.querySelector("h2");
+// }
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -192,42 +222,69 @@ document.addEventListener("DOMContentLoaded", () => {
       handleDelete(e.target);
     }
 
+    // edit ferment
+    // if (e.target.matches("button[data-edit]")) {
+    //   handleEdit(e.target);
+    // }
+
     // share ferment
-    if (e.target.matches("button[data-share]")) {
-      if (navigator.canShare) {
-        handleShare(e.target);
-      }
+    if (e.target.matches("button[data-share='ferment']")) {
+      handleShare(e.target);
     }
 
   });
-
+  
   saveFermentForm.addEventListener("submit", e => {
     e.preventDefault();
 
-    const date = new Date();
-    const randomNumber = Math.floor(Math.random() * 9000 + 1000);
-    const state = JSON.parse(localStorage.getItem("state"));
     const color = document.querySelector("[name='color']:checked");
-    const thisFerment = {
-      id: `ferment-${randomNumber}-${parseInt(state.brine, 10) + parseInt(state.weight, 10) + parseInt(state.salt, 10)}`,
-      brine: parseInt(state.brine, 10),
-      weight: parseInt(state.weight, 10),
-      salt: state.salt,
-      unit: state.unit,
-      fermentName: fermentName.value || "",
-      dateStart: date,
-      dateEnd: dateEnd.value || "",
-      notes: notes.value || "",
-      color: color ? color.value : "transparent",
-    };
-  
-    savedFermentsStorage.push(thisFerment);
-    addFerment(thisFerment);
-    localStorage.setItem("saved", JSON.stringify(savedFermentsStorage));
+    let thisFerment = {};
 
+    if (saveFermentForm.hasAttribute("data-edit")) {
+      // const id = saveFermentForm.dataset.edit;
+      // const fermentEl = document.getElementById(id);
+
+      // thisFerment = {
+      //   fermentName: fermentName.value || "",
+      //   dateEnd: dateEnd.value || "",
+      //   notes: notes.value || "",
+      //   color: color ? color.value : "transparent",
+      // };
+
+      // getObjectWithId(myFermentsStorage, id).fermentName = thisFerment.fermentName;
+      // getObjectWithId(myFermentsStorage, id).dateEnd = thisFerment.dateEnd;
+      // getObjectWithId(myFermentsStorage, id).notes = thisFerment.notes;
+      // getObjectWithId(myFermentsStorage, id).color = thisFerment.color;
+
+    } else {
+      const date = new Date();
+      const randomNumber = Math.floor(Math.random() * 9000 + 1000);
+      const state = JSON.parse(localStorage.getItem("state"));
+      thisFerment = {
+        id: `ferment-${randomNumber}-${parseInt(state.brine, 10) + parseInt(state.weight, 10) + parseInt(state.salt, 10)}`,
+        brine: parseInt(state.brine, 10),
+        weight: parseInt(state.weight, 10),
+        salt: state.salt,
+        unit: state.unit,
+        fermentName: fermentName.value || "",
+        dateStart: date,
+        dateEnd: dateEnd.value || "",
+        notes: notes.value || "",
+        color: color ? color.value : "transparent",
+      };
+    
+      myFermentsStorage.push(thisFerment);
+      addFerment(thisFerment);
+      localStorage.setItem("saved", JSON.stringify(myFermentsStorage));
+
+    }
+    
     saveFermentDialog.close();
-    viewFermentsDialog.showModal();
+    if (!myFermentsDialog.hasAttribute("open")) {
+      myFermentsDialog.showModal();
+    }
+    
   });
 
-  addFerments(savedFermentsStorage);
+  addFerments(myFermentsStorage);
 });

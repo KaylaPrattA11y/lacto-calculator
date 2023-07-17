@@ -1,0 +1,22 @@
+<dialog id="myFermentsDialog">
+  <div class="dialog-header">
+    <h2 id="myFermentsHeading">My ferments</h2>
+    <button aria-controls="myFermentsDialog" aria-haspopup="dialog" aria-label="Close" class="btn-default">
+      <kay-icon class="carbon:close" aria-hidden="true"></kay-icon>
+    </button>
+  </div>
+  <div class="dialog-main">
+    <ul id="myFermentsList"></ul>
+  </div>
+</dialog>
+
+<style>
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  ul:empty::after {
+    content: "No ferments saved.";
+  }
+</style>

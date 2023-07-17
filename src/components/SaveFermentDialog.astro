@@ -198,16 +198,22 @@
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     const saveFermentDialog = document.getElementById("saveFermentDialog");
-    const saveFermentForm = document.getElementById("saveFermentForm");
+    const saveFermentForm = document.querySelector("form#saveFermentForm");
+    const addOneDay = date => {
+      date.setDate(date.getDate() + 1);
+      return date;
+    }
     
     saveFermentDialog.addEventListener("cancel", () => {
-      const todaysdate = new Date().toISOString().split('T')[0];
+      const date = new Date();
+      const todaysdate = addOneDay(date).toISOString().split('T')[0];
 
       saveFermentForm.reset();
       dateEnd.setAttribute("min", todaysdate);
     });
     saveFermentDialog.addEventListener("close", () => {
-      const todaysdate = new Date().toISOString().split('T')[0];
+      const date = new Date();
+      const todaysdate = addOneDay(date).toISOString().split('T')[0];
 
       saveFermentForm.reset();
       dateEnd.setAttribute("min", todaysdate);

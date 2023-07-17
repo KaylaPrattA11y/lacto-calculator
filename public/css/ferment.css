@@ -76,6 +76,9 @@
 .ferment {
   position: relative;
 }
+.ferment *:not(kay-icon, input, button):empty {
+  display: none;
+}
 .ferment-details li > div > span:first-child {
   font-size: var(--font-size-lg);
   font-weight: 700;
@@ -83,8 +86,8 @@
 .ferment-details {
   padding-block: 1rem;
 }
-.ferment-header h3:empty {
-  display: none;
+.ferment-tagged h3:empty + time {
+  padding-inline-start: 1rem;
 }
 .ferment-notes {
   margin: 0;
@@ -94,9 +97,6 @@
 }
 [data-ferment] {
   font-size: var(--font-size-sm);
-}
-[data-ferment]:empty {
-  display: none;
 }
 [data-ferment]:not(:empty)::before {
   content: attr(data-ferment);
@@ -122,6 +122,15 @@
   font-size: var(--font-size-sm);
   font-style: italic;
   margin-block: 0;
+}
+.ferment-notify:not([hidden]) {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: var(--font-size-sm);
+}
+.ferment-notify input {
+  accent-color: var(--link-color);
 }
 [data-delete="prompt"][aria-expanded="true"],
 [data-delete="prompt"][aria-expanded="false"] + .ferment-delete-options {
