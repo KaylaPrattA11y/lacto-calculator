@@ -210,10 +210,6 @@ const handleEditDialog = button => {
   
 }
 
-const handleEditSubmit = id => {
-  
-}
-
 document.addEventListener("DOMContentLoaded", () => {
 
   document.addEventListener("click", e => {
@@ -256,8 +252,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       thisFerment = {
         id,
-        brine: document.getElementById("currentBrine").value,
-        weight: document.getElementById("currentWeight").value,
+        brine: formatDecimal(document.getElementById("currentBrine").value),
+        weight: formatDecimal(document.getElementById("currentWeight").value),
         salt: document.getElementById("currentSalt").value,
         unit: document.getElementById("currentWeight").nextElementSibling.innerText,
         fermentName: fermentName.value || "",
