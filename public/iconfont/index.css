@@ -10,6 +10,7 @@
   font-weight: normal;
   font-style: normal;
 }
+
 kay-icon {
   display: inline-block;
   font-family: "Iconify Explorer Font" !important;
@@ -18,28 +19,40 @@ kay-icon {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+
 kay-icon.carbon\:calendar::before {
 content: "\e001";
 }
+
 kay-icon.carbon\:close::before {
 content: "\e002";
 }
+
 kay-icon.carbon\:download::before {
 content: "\e003";
 }
-kay-icon.carbon\:share::before {
+
+kay-icon.carbon\:edit::before {
 content: "\e004";
 }
-kay-icon.carbon\:star::before {
+
+kay-icon.carbon\:share::before {
 content: "\e005";
 }
-kay-icon.carbon\:star-filled::before {
+
+kay-icon.carbon\:star::before {
 content: "\e006";
 }
-kay-icon.carbon\:time::before {
+
+kay-icon.carbon\:star-filled::before {
 content: "\e007";
 }
-kay-icon.carbon\:trash-can::before {
+
+kay-icon.carbon\:time::before {
 content: "\e008";
 }
 
+kay-icon.carbon\:trash-can::before {
+content: "\e009";
+}
