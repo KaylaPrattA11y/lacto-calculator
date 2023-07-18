@@ -50,10 +50,9 @@ const addFerment = (f) => {
     <div class="ferment-header${f.color !== "transparent" ? " ferment-tagged" : ""}" style="--color: ${f.color}">
       <div class="ferment-heading">
         <h3>${f.fermentName}</h3>
-        
       </div>
       <div class="ferment-options">
-        <button type="button" class="btn-default" aria-controls="${f.id}" data-edit>
+        <button type="button" class="btn-default" aria-controls="saveFermentDialog" aria-haspopup="dialog" data-edit="${f.id}">
           <kay-icon class="carbon:edit" aria-hidden="true"></kay-icon> Edit
         </button>
         <button type="button" class="btn-default" aria-controls="${f.id}" data-share="ferment">
@@ -196,12 +195,10 @@ const handleDelete = button => {
 
 const handleEditDialog = button => {
   const myFermentsStorage = JSON.parse(localStorage.getItem("saved"));
-  const id = button.getAttribute("aria-controls");
-
-  saveFermentDialog.showModal();
+  const id = button.dataset.edit;
 
   saveFermentDialog.querySelector("h2").innerText = "Edit this ferment";
-  saveFermentForm.setAttribute("data-edit", button.getAttribute("aria-controls"));
+  saveFermentForm.setAttribute("data-edit", id);
   saveFermentForm.querySelector("[data-label='brine']").innerText = getObjectWithId(myFermentsStorage, id).brine;
   saveFermentForm.querySelector("[data-label='weight']").innerText = getObjectWithId(myFermentsStorage, id).weight;
   saveFermentForm.querySelector("[data-label='salt']").innerText = getObjectWithId(myFermentsStorage, id).salt;
@@ -258,10 +255,10 @@ document.addEventListener("DOMContentLoaded", () => {
       const id = saveFermentForm.dataset.edit;
 
       thisFerment = {
-        id: `ferment${randomNumber}${parseInt(document.getElementById("currentBrine").value, 10) + parseInt(document.getElementById("currentWeight").value, 10) + parseInt(document.getElementById("currentWeight").value, 10)}`,
-        brine: formatDecimal(document.getElementById("currentBrine").value),
-        weight: formatDecimal(document.getElementById("currentWeight").value),
-        salt: document.getElementById("currentWeight").value,
+        id,
+        brine: document.getElementById("currentBrine").value,
+        weight: document.getElementById("currentWeight").value,
+        salt: document.getElementById("currentSalt").value,
         unit: document.getElementById("currentWeight").nextElementSibling.innerText,
         fermentName: fermentName.value || "",
         dateStart: getObjectWithId(myFermentsStorage, id).dateStart,
