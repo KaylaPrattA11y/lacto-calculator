@@ -167,13 +167,15 @@ const { title } = Astro.props;
 		display: flex;
 		align-items: center;
 		gap: 0.25rem;
-		font-family: var(--font-family);
 	}
 	button > * {
 		pointer-events: none;
 	}
-	textarea {
+	:where(textarea, input, button) {
 		font-family: var(--font-family);
+	}
+	textarea {
+		resize: vertical;
 	}
 	body {
 		display: flex;
@@ -241,9 +243,12 @@ const { title } = Astro.props;
 		filter: var(--filter-invert);
 		opacity: 0.5;
 	}
-	input[type="number"]:out-of-range:not(:focus) ~ [data-validate="field"],
+	:Where(input[type="number"], input[type="date"]):out-of-range:not(:focus) ~ [data-validate="field"],
 	input[type="text"]:invalid:not(:focus) ~ [data-validate="field"] {
     display: block;
+  }
+	input:out-of-range:not(:focus) {
+    border-color: var(--error-color);
   }
   [data-validate="field"] {
     display: none;
