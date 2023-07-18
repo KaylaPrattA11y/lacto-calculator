@@ -26,18 +26,19 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  content: "\e006";
+  content: "\e007";
   color: var(--color);
 }
 .ferment-tagged h3:empty + div {
   padding-inline-start: 0.75rem;
 }
-.ferment-header > div,
-.ferment-date {
+:where(.ferment-heading, .ferment-relative-time, .ferment-date, .ferment-options) {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
   gap: 0.25rem;
+}
+:where(.ferment-heading, .ferment-date) {
+  flex-wrap: wrap;
 }
 .ferment-header h3 {
   padding: 0.25rem 1rem;
