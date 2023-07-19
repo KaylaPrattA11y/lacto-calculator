@@ -13,7 +13,15 @@ const handleClose = dialog => {
   const isOpen = dialog.hasAttribute("open");
   
   if (dialog.id === "myFermentsDialog") {
-    window.location.reload();
+    // if has URL params, clear them
+    let params = new URLSearchParams(location.search);
+    if (params.get("showModal")) {
+      document.getElementById(params.get("showModal")).showModal();
+      params.delete("showModal");
+      window.location.search = params.toString();
+    } else {
+      window.location.reload();
+    }
   } else {
     hideBodyScrollbar(!isOpen);
     saveFermentDialog.querySelector("h2").innerText = "Save this ferment";

@@ -8,7 +8,6 @@ const dateEnd = document.getElementById("dateEnd");
 const notes = document.getElementById("notes");
 const myFermentsList = document.getElementById("myFermentsList");
 const myFermentsStorage = JSON.parse(localStorage.getItem("saved")) || [];
-const randomNumber = Math.floor(Math.random() * 9000 + 1000);
 const formatDecimal = (number) => new Intl.NumberFormat("default", { maximumSignificantDigits: 3 }).format(number);
 
 const formatter = new Intl.RelativeTimeFormat(undefined, {
@@ -207,88 +206,91 @@ const handleEditDialog = button => {
   fermentName.value = getObjectWithId(myFermentsStorage, id).fermentName;
   notes.value = getObjectWithId(myFermentsStorage, id).notes;
   document.querySelector(`[name='color'][value='${ getObjectWithId(myFermentsStorage, id).color}']`).checked = true;
-  
 }
 
 document.addEventListener("DOMContentLoaded", () => {
 
-  document.addEventListener("click", e => {
+  // check for URL params that open a modal
+  let params = new URLSearchParams(location.search);
+  if (params.get("showModal")) {
+    document.getElementById(params.get("showModal")).showModal();
+  }
 
-    // toggle delete prompt
-    if (e.target.matches("button[data-delete='prompt']")) {
-      handleDeletePrompt(e.target);
-    }
-
-    // cancel delete
-    if (e.target.matches("button[data-delete='cancel']")) {
-      handleDeleteCancel(e.target);
-    }
-
-    // delete ferment
-    if (e.target.matches("button[data-delete='yes']")) {
-      handleDelete(e.target);
-    }
-
-    // edit ferment dialog
-    if (e.target.matches("button[data-edit]")) {
-      handleEditDialog(e.target);
-    }
-
-    // share ferment
-    if (e.target.matches("button[data-share='ferment']")) {
-      handleShare(e.target);
-    }
-
-  });
-  
-  saveFermentForm.addEventListener("submit", e => {
-    e.preventDefault();
-
-    const color = document.querySelector("[name='color']:checked");
-    let thisFerment = {};
-
-    if (saveFermentForm.hasAttribute("data-edit")) {
-      const id = saveFermentForm.dataset.edit;
-
-      thisFerment = {
-        id,
-        brine: formatDecimal(document.getElementById("currentBrine").value),
-        weight: formatDecimal(document.getElementById("currentWeight").value),
-        salt: document.getElementById("currentSalt").value,
-        unit: document.getElementById("currentWeight").nextElementSibling.innerText,
-        fermentName: fermentName.value || "",
-        dateStart: getObjectWithId(myFermentsStorage, id).dateStart,
-        dateEnd: dateEnd.value || "",
-        notes: notes.value || "",
-        color: color ? color.value : "transparent",
-      };
-
-      localStorage.setItem("saved", JSON.stringify(replaceObjectWithId(myFermentsStorage, id, thisFerment)));
-
-    } else {
-      const date = new Date();
-      const state = JSON.parse(localStorage.getItem("state"));
-
-      thisFerment = {
-        id: `ferment${randomNumber}${parseInt(state.brine, 10) + parseInt(state.weight, 10) + parseInt(state.salt, 10)}`,
-        brine: formatDecimal(state.brine),
-        weight: formatDecimal(state.weight),
-        salt: state.salt,
-        unit: state.unit,
-        fermentName: fermentName.value || "",
-        dateStart: date,
-        dateEnd: dateEnd.value || "",
-        notes: notes.value || "",
-        color: color ? color.value : "transparent",
-      };
-    
-      myFermentsStorage.push(thisFerment);
-      localStorage.setItem("saved", JSON.stringify(myFermentsStorage));
-    }
-    
-    window.location.reload();
-    
-  });
-
+  // build ferments list
   addFerments(myFermentsStorage);
+});
+
+document.addEventListener("click", e => {
+
+  // toggle delete prompt
+  if (e.target.matches("button[data-delete='prompt']")) {
+    handleDeletePrompt(e.target);
+  }
+
+  // cancel delete
+  if (e.target.matches("button[data-delete='cancel']")) {
+    handleDeleteCancel(e.target);
+  }
+
+  // delete ferment
+  if (e.target.matches("button[data-delete='yes']")) {
+    handleDelete(e.target);
+  }
+
+  // edit ferment dialog
+  if (e.target.matches("button[data-edit]")) {
+    handleEditDialog(e.target);
+  }
+
+  // share ferment
+  if (e.target.matches("button[data-share='ferment']")) {
+    handleShare(e.target);
+  }
+});
+
+saveFermentForm.addEventListener("submit", e => {
+  e.preventDefault();
+
+  const formData = new FormData(saveFermentForm);
+  let thisFerment = {
+    color: formData.get("color"),
+    dateEnd: formData.get("dateEnd"),
+    fermentName: formData.get("fermentName"),
+    notes: formData.get("notes"),
+  };
+
+  if (saveFermentForm.hasAttribute("data-edit")) {
+    const id = saveFermentForm.dataset.edit;
+    const { brine, dateStart, salt, unit, weight } = getObjectWithId(myFermentsStorage, id);
+
+    thisFerment.brine = brine;
+    thisFerment.dateStart = dateStart;
+    thisFerment.id = id;
+    thisFerment.salt = salt;
+    thisFerment.unit = unit;
+    thisFerment.weight = weight;
+
+    localStorage.setItem("saved", JSON.stringify(replaceObjectWithId(myFermentsStorage, id, thisFerment)));
+
+  } else {
+    const dateStart = new Date();
+    const randomNumber = Math.floor(Math.random() * 9000 + 1000);
+    const state = JSON.parse(localStorage.getItem("state"));
+    const { brine, salt, unit, weight } = state;
+
+    thisFerment.brine = formatDecimal(brine);
+    thisFerment.dateStart = dateStart;
+    thisFerment.id = `ferment${randomNumber}${parseInt(brine, 10) + parseInt(weight, 10) + parseInt(salt, 10)}`;
+    thisFerment.salt = salt;
+    thisFerment.unit = unit;
+    thisFerment.weight = formatDecimal(weight);
+
+    myFermentsStorage.push(thisFerment);
+    localStorage.setItem("saved", JSON.stringify(myFermentsStorage));
+  }
+
+  let params = new URLSearchParams(location.search);
+  params.set('showModal', 'myFermentsDialog');
+  window.location.search = params.toString();
+  // window.location.reload();
 });
