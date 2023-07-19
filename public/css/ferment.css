@@ -67,7 +67,7 @@
   text-align: center;
   width: 1rem;
 }
-.ferment button,
+.ferment button:not([hidden]),
 .ferment-date > div,
 .ferment-started {
   display: flex;

@@ -38,15 +38,18 @@ const addFerment = (f) => {
   const li = document.createElement("li");
   const ds = new Date(f.dateStart);
   let de;
-
+  let dateHasPassed = false;
+  
   if (f.dateEnd !== "") {
     de = new Date(f.dateEnd);
+    dateHasPassed = de.getTime() < new Date().getTime();
   }
 
+  li.setAttribute("data-complete", dateHasPassed);
   li.id = f.id;
   li.className = "ferment";
   li.innerHTML = `
-    <div class="ferment-header${f.color !== "transparent" ? " ferment-tagged" : ""}" style="--color: ${f.color}">
+    <div class="ferment-header ferment-tagged" style="--color: ${f.color}">
       <div class="ferment-heading">
         <h3>${f.fermentName}</h3>
       </div>
@@ -77,7 +80,7 @@ const addFerment = (f) => {
       <div class="ferment-relative-time">
         <kay-icon class="carbon:time" aria-hidden="true"></kay-icon> 
         <time datetime="${ds}" class="ferment-started" data-ferment="Started " data-relative="start">${formatTimeAgo(ds)}.</time>
-        <time datetime="${de || ""}" class="ferment-done" data-ferment=" Finishes " data-relative="end">${formatTimeAgo(de) !== undefined ? formatTimeAgo(de)+"." : ""}</time>
+        <time datetime="${de || ""}" class="ferment-done" data-ferment=" ${dateHasPassed ? "Finished" : "Finishes"} " data-relative="end">${formatTimeAgo(de) !== undefined ? formatTimeAgo(de)+"." : ""}</time>
       </div>
       <div class="ferment-date">
         <kay-icon class="carbon:calendar" aria-hidden="true"></kay-icon> 
@@ -203,6 +206,7 @@ const handleEditDialog = button => {
   saveFermentForm.querySelector("[data-label='salt']").innerText = getObjectWithId(myFermentsStorage, id).salt;
   saveFermentForm.querySelectorAll("[data-label='unit']").forEach(unit => unit.innerText = getObjectWithId(myFermentsStorage, id).unit);
   dateEnd.value = getObjectWithId(myFermentsStorage, id).dateEnd;
+  dateEnd.toggleAttribute("readonly", true);
   fermentName.value = getObjectWithId(myFermentsStorage, id).fermentName;
   notes.value = getObjectWithId(myFermentsStorage, id).notes;
   document.querySelector(`[name='color'][value='${ getObjectWithId(myFermentsStorage, id).color}']`).checked = true;

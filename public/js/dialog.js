@@ -26,6 +26,7 @@ const handleClose = dialog => {
     hideBodyScrollbar(!isOpen);
     saveFermentDialog.querySelector("h2").innerText = "Save this ferment";
     saveFermentForm.toggleAttribute("data-edit", false);
+    document.getElementById("dateEnd").toggleAttribute("readonly", false);
   }
 }
 
