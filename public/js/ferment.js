@@ -159,7 +159,7 @@ const handleShare = button => {
     const { brine, weight, salt, unit, fermentName, dateStart, dateEnd, notes } = getObjectWithId(myFermentsStorage, id);
     const shareData = {
       title: "Brine Calculator | Lacto-fermentation",
-      text: `${fermentName ? fermentName+" | " : ""}Started: ${formatDate(dateStart) || ""}, Finishes: ${formatDate(dateEnd) || ""}, Brine: ${brine}%, Weight: ${weight} ${unit}, Salt: ${salt} ${unit}, ${notes ? "Notes: "+notes : ""}`,
+      text: `${fermentName ? fermentName+" | " : ""}Started: ${formatDate(dateStart) || ""}, Finishes: ${formatDate(dateEnd) || ""}, Brine: ${formatDecimal(brine)}%, Weight: ${formatDecimal(weight)} ${unit}, Salt: ${formatDecimal(salt)} ${unit}, ${notes ? "Notes: "+notes : ""}`,
       url: "https://kaylapratta11y.github.io/lacto-calculator/",
     };
 
@@ -253,7 +253,7 @@ saveFermentForm.addEventListener("submit", e => {
 
   const formData = new FormData(saveFermentForm);
   let thisFerment = {
-    color: formData.get("color"),
+    color: formData.get("color") || "transparent",
     dateEnd: formData.get("dateEnd"),
     fermentName: formData.get("fermentName"),
     notes: formData.get("notes"),
@@ -281,7 +281,7 @@ saveFermentForm.addEventListener("submit", e => {
     thisFerment.brine = formatDecimal(brine);
     thisFerment.dateStart = dateStart;
     thisFerment.id = `ferment${randomNumber}${parseInt(brine, 10) + parseInt(weight, 10) + parseInt(salt, 10)}`;
-    thisFerment.salt = salt;
+    thisFerment.salt = formatDecimal(salt);
     thisFerment.unit = unit;
     thisFerment.weight = formatDecimal(weight);
 

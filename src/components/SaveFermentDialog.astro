@@ -46,28 +46,36 @@
     <fieldset class="input-group">
       <legend>Tag with a color (optional)</legend>
       <label class="theme-transparent">
-        <input type="radio" name="color" value="transparent" aria-label="transparent" />
+        <span class="visually-hidden">transparent</span>
+        <input type="radio" name="color" value="transparent" checked />
       </label>
       <label class="theme-red">
-        <input type="radio" name="color" value="red" aria-label="red" />
+        <span class="visually-hidden">red</span>
+        <input type="radio" name="color" value="red" />
       </label>
       <label class="theme-orange">
-        <input type="radio" name="color" value="orange" aria-label="orange" />
+        <span class="visually-hidden">orange</span>
+        <input type="radio" name="color" value="orange" />
       </label>
       <label class="theme-yellow">
-        <input type="radio" name="color" value="yellow" aria-label="yellow" />
+        <span class="visually-hidden">yellow</span>
+        <input type="radio" name="color" value="yellow" />
       </label>
       <label class="theme-green">
-        <input type="radio" name="color" value="green" aria-label="green" />
+        <span class="visually-hidden">green</span>
+        <input type="radio" name="color" value="green" />
       </label>
       <label class="theme-blue">
-        <input type="radio" name="color" value="blue" aria-label="blue" />
+        <span class="visually-hidden">blue</span>
+        <input type="radio" name="color" value="blue" />
       </label>
       <label class="theme-indigo">
-        <input type="radio" name="color" value="indigo" aria-label="indigo" />
+        <span class="visually-hidden">indigo</span>
+        <input type="radio" name="color" value="indigo" />
       </label>
       <label class="theme-violet">
-        <input type="radio" name="color" value="violet" aria-label="violet" />
+        <span class="visually-hidden">violet</span>
+        <input type="radio" name="color" value="violet" />
       </label>
     </fieldset>
     <div class="input-group actions">
@@ -149,49 +157,49 @@
   .theme-red {
     background: red;
   }
-  [aria-label="transparent"] {
+  [value="transparent"] {
     accent-color: var(--border-color);
   }
   .theme-transparent {
     border: 2px solid var(--border-color);
   }
-  [aria-label="red"] {
+  [value="red"] {
     accent-color: red;
   }
   .theme-orange {
     background: orange;
   }
-  [aria-label="orange"] {
+  [value="orange"] {
     accent-color: orange;
   }
   .theme-yellow {
     background: yellow;
   }
-  [aria-label="yellow"] {
+  [value="yellow"] {
     accent-color: yellow;
   }
   .theme-green {
     background: green;
   }
-  [aria-label="green"] {
+  [value="green"] {
     accent-color: green;
   }
   .theme-blue {
     background: blue;
   }
-  [aria-label="blue"] {
+  [value="blue"] {
     accent-color: blue;
   }
   .theme-indigo {
     background: indigo;
   }
-  [aria-label="indigo"] {
+  [value="indigo"] {
     accent-color: indigo;
   }
   .theme-violet {
     background: violet;
   }
-  [aria-label="violet"] {
+  [value="violet"] {
     accent-color: violet;
   }
 </style>
