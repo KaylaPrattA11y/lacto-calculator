@@ -11,6 +11,7 @@
     <button type="button" tabindex="-1" role="radio" aria-checked="false" data-value="2">Completed</button>
   </div>
   <div class="dialog-main">
+    <p id="noFermentsAvailable" hidden>No ferments available.</p>
     <ul id="myFermentsList"></ul>
   </div>
 </dialog>
@@ -23,6 +24,9 @@
   }
   ul:empty::after {
     content: "No ferments saved.";
+  }
+  button[data-length]::after {
+    content: "(" attr(data-length) ")";
   }
   [role="group"] {
     display: flex;
@@ -51,10 +55,26 @@
       this.group = document.getElementById("myFermentsFilter");
       this.buttons = this.group.querySelectorAll("[data-value]");
       this.ferments = document.getElementById("myFermentsList").querySelectorAll(".ferment");
+      this.noFermentsAvailable = document.getElementById("noFermentsAvailable");
     }
 
     init() {
+      this.setLengthTexts();
       this.addEventListeners();
+    }
+
+    setLengthTexts = () => {
+      this.buttons.forEach(button => {
+        if (button.dataset.value === "0") {
+          button.setAttribute("data-length", this.totalLength);
+        }
+        if (button.dataset.value === "1") {
+          button.setAttribute("data-length", this.inProgressLength);
+        }
+        if (button.dataset.value === "2") {
+          button.setAttribute("data-length", this.completedLength);
+        }
+      });
     }
 
     addEventListeners = () => {
@@ -69,6 +89,7 @@
       this.group.querySelector(`[data-value="${value}"]`).setAttribute("aria-checked", "true");
       this.group.querySelector(`[data-value="${value}"]`).setAttribute("tabindex", "0");
       this.updateVisibility(value);
+      this.updateNoFermentsAvailableText(value);
     }
 
     reset() {
@@ -98,6 +119,19 @@
       }
     }
 
+    updateNoFermentsAvailableText(value) {
+      this.noFermentsAvailable.toggleAttribute("hidden", !this.allFermentsHidden);
+      if (value === "0") {
+        this.noFermentsAvailable.innerText = "No ferments available.";
+      }
+      if (value === "1") {
+        this.noFermentsAvailable.innerText = "No ferments in progress.";
+      }
+      if (value === "2") {
+        this.noFermentsAvailable.innerText = "No ferments completed.";
+      }
+    }
+
     handleNavigation = e => {
       const l = e.code === "ArrowLeft";
       const r = e.code === "ArrowRight";
@@ -114,6 +148,22 @@
         this.select(n.dataset.value);
         n.focus();
       }
+    }
+
+    get allFermentsHidden() {
+      return [...this.ferments].every(f => f.hasAttribute("hidden"));
+    }
+
+    get totalLength() {
+      return [...this.ferments].length;
+    }
+
+    get inProgressLength() {
+      return [...this.ferments].filter(f => f.dataset.complete === "false").length;
+    }
+
+    get completedLength() {
+      return [...this.ferments].filter(f => f.dataset.complete === "true").length;
     }
   }
 

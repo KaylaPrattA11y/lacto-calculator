@@ -3,12 +3,17 @@ const saveFermentForm = document.getElementById("saveFermentForm");
 const saveFermentButton = document.getElementById("saveFermentButton");
 const saveFermentDialog = document.getElementById("saveFermentDialog");
 const myFermentsDialog = document.getElementById("myFermentsDialog");
-const fermentName = document.getElementById("fermentName");
-const dateEnd = document.getElementById("dateEnd");
-const notes = document.getElementById("notes");
+const fermentNameEl = document.getElementById("fermentName");
+const dateEndEl = document.getElementById("dateEnd");
+const notesEl = document.getElementById("notes");
 const myFermentsList = document.getElementById("myFermentsList");
+const myFermentsFilter = document.getElementById("myFermentsFilter");
 const myFermentsStorage = JSON.parse(localStorage.getItem("saved")) || [];
 const formatDecimal = (number) => new Intl.NumberFormat("default", { maximumSignificantDigits: 3 }).format(number);
+const addOneDay = date => {
+  date.setDate(date.getDate() + 1);
+  return date;
+}
 
 const formatter = new Intl.RelativeTimeFormat(undefined, {
   numeric: "auto",
@@ -193,23 +198,44 @@ const handleDelete = button => {
   document.getElementById(id).remove();
   removeObjectWithId(myFermentsStorage, id);
   localStorage.setItem("saved", JSON.stringify(myFermentsStorage));
+
+  //get new .ferment item data
+  const totalLength = myFermentsList.childElementCount;
+  const inProgressLength = [...myFermentsList.querySelectorAll(".ferment")].filter(f => f.dataset.complete === "false").length;
+  const completedLength = [...myFermentsList.querySelectorAll(".ferment")].filter(f => f.dataset.complete === "true").length;
+
+  // update filter button length counter
+  myFermentsFilter.querySelectorAll("button").forEach(button => {
+    if (button.dataset.value === "0") {
+      button.setAttribute("data-length", totalLength);
+    }
+    if (button.dataset.value === "1") {
+      button.setAttribute("data-length", inProgressLength);
+    }
+    if (button.dataset.value === "2") {
+      button.setAttribute("data-length", completedLength);
+    }
+  });
 }
 
 const handleEditDialog = button => {
   const myFermentsStorage = JSON.parse(localStorage.getItem("saved"));
   const id = button.dataset.edit;
+  const { brine, weight, salt, unit, color, dateEnd, fermentName, notes } = getObjectWithId(myFermentsStorage, id);
+  const todaysdate = addOneDay(new Date()).toISOString().split('T')[0];
+  const dateHasPassed = new Date(dateEnd).getTime() < new Date().getTime();
 
   saveFermentDialog.querySelector("h2").innerText = "Edit this ferment";
   saveFermentForm.setAttribute("data-edit", id);
-  saveFermentForm.querySelector("[data-label='brine']").innerText = getObjectWithId(myFermentsStorage, id).brine;
-  saveFermentForm.querySelector("[data-label='weight']").innerText = getObjectWithId(myFermentsStorage, id).weight;
-  saveFermentForm.querySelector("[data-label='salt']").innerText = getObjectWithId(myFermentsStorage, id).salt;
-  saveFermentForm.querySelectorAll("[data-label='unit']").forEach(unit => unit.innerText = getObjectWithId(myFermentsStorage, id).unit);
-  dateEnd.value = getObjectWithId(myFermentsStorage, id).dateEnd;
-  dateEnd.toggleAttribute("readonly", true);
-  fermentName.value = getObjectWithId(myFermentsStorage, id).fermentName;
-  notes.value = getObjectWithId(myFermentsStorage, id).notes;
-  document.querySelector(`[name='color'][value='${ getObjectWithId(myFermentsStorage, id).color}']`).checked = true;
+  saveFermentForm.querySelector("[data-label='brine']").innerText = brine;
+  saveFermentForm.querySelector("[data-label='weight']").innerText = weight;
+  saveFermentForm.querySelector("[data-label='salt']").innerText = salt;
+  saveFermentForm.querySelectorAll("[data-label='unit']").forEach(u => u.innerText = unit);
+  dateEndEl.value = dateEnd;
+  dateEndEl.setAttribute("min", dateHasPassed ? dateEnd : todaysdate);
+  fermentNameEl.value = fermentName;
+  notesEl.value = notes;
+  document.querySelector(`[name='color'][value='${color}']`).checked = true;
 }
 
 document.addEventListener("DOMContentLoaded", () => {
