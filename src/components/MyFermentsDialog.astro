@@ -6,8 +6,8 @@
     </button>
   </div>
   <div id="myFermentsFilter" role="group" aria-label="Ferment list visibility options">
-    <button type="button" tabindex="0" role="radio" aria-checked="true" data-value="0">View All</button>
-    <button type="button" tabindex="-1" role="radio" aria-checked="false" data-value="1">In Progress</button>
+    <button type="button" tabindex="0" role="radio" aria-checked="true" data-value="0">All</button>
+    <button type="button" tabindex="-1" role="radio" aria-checked="false" data-value="1">Current</button>
     <button type="button" tabindex="-1" role="radio" aria-checked="false" data-value="2">Completed</button>
   </div>
   <div class="dialog-main">
@@ -24,6 +24,9 @@
   }
   ul:empty::after {
     content: "No ferments saved.";
+  }
+  button[data-length] {
+    text-align: left;
   }
   button[data-length]::after {
     content: "(" attr(data-length) ")";
@@ -66,10 +69,10 @@
     setLengthTexts = () => {
       this.buttons.forEach(button => {
         if (button.dataset.value === "0") {
-          button.setAttribute("data-length", this.totalLength);
+          button.setAttribute("data-length", this.allLength);
         }
         if (button.dataset.value === "1") {
-          button.setAttribute("data-length", this.inProgressLength);
+          button.setAttribute("data-length", this.currentLength);
         }
         if (button.dataset.value === "2") {
           button.setAttribute("data-length", this.completedLength);
@@ -154,11 +157,11 @@
       return [...this.ferments].every(f => f.hasAttribute("hidden"));
     }
 
-    get totalLength() {
+    get allLength() {
       return [...this.ferments].length;
     }
 
-    get inProgressLength() {
+    get currentLength() {
       return [...this.ferments].filter(f => f.dataset.complete === "false").length;
     }
 
@@ -168,7 +171,6 @@
   }
 
   document.addEventListener("DOMContentLoaded", () => {
-    const filter = new Filter();
-    filter.init();
+    new Filter().init();
   });
 </script>

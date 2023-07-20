@@ -200,17 +200,17 @@ const handleDelete = button => {
   localStorage.setItem("saved", JSON.stringify(myFermentsStorage));
 
   //get new .ferment item data
-  const totalLength = myFermentsList.childElementCount;
-  const inProgressLength = [...myFermentsList.querySelectorAll(".ferment")].filter(f => f.dataset.complete === "false").length;
+  const allLength = myFermentsList.childElementCount;
+  const currentLength = [...myFermentsList.querySelectorAll(".ferment")].filter(f => f.dataset.complete === "false").length;
   const completedLength = [...myFermentsList.querySelectorAll(".ferment")].filter(f => f.dataset.complete === "true").length;
 
   // update filter button length counter
   myFermentsFilter.querySelectorAll("button").forEach(button => {
     if (button.dataset.value === "0") {
-      button.setAttribute("data-length", totalLength);
+      button.setAttribute("data-length", allLength);
     }
     if (button.dataset.value === "1") {
-      button.setAttribute("data-length", inProgressLength);
+      button.setAttribute("data-length", currentLength);
     }
     if (button.dataset.value === "2") {
       button.setAttribute("data-length", completedLength);
