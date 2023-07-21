@@ -96,9 +96,3 @@ class Calculator {
     this.calculator.querySelector(`input[name="unit"][value="${unit}"]`).toggleAttribute("checked", true);
   }
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-  const calculator = new Calculator();
-  
-  calculator.init();
-});

@@ -28,9 +28,13 @@ const { title } = Astro.props;
 		<link rel="stylesheet" href="/lacto-calculator/iconfont/index.css" />
 		<link rel="stylesheet" href="/lacto-calculator/css/dialog.css" />
 		<link rel="stylesheet" href="/lacto-calculator/css/ferment.css" />
-		<script defer src="/lacto-calculator/js/calculator.js"></script>
-		<script defer src="/lacto-calculator/js/dialog.js"></script>
-		<script defer src="/lacto-calculator/js/ferment.js"></script>
+		<script defer is:inline src="/lacto-calculator/js/global.js"></script>
+		<script defer is:inline src="/lacto-calculator/js/formatters.js"></script>
+		<script defer src="/lacto-calculator/js/Ferments.js"></script>
+		<script defer src="/lacto-calculator/js/Dialog.js"></script>
+		<script defer src="/lacto-calculator/js/SaveFermentForm.js"></script>
+		<script defer src="/lacto-calculator/js/Calculator.js"></script>
+		<script defer src="/lacto-calculator/js/Filter.js"></script>
 		<script async defer src="https://buttons.github.io/buttons.js"></script>
 		<title>{title}</title>
 	</head>
@@ -257,17 +261,33 @@ const { title } = Astro.props;
 </style>
 
 <script>
-	const isStandalone = () =>  window.matchMedia('(display-mode: standalone)').matches || document.referrer.includes('android-app://');
+	document.addEventListener("DOMContentLoaded", () => {
+		const saveFermentDialog = new Dialog("saveFermentDialog");
+		const myFermentsDialog = new Dialog("myFermentsDialog");
+
+		checkUrlParams();
+		ferments.init();
+		saveFermentDialog.init();
+		myFermentsDialog.init();
+		filter.init();
+		new Calculator().init();
+		new SaveFermentForm().init();
+
+	});
 
 	if (isStandalone()) {
 		// Prevent the PWA from closing when user presses "back" button on Android device
-		// 1. Add previous history state
 		window.addEventListener('load', function() {
+			// 1. Add previous history state
 			window.history.pushState({}, '');
 		});
-		// 2. Each time users presses 'back' to go to the first entry, we add the new entry back again
-		window.addEventListener('popstate', function() {
+		window.addEventListener('popstate', function(e) {
+			// 2. Each time users presses 'back' to go to the first entry, we add the new entry back again
 			window.history.pushState({}, '');
+			// Close dialog when pressing "Back" button while a dialog is open
+			if (e.state?.isPopup) {
+				document.querySelector("dialog[open]")?.close();
+			}
 		});
 	}
 

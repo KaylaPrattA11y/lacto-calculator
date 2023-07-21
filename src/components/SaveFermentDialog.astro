@@ -203,29 +203,3 @@
     accent-color: violet;
   }
 </style>
-
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const saveFermentDialog = document.getElementById("saveFermentDialog");
-    const saveFermentForm = document.querySelector("form#saveFermentForm");
-    const addOneDay = date => {
-      date.setDate(date.getDate() + 1);
-      return date;
-    }
-    
-    saveFermentDialog.addEventListener("cancel", () => {
-      const date = new Date();
-      const todaysdate = addOneDay(date).toISOString().split('T')[0];
-
-      saveFermentForm.reset();
-      dateEnd.setAttribute("min", todaysdate);
-    });
-    saveFermentDialog.addEventListener("close", () => {
-      const date = new Date();
-      const todaysdate = addOneDay(date).toISOString().split('T')[0];
-
-      saveFermentForm.reset();
-      dateEnd.setAttribute("min", todaysdate);
-    });
-  });
-</script>
