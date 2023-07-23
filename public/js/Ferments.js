@@ -35,7 +35,7 @@ class Ferments {
     const { brine, weight, salt, unit, fermentName, dateStart, dateEnd, notes } = ferments.getFermentData(id);
     const shareData = {
       title: "Brine Calculator | Lacto-fermentation",
-      text: `${fermentName ? fermentName+" | " : ""}Started: ${formatDate(dateStart) || ""}, ${dateEnd !== "" ? "Finishes: " + formatDate(dateEnd) + ", " : ""}Brine: ${formatDecimal(brine)}%, Weight: ${formatDecimal(weight)} ${unit}, Salt: ${formatDecimal(salt)} ${unit}, ${notes ? "Notes: "+notes : ""}`,
+      text: `${fermentName ? fermentName+" | " : ""}Started: ${formatDate(dateStart) || ""}, ${dateEnd !== "" ? "Finishes: " + formatDate(dateEnd) + ", " : ""}Brine: ${brine}%, Weight: ${weight} ${unit}, Salt: ${salt} ${unit}, ${notes ? "Notes: "+notes : ""}`,
       url: "https://kaylapratta11y.github.io/lacto-calculator/",
     };
 
@@ -102,15 +102,15 @@ class Ferments {
         <ul class="ferment-details">
           <li>
             <div>Brine:</div>
-            <div><span>${f.brine}</span><span class="ferment-unit">%</span></div>
+            <div><span>${formatDecimal(f.brine)}</span><span class="ferment-unit">%</span></div>
           </li>
           <li>
             <div>Weight:</div>
-            <div><span>${f.weight}</span> <span class="ferment-unit">${f.unit}</span></div>
+            <div><span>${formatDecimal(f.weight)}</span> <span class="ferment-unit">${f.unit}</span></div>
           </li>
           <li>
             <div>Salt:</div>
-            <div><span>${f.salt}</span> <span class="ferment-unit">${f.unit}</span></div>
+            <div><span>${formatDecimal(f.salt)}</span> <span class="ferment-unit">${f.unit}</span></div>
           </li>
         </ul>
         <div class="ferment-relative-time">

@@ -36,12 +36,12 @@ class SaveFermentForm {
     if (this.isEditing) {
       const { brine, dateStart, salt, unit, weight } = getObjectWithId(myFermentsStorage, this.targetFerment);
   
-      thisFermentObj.brine = formatDecimal(brine);
+      thisFermentObj.brine = brine;
       thisFermentObj.dateStart = dateStart;
       thisFermentObj.id = this.targetFerment;
-      thisFermentObj.salt = formatDecimal(salt);
+      thisFermentObj.salt = salt;
       thisFermentObj.unit = unit;
-      thisFermentObj.weight = formatDecimal(weight);
+      thisFermentObj.weight = weight;
   
       localStorage.setItem("saved", JSON.stringify(replaceObjectWithId(myFermentsStorage, this.targetFerment, thisFermentObj)));
   
@@ -51,12 +51,12 @@ class SaveFermentForm {
       const state = JSON.parse(localStorage.getItem("state"));
       const { brine, salt, unit, weight } = state;
   
-      thisFermentObj.brine = formatDecimal(brine);
+      thisFermentObj.brine = brine;
       thisFermentObj.dateStart = dateStart;
       thisFermentObj.id = `ferment${randomNumber}${parseInt(brine, 10) + parseInt(weight, 10) + parseInt(salt, 10)}`;
-      thisFermentObj.salt = formatDecimal(salt);
+      thisFermentObj.salt = salt;
       thisFermentObj.unit = unit;
-      thisFermentObj.weight = formatDecimal(weight);
+      thisFermentObj.weight = weight;
   
       myFermentsStorage.push(thisFermentObj);
       localStorage.setItem("saved", JSON.stringify(myFermentsStorage));
