@@ -1,13 +1,16 @@
 // Constants
 const dialogs = document.querySelectorAll("dialog");
 const deleteFermentButtons = document.querySelectorAll("button[data-delete]");
-const saveFermentForm = document.getElementById("saveFermentForm");
 const saveFermentButton = document.getElementById("saveFermentButton");
 const saveFermentDialog = document.getElementById("saveFermentDialog");
 const myFermentsDialog = document.getElementById("myFermentsDialog");
 const fermentNameEl = document.getElementById("fermentName");
+const dateStartedEl = document.getElementById("dateStarted");
 const dateEndEl = document.getElementById("dateEnd");
 const notesEl = document.getElementById("notes");
+const editFermentNameEl = document.getElementById("editFermentName");
+const editDateEndEl = document.getElementById("editDateEnd");
+const editNotesEl = document.getElementById("editNotes");
 const myFermentsList = document.getElementById("myFermentsList");
 const myFermentsFilter = document.getElementById("myFermentsFilter");
 const myFermentsStorage = JSON.parse(localStorage.getItem("saved")) || [];

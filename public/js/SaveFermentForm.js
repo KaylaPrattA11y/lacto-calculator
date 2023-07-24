@@ -15,14 +15,6 @@ class SaveFermentForm {
     return new FormData(this.form);
   }
 
-  get isEditing() {
-    return this.form.hasAttribute("data-edit");
-  }
-
-  get targetFerment() {
-    return this.form.dataset.edit;
-  }
-
   handleSubmit = e => {
     e.preventDefault();
 
@@ -32,38 +24,26 @@ class SaveFermentForm {
       fermentName: this.formData.get("fermentName"),
       notes: this.formData.get("notes"),
     };
-  
-    if (this.isEditing) {
-      const { brine, dateStart, salt, unit, weight } = getObjectWithId(myFermentsStorage, this.targetFerment);
-  
-      thisFermentObj.brine = brine;
-      thisFermentObj.dateStart = dateStart;
-      thisFermentObj.id = this.targetFerment;
-      thisFermentObj.salt = salt;
-      thisFermentObj.unit = unit;
-      thisFermentObj.weight = weight;
-  
-      localStorage.setItem("saved", JSON.stringify(replaceObjectWithId(myFermentsStorage, this.targetFerment, thisFermentObj)));
-  
-    } else {
-      const dateStart = new Date();
-      const randomNumber = Math.floor(Math.random() * 9000 + 1000);
-      const state = JSON.parse(localStorage.getItem("state"));
-      const { brine, salt, unit, weight } = state;
-  
-      thisFermentObj.brine = brine;
-      thisFermentObj.dateStart = dateStart;
-      thisFermentObj.id = `ferment${randomNumber}${parseInt(brine, 10) + parseInt(weight, 10) + parseInt(salt, 10)}`;
-      thisFermentObj.salt = salt;
-      thisFermentObj.unit = unit;
-      thisFermentObj.weight = weight;
-  
-      myFermentsStorage.push(thisFermentObj);
-      localStorage.setItem("saved", JSON.stringify(myFermentsStorage));
-    }
-  
-    let params = new URLSearchParams(location.search);
-    params.set('showModal', 'myFermentsDialog');
-    window.location.search = params.toString();
+    
+    const dateStart = new Date();
+    const randomNumber = Math.floor(Math.random() * 9000 + 1000);
+    const state = JSON.parse(localStorage.getItem("state"));
+    const { brine, salt, unit, weight } = state;
+
+    thisFermentObj.brine = brine;
+    thisFermentObj.dateStart = dateStart;
+    thisFermentObj.id = `ferment${randomNumber}${parseInt(brine, 10) + parseInt(weight, 10) + parseInt(salt, 10)}`;
+    thisFermentObj.salt = salt;
+    thisFermentObj.unit = unit;
+    thisFermentObj.weight = weight;
+
+    myFermentsStorage.push(thisFermentObj);
+    localStorage.setItem("saved", JSON.stringify(myFermentsStorage));
+
+    ferments.build(myFermentsStorage);
+    saveFermentDialog.close();
+    myFermentsDialog.showModal();
+
   }
+  
 }

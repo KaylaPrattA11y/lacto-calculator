@@ -1,86 +1,121 @@
-<dialog id="saveFermentDialog">
+---
+export interface Props {
+  action: string;
+  brine: string;
+  weight: string;
+  salt: string;
+  dateEnd: string;
+  fermentName: string;
+  notes: string;
+  color: string;
+}
+
+const { 
+  action,
+  brine, 
+  weight, 
+  salt, 
+  dateEnd, 
+  fermentName, 
+  notes, 
+  color  
+} = Astro.props;
+---
+
+<dialog id={action === "save" ? "saveFermentDialog" : "editFermentDialog"}>
   <div class="dialog-header">
-    <h2>Save this ferment</h2>
-    <button aria-controls="saveFermentDialog" aria-haspopup="dialog" aria-label="Close" class="btn-default">
+    <h2>{action === "save" ? "Save this ferment" : "Edit this ferment"}</h2>
+    <button 
+      type="button"
+      aria-controls={action === "save" ? "saveFermentDialog" : "editFermentDialog"} 
+      aria-haspopup="dialog" 
+      aria-label="Close" 
+      class="btn-default">
       <kay-icon class="carbon:close" aria-hidden="true"></kay-icon>
     </button>
   </div>
-  <form class="dialog-main" id="saveFermentForm">
+  <form 
+    class="dialog-main" 
+    id={action === "save" ? "saveFermentForm" : "editFermentForm"}
+    method="dialog">
     <ul class="input-group ferment-details">
       <li>
-        <label for="currentBrine">Brine: </label>
-        <output id="currentBrine" data-label="brine"></output>
+        <label for={brine}>Brine: </label>
+        <output id={brine} name={brine} data-label="brine"></output>
         <span class="ferment-unit">%</span>
       </li>
       <li>
-        <label for="currentWeight">Weight: </label>
-        <output id="currentWeight" data-label="weight"></output>
+        <label for={weight}>Weight: </label>
+        <output id={weight} name={weight} data-label="weight"></output>
         <span data-label="unit" class="ferment-unit"></span>
       </li>
       <li>
-        <label for="currentSalt">Salt: </label>
-        <output id="currentSalt" data-label="salt"></output>
+        <label for={salt}>Salt: </label>
+        <output id={salt} name={salt} data-label="salt"></output>
         <span data-label="unit" class="ferment-unit"></span>
       </li>
     </ul>
     <div class="input-group">
-      <label for="dateStart">End date (optional)</label>
-      <input type="date" id="dateEnd" name="dateEnd" />
+      <label for={dateEnd}>End date (optional)</label>
+      <input type="date" id={dateEnd} name={dateEnd} />
       <p data-validate="field">End date must be later than today's date.</p>
     </div>
     <div class="input-group">
-      <label for="fermentName">Name (optional)</label>
+      <label for={fermentName}>Name (optional)</label>
       <input 
       type="text" 
-      id="fermentName" 
+      id={fermentName} 
       maxlength="30" 
-      pattern="^[a-zA-Z0-9 ]{1,30}$" 
-      title="Please use only letters, numbers, and spaces." 
-      name="fermentName" />
-      <p data-validate="field">Please use only letters, numbers, and spaces.</p>
+      name={fermentName} />
     </div>
     <div class="input-group">
-      <label for="notes">Notes (optional)</label>
-      <textarea id="notes" name="notes" maxlength="100"></textarea>
+      <label for={notes}>Notes (optional)</label>
+      <textarea id={notes} name={notes} maxlength="100"></textarea>
     </div>
     <fieldset class="input-group">
       <legend>Tag with a color (optional)</legend>
       <label class="theme-transparent">
         <span class="visually-hidden">transparent</span>
-        <input type="radio" name="color" value="transparent" checked />
+        <input type="radio" name={color} value="transparent" checked />
       </label>
       <label class="theme-red">
         <span class="visually-hidden">red</span>
-        <input type="radio" name="color" value="red" />
+        <input type="radio" name={color} value="red" />
       </label>
       <label class="theme-orange">
         <span class="visually-hidden">orange</span>
-        <input type="radio" name="color" value="orange" />
+        <input type="radio" name={color} value="orange" />
       </label>
       <label class="theme-yellow">
         <span class="visually-hidden">yellow</span>
-        <input type="radio" name="color" value="yellow" />
+        <input type="radio" name={color} value="yellow" />
       </label>
       <label class="theme-green">
         <span class="visually-hidden">green</span>
-        <input type="radio" name="color" value="green" />
+        <input type="radio" name={color} value="green" />
       </label>
       <label class="theme-blue">
         <span class="visually-hidden">blue</span>
-        <input type="radio" name="color" value="blue" />
+        <input type="radio" name={color} value="blue" />
       </label>
       <label class="theme-indigo">
         <span class="visually-hidden">indigo</span>
-        <input type="radio" name="color" value="indigo" />
+        <input type="radio" name={color} value="indigo" />
       </label>
       <label class="theme-violet">
         <span class="visually-hidden">violet</span>
-        <input type="radio" name="color" value="violet" />
+        <input type="radio" name={color} value="violet" />
       </label>
     </fieldset>
     <div class="input-group actions">
-      <button type="submit" class="btn-primary" id="saveFermentButton">Save</button>
-      <button type="button" aria-controls="saveFermentDialog" aria-haspopup="dialog" class="btn-default">Cancel</button>
+      <button type="submit" class="btn-primary">Save</button>
+      <button 
+        type="button" 
+        aria-controls={action === "save" ? "saveFermentDialog" : "editFermentDialog"} 
+        aria-haspopup="dialog" 
+        class="btn-default">
+        Cancel
+      </button>
     </div>
   </form>
 </dialog>

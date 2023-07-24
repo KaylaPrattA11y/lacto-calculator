@@ -1,3 +1,40 @@
+const hideBodyScrollbar = isOpen => {
+  if (isStandalone()) return;
+  if (isOpen) {
+    document.body.style.overflowY = "auto";
+    document.body.style.paddingInlineEnd = "0";
+  } else {
+    document.body.style.overflowY = "hidden";
+    document.body.style.paddingInlineEnd = "16px";
+  }
+}
+
+const closeAllDialogs = () => document.querySelectorAll("dialog[open]")?.forEach(dialog => dialog.close());
+
+const handleToggleDialog = e => {
+  const dialog = document.getElementById(e.target.getAttribute("aria-controls"));
+  const isOpen = dialog.hasAttribute("open");
+
+  hideBodyScrollbar(isOpen);
+  if (isOpen) {
+    dialog.close();
+    // adjust window history
+    if (isStandalone()) {
+      window.history.back();
+    }
+  } else {
+    closeAllDialogs();
+    dialog.showModal();
+    dialog.dispatchEvent(new CustomEvent("showModal"));
+
+    // Add to history state
+    if (isStandalone()) {
+      window.history.pushState({ isPopup: true }, 'Dialog');
+    }
+
+  }
+}
+
 class Dialog {
   constructor(id) {
     this.id = id;
@@ -9,70 +46,26 @@ class Dialog {
   }
 
   addEventListeners = () => {
-    this.toggleButtons.forEach(button => button.addEventListener("click", () => this.handleToggleDialog()));
     this.dialog.addEventListener("close", () => this.handleClose());
+    this.dialog.addEventListener("showModal", () => this.handleOpen());
   }
 
-  handleToggleDialog = () => {
-    const showModal = new CustomEvent("showModal");
-
-    this.hideBodyScrollbar(this.isOpen);
-    if (this.isOpen) {
-      this.dialog.close();
-      // adjust window history
-      if (isStandalone()) {
-        window.history.back();
-      }
-    } else {
-      this.dialog.dispatchEvent(showModal);
-      this.dialog.showModal();
-
+  handleOpen = () => {
+    if (this.id === "myFermentsDialog") {
+      // refresh the list every time it is opened
+      ferments.build(myFermentsStorage);
+    }
+    if (this.id === "saveFermentDialog") {
       // disallow end date to be newer than start date
-      if (this.id === "saveFermentDialog") {
-        const date = new Date();
-        const todaysdate = addOneDay(date).toISOString().split('T')[0];
+      const date = new Date();
+      const todaysdatePlusOne = addOneDay(date).toISOString().split('T')[0];
 
-        dateEndEl.setAttribute("min", todaysdate);
-      }
-
-      // Add to history state
-      if (isStandalone()) {
-        window.history.pushState({ isPopup: true }, 'Dialog');
-      }
+      dateEndEl.setAttribute("min", todaysdatePlusOne);
     }
   }
 
   handleClose = () => {
-    if (this.id === "myFermentsDialog") {
-      // if has URL params, clear them
-      let params = new URLSearchParams(location.search);
-      if (params.get("showModal")) {
-        document.getElementById(params.get("showModal")).showModal();
-        params.delete("showModal");
-        window.location.search = params.toString();
-      } else {
-        window.location.reload();
-      }
-    } else {
-      this.hideBodyScrollbar(!this.isOpen);
-      saveFermentDialog.querySelector("h2").innerText = "Save this ferment";
-      saveFermentForm.toggleAttribute("data-edit", false);
-    }
-  }
-
-  hideBodyScrollbar = () => {
-    if (isStandalone()) return;
-    if (this.isOpen) {
-      document.body.style.overflowY = "auto";
-      document.body.style.paddingInlineEnd = "0";
-    } else {
-      document.body.style.overflowY = "hidden";
-      document.body.style.paddingInlineEnd = "16px";
-    }
-  }
-
-  get toggleButtons() {
-    return document.querySelectorAll(`button[aria-haspopup="dialog"][aria-controls="${this.id}"]`);
+    hideBodyScrollbar(!this.isOpen);
   }
 
   get isOpen() {

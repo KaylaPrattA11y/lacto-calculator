@@ -5,11 +5,11 @@ import Calculator from '../components/Calculator.astro';
 import GithubStar from '../components/GithubStar.astro';
 import MyFermentsButton from '../components/MyFermentsButton.astro';
 import MyFermentsDialog from '../components/MyFermentsDialog.astro';
-import SaveFermentDialog from '../components/SaveFermentDialog.astro';
+import EditOrSaveFerment from '../components/EditOrSaveFerment.astro';
 ---
 
 <Layout title="Brine Calculator | Lacto-fermentation">
-	<GithubStar />
+
 	<main>
 		<section aria-labelledby="pageHeading">
 			<About />
@@ -19,8 +19,30 @@ import SaveFermentDialog from '../components/SaveFermentDialog.astro';
 			<MyFermentsButton />
 		</section>
 	</main>
+	
 	<MyFermentsDialog />
-	<SaveFermentDialog />
+
+	<EditOrSaveFerment 
+		action = "save" 
+		brine="brine" 
+		weight="weight" 
+		salt="dalt" 
+		dateEnd="dateEnd" 
+		fermentName="fermentName" 
+		notes="notes" 
+		color="color" />
+
+	<EditOrSaveFerment 
+		action = "edit" 
+		brine="editBrine" 
+		weight="editWeight" 
+		salt="editSalt"  
+		dateEnd="editDateEnd" 
+		fermentName="editFermentName" 
+		notes="editNotes" 
+		color="editColor" />
+
+	<GithubStar />
 </Layout>
 
 <style>
