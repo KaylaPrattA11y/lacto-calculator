@@ -269,7 +269,6 @@ const { title } = Astro.props;
 		const saveFermentForm = new SaveFermentForm();
 		const editFermentForm = new EditFermentForm();
 
-		// checkUrlParams();
 		ferments.init();
 		saveFermentDialog.init();
 		myFermentsDialog.init();
@@ -278,6 +277,7 @@ const { title } = Astro.props;
 		new Calculator().init();
 		saveFermentForm.init();
 		editFermentForm.init();
+		checkForShowModalParams();
 
 	});
 

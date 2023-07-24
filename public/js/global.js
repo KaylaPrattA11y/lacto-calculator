@@ -19,7 +19,7 @@ const myFermentsStorage = JSON.parse(localStorage.getItem("saved")) || [];
 const isStandalone = () =>  window.matchMedia('(display-mode: standalone)').matches || document.referrer.includes('android-app://');
 
 // URL params
-const checkUrlParams = () => {
+const checkForShowModalParams = () => {
   // check for URL params that open a modal
   let params = new URLSearchParams(location.search);
   if (params.get("showModal")) {

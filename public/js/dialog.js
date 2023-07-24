@@ -54,6 +54,8 @@ class Dialog {
     if (this.id === "myFermentsDialog") {
       // refresh the list every time it is opened
       ferments.build(myFermentsStorage);
+      // allow the page to instantly open the modal on refresh
+      window.history.pushState(null, null, this.urlModifier);
     }
     if (this.id === "saveFermentDialog") {
       // disallow end date to be newer than start date
@@ -66,6 +68,16 @@ class Dialog {
 
   handleClose = () => {
     hideBodyScrollbar(!this.isOpen);
+
+    // if has URL params, clear them
+    let params = new URLSearchParams(location.search);
+    if (params.get("showModal")) {
+      window.history.back();
+    }
+  }
+
+  get urlModifier() {
+    return `?showModal=${this.id}`;
   }
 
   get isOpen() {
