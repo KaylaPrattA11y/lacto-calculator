@@ -160,7 +160,7 @@ import Share from '../components/Share.astro';
     color: var(--text-color);
     font-size: var(--font-size-lg);
   }
-  input:focus-visible {
+  input:not([type="radio"]):focus-visible {
     outline: 0;
   }
   :where(label, .label) {

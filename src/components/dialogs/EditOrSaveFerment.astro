@@ -1,4 +1,6 @@
 ---
+import Dialog from "../Dialog.astro";
+
 export interface Props {
   action: string;
   brine: string;
@@ -22,20 +24,10 @@ const {
 } = Astro.props;
 ---
 
-<dialog id={action === "save" ? "saveFermentDialog" : "editFermentDialog"}>
-  <div class="dialog-header">
-    <h2>{action === "save" ? "Save this ferment" : "Edit this ferment"}</h2>
-    <button 
-      type="button"
-      aria-controls={action === "save" ? "saveFermentDialog" : "editFermentDialog"} 
-      aria-haspopup="dialog" 
-      aria-label="Close" 
-      class="btn-default">
-      <kay-icon class="carbon:close" aria-hidden="true"></kay-icon>
-    </button>
-  </div>
+<Dialog 
+  id={action === "save" ? "saveFermentDialog" : "editFermentDialog"} 
+  heading={action === "save" ? "Save this ferment" : "Edit this ferment"}>
   <form 
-    class="dialog-main" 
     id={action === "save" ? "saveFermentForm" : "editFermentForm"}
     method="dialog">
     <ul class="input-group ferment-details">
@@ -118,7 +110,7 @@ const {
       </button>
     </div>
   </form>
-</dialog>
+</Dialog>
 
 <style>
   output {

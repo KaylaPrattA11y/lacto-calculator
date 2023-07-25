@@ -1,11 +1,11 @@
-const hideBodyScrollbar = isOpen => {
+const hideBodyScrollbar = doHide => {
   if (isStandalone()) return;
-  if (isOpen) {
-    document.body.style.overflowY = "auto";
-    document.body.style.paddingInlineEnd = "0";
-  } else {
+  if (doHide) {
     document.body.style.overflowY = "hidden";
     document.body.style.paddingInlineEnd = "16px";
+  } else {
+    document.body.style.overflowY = "auto";
+    document.body.style.paddingInlineEnd = "0";
   }
 }
 
@@ -15,23 +15,13 @@ const handleToggleDialog = e => {
   const dialog = document.getElementById(e.target.getAttribute("aria-controls"));
   const isOpen = dialog.hasAttribute("open");
 
-  hideBodyScrollbar(isOpen);
+  hideBodyScrollbar(!isOpen);
   if (isOpen) {
     dialog.close();
-    // adjust window history
-    if (isStandalone()) {
-      window.history.back();
-    }
   } else {
     closeAllDialogs();
     dialog.showModal();
     dialog.dispatchEvent(new CustomEvent("showModal"));
-
-    // Add to history state
-    if (isStandalone()) {
-      window.history.pushState({ isPopup: true }, 'Dialog');
-    }
-
   }
 }
 
@@ -39,14 +29,25 @@ class Dialog {
   constructor(id) {
     this.id = id;
     this.dialog = document.getElementById(id);
+    this.hasAForm = this.dialog.querySelectorAll("form").length > 0;
   }
 
   init() {
     this.addEventListeners();
   }
 
+  close() {
+    this.dialog.close();
+  }
+
+  showModal() {
+    this.dialog.showModal();
+    hideBodyScrollbar(true);
+  }
+
   addEventListeners = () => {
     this.dialog.addEventListener("close", () => this.handleClose());
+    this.dialog.addEventListener("cancel", () => this.handleCancel());
     this.dialog.addEventListener("showModal", () => this.handleOpen());
   }
 
@@ -54,8 +55,6 @@ class Dialog {
     if (this.id === "myFermentsDialog") {
       // refresh the list every time it is opened
       ferments.build(myFermentsStorage);
-      // allow the page to instantly open the modal on refresh
-      window.history.pushState(null, null, this.urlModifier);
     }
     if (this.id === "saveFermentDialog") {
       // disallow end date to be newer than start date
@@ -67,20 +66,49 @@ class Dialog {
   }
 
   handleClose = () => {
-    hideBodyScrollbar(!this.isOpen);
-
-    // if has URL params, clear them
-    let params = new URLSearchParams(location.search);
-    if (params.get("showModal")) {
-      window.history.back();
+    if (this.id === "myFermentsDialog") {
+      fermentsMenu.openMenu(false);
+    }
+    if (
+      this.id === "importFermentsDialog" || 
+      this.id === "editFermentDialog" || 
+      this.id === "confirmDeleteAllDialog") {
+      myFermentsDialog.showModal();
+    }
+    if (this.hasAForm) {
+      this.forms.forEach(f => f.reset());
     }
   }
 
-  get urlModifier() {
-    return `?showModal=${this.id}`;
+  handleCancel = () => {
+    hideBodyScrollbar(false);
+  }
+
+  get forms() {
+    return this.dialog.querySelectorAll("form");
   }
 
   get isOpen() {
     return this.dialog.hasAttribute("open");
   }
 }
+
+const confirmDeleteAllDialog = new Dialog("confirmDeleteAllDialog");
+const saveFermentDialog = new Dialog("saveFermentDialog");
+const editFermentDialog = new Dialog("editFermentDialog");
+const importFermentsDialog = new Dialog("importFermentsDialog");
+const myFermentsDialog = new Dialog("myFermentsDialog");
+
+document.addEventListener("DOMContentLoaded", () => {
+  confirmDeleteAllDialog.init();
+  saveFermentDialog.init();
+  editFermentDialog.init();
+  importFermentsDialog.init();
+  myFermentsDialog.init();
+});
+
+document.addEventListener("click", e => {
+  if (e.target.matches("button[aria-haspopup='dialog']")) {
+    handleToggleDialog(e);
+  }
+});

@@ -1,0 +1,63 @@
+---
+import Dialog from "../Dialog.astro";
+---
+
+<Dialog id="importFermentsDialog" heading="Import ferments">
+  <form 
+    id="importFermentsForm" 
+    method="dialog">
+    <p>Importing ferment data will permanently replace the ferment data in your local storage. <em>This action is irreversible.</em></p>
+    <p>Consider first exporting your current ferment data.</p>
+
+    <label for="importFermentFile">Import ferments (.JSON)</label>
+    <input type="file" accept=".json" id="importFermentFile" name="importFermentFile" />
+
+    <div class="level">
+      <div>
+        <h3 id="yourFileText" hidden>Import this file?</h3>
+        <p id="errorMessage" hidden>Invalid import data. Please try another file.</p>
+      </div>
+      <div>
+        <button type="submit" class="btn-primary" aria-haspopup="dialog" aria-controls="importFermentsDialog">Import</button>
+        <button type="button" class="btn-default" aria-haspopup="dialog" aria-controls="importFermentsDialog">Cancel</button>
+      </div>
+    </div>
+    <ol id="fileList"></ol>
+
+  </form>
+</Dialog>
+
+<style>
+  :where(label, output) {
+    display: block;
+  }
+  label {
+    margin-block-end: 0.25rem;
+  }
+  a {
+    display: inline-block;
+    margin-block-end: 1rem;
+  }
+  .level {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+  button {
+    display: inline-block;
+  }
+  input[type="file" i]::-webkit-file-upload-button {
+    border: 0;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+		color: var(--text-color);
+		background: var(--calc-output-background-color);
+    cursor: pointer;
+		text-decoration: none;
+  } 
+  ol {
+    display: grid;
+    gap: 1rem;
+  }
+</style>

@@ -6,8 +6,13 @@ class Filter {
   }
 
   init() {
-    this.updateLengthTexts();
+    this.update();
     this.addEventListeners();
+  }
+  
+  update() {
+    this.updateLengthTexts();
+    this.updateNoFermentsAvailableText();
   }
 
   updateLengthTexts = () => {
@@ -87,11 +92,11 @@ class Filter {
     const p = e.target.previousElementSibling;
     const n = e.target.nextElementSibling;
 
-    if (l && p) {
+    if (l && p && p.matches("[data-value]")) {
       this.select(p.dataset.value);
       p.focus();
     }
-    if (r && n) {
+    if (r && n && n.matches("[data-value]")) {
       this.select(n.dataset.value);
       n.focus();
     }
@@ -104,3 +109,7 @@ class Filter {
 }
 
 const filter = new Filter();
+
+document.addEventListener("DOMContentLoaded", () => {
+  filter.init();
+});

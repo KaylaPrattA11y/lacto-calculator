@@ -1,0 +1,18 @@
+---
+import Dialog from "../Dialog.astro";
+import FermentsFilters from "../FermentsFilters.astro";
+---
+
+<Dialog id="myFermentsDialog" heading="My ferments">
+  <FermentsFilters />
+  <p id="noFermentsAvailable" hidden>No ferments available.</p>
+  <ul id="myFermentsList"></ul>
+</Dialog>
+
+<style>
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+</style>

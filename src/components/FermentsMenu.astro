@@ -1,0 +1,81 @@
+<div class="ferments-menu" id="fermentsMenuContainer">
+  <button 
+    id="fermentMenuButton"
+    type="button" 
+    class="btn-default" 
+    aria-label="Options" 
+    aria-haspopup="menu" 
+    aria-controls="fermentMenu" 
+    aria-expanded="false">
+    <kay-icon class="carbon:overflow-menu-vertical" aria-hidden="true"></kay-icon>
+  </button>
+  <div role="menu" id="fermentMenu">
+    <button type="button" role="menuitem" data-menuitem="0" aria-haspopup="dialog" aria-controls="confirmDeleteAllDialog">
+      <kay-icon class="carbon:trash-can" aria-hidden="true"></kay-icon>
+      Delete all ferments
+    </button>
+    <a data-menuitem="1" role="menuitem">
+      <kay-icon class="carbon:document-export" aria-hidden="true"></kay-icon>
+      Export Ferments (.json)
+    </a>
+    <button type="button" role="menuitem" data-menuitem="2" aria-haspopup="dialog" aria-controls="importFermentsDialog">
+      <kay-icon class="carbon:document-import" aria-hidden="true"></kay-icon>
+      Import Ferments (.json)
+    </button>
+  </div>
+</div>
+
+<style>
+  [aria-controls="fermentMenu"] {
+    border-radius: 0.5rem 0.5rem 0 0;
+    font-size: var(--font-size-lg);
+  }
+  [aria-expanded="true"] {
+    background: var(--calc-output-background-color);
+  }
+  [aria-expanded="false"] + [role="menu"] {
+    display: none;
+  }
+  .ferments-menu {
+    position: relative;
+    flex-grow: 1;
+    text-align: end;
+  }
+  .ferments-menu:has([aria-expanded="true"]) [role="menu"] {
+    max-inline-size: 15rem;
+    inline-size: 100svw;
+  }
+  .ferments-menu > button {
+    margin-inline: auto 0;
+  }
+  [role="menu"] {
+    background: var(--calc-output-background-color);
+    position: absolute;
+    inset: auto 0 auto auto;
+    z-index: 9;
+    display: grid;
+    box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.35);
+  }
+  [role="menuitem"] {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    color: var(--text-color);
+    padding: 0.75rem 1rem;
+    font-size: var(--font-size-md);
+    cursor: pointer;
+    text-decoration: none;
+  }
+  [role="menu"] [role="menuitem"]:not(:first-child) {
+    border-top: 1px solid var(--calc-group-background-color);
+  }
+</style>
+<style is:inline>
+  /* if there are no items in the list, hide irrelevant buttons from options menu */
+  button[data-value="0"][data-length="0"] ~ .ferments-menu :where([data-menuitem="0"], [data-menuitem="1"]) {
+    display: none;
+  }
+</style>

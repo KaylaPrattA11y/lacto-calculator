@@ -4,7 +4,7 @@ class Ferments {
   }
 
   init() {
-    this.build(myFermentsStorage);
+    this.build();
     this.addEventListeners();
   }
 
@@ -53,12 +53,13 @@ class Ferments {
     const { brine, weight, salt, unit, color, dateEnd, fermentName, notes } = ferments.getFermentData(id);
     const todaysdate = addOneDay(new Date()).toISOString().split('T')[0];
     const dateHasPassed = new Date(dateEnd).getTime() < new Date().getTime();
+    const editFermentFormEl = document.getElementById("editFermentForm");
 
-    editFermentForm.setAttribute("data-edit", id);
-    editFermentForm.querySelector("[data-label='brine']").innerText = formatDecimal(brine);
-    editFermentForm.querySelector("[data-label='weight']").innerText = formatDecimal(weight);
-    editFermentForm.querySelector("[data-label='salt']").innerText = formatDecimal(salt);
-    editFermentForm.querySelectorAll("[data-label='unit']").forEach(u => u.innerText = unit);
+    editFermentFormEl.setAttribute("data-edit", id);
+    editFermentFormEl.querySelector("[data-label='brine']").innerText = formatDecimal(brine);
+    editFermentFormEl.querySelector("[data-label='weight']").innerText = formatDecimal(weight);
+    editFermentFormEl.querySelector("[data-label='salt']").innerText = formatDecimal(salt);
+    editFermentFormEl.querySelectorAll("[data-label='unit']").forEach(u => u.innerText = unit);
     editDateEndEl.value = dateEnd;
     editDateEndEl.setAttribute("min", dateHasPassed ? dateEnd : todaysdate);
     editFermentNameEl.value = fermentName;
@@ -67,10 +68,10 @@ class Ferments {
   }
 
   build() {
-    if (!myFermentsStorage) return;
-    this.list.innerHTML = "";
-    myFermentsStorage.forEach((f) => this.add(f));
-    filter.updateLengthTexts();
+    if (!getSavedLocalStorage()) return;
+    this.all.forEach(li => li.remove());
+    getSavedLocalStorage().forEach((f) => this.add(f));
+    filter.update();
   }
 
   add(f) {
@@ -155,24 +156,26 @@ class Ferments {
         </div>
       </div>`;
     myFermentsList.insertAdjacentElement("afterbegin", li);
-    filter.updateLengthTexts();
+    filter.update();
+    fermentsMenu.updateExportButtonAttrs();
   }
 
   getFermentData(id) {
-    return getObjectWithId(myFermentsStorage, id);
+    return getObjectWithId(getSavedLocalStorage(), id);
   }
 
   deleteFerment(id) {
     document.getElementById(id).remove();
     removeObjectWithId(myFermentsStorage, id);
     localStorage.setItem("saved", JSON.stringify(myFermentsStorage));
-    filter.updateLengthTexts();
+    filter.update();
+    fermentsMenu.updateExportButtonAttrs();
   }
 
   deleteAllFerments() {
-    this.list.innerHTML = "";
     localStorage.setItem("saved", "[]");
-    filter.updateLengthTexts();
+    this.build();
+    fermentsMenu.updateExportButtonAttrs();
   }
 
   get all() {
@@ -190,3 +193,7 @@ class Ferments {
 }
 
 const ferments = new Ferments();
+
+document.addEventListener("DOMContentLoaded", () => {
+  ferments.init();
+});

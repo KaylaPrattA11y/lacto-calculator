@@ -29,30 +29,43 @@ kay-icon.carbon\:close::before {
 content: "\e002";
 }
 
-kay-icon.carbon\:download::before {
+kay-icon.carbon\:document-export::before {
 content: "\e003";
 }
 
-kay-icon.carbon\:edit::before {
+kay-icon.carbon\:document-import::before {
 content: "\e004";
 }
 
-kay-icon.carbon\:share::before {
+kay-icon.carbon\:download::before {
 content: "\e005";
 }
 
-kay-icon.carbon\:star::before {
+kay-icon.carbon\:edit::before {
 content: "\e006";
 }
 
-kay-icon.carbon\:star-filled::before {
+kay-icon.carbon\:overflow-menu-vertical::before {
 content: "\e007";
 }
 
-kay-icon.carbon\:time::before {
+kay-icon.carbon\:share::before {
 content: "\e008";
 }
 
-kay-icon.carbon\:trash-can::before {
+kay-icon.carbon\:star::before {
 content: "\e009";
 }
+
+kay-icon.carbon\:star-filled::before {
+content: "\e00a";
+}
+
+kay-icon.carbon\:time::before {
+content: "\e00b";
+}
+
+kay-icon.carbon\:trash-can::before {
+content: "\e00c";
+}
+

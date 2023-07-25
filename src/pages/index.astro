@@ -4,12 +4,13 @@ import About from '../components/About.astro';
 import Calculator from '../components/Calculator.astro';
 import GithubStar from '../components/GithubStar.astro';
 import MyFermentsButton from '../components/MyFermentsButton.astro';
-import MyFermentsDialog from '../components/MyFermentsDialog.astro';
-import EditOrSaveFerment from '../components/EditOrSaveFerment.astro';
+import MyFerments from '../components/dialogs/MyFerments.astro';
+import EditOrSaveFerment from '../components/dialogs/EditOrSaveFerment.astro';
+import ConfirmDeleteAll from '../components/dialogs/ConfirmDeleteAll.astro';
+import ImportFerments from '../components/dialogs/ImportFerments.astro';
 ---
 
 <Layout title="Brine Calculator | Lacto-fermentation">
-
 	<main>
 		<section aria-labelledby="pageHeading">
 			<About />
@@ -19,9 +20,8 @@ import EditOrSaveFerment from '../components/EditOrSaveFerment.astro';
 			<MyFermentsButton />
 		</section>
 	</main>
-	
-	<MyFermentsDialog />
-
+	<!-- Start Dialogs -->
+	<MyFerments />
 	<EditOrSaveFerment 
 		action = "save" 
 		brine="brine" 
@@ -31,7 +31,6 @@ import EditOrSaveFerment from '../components/EditOrSaveFerment.astro';
 		fermentName="fermentName" 
 		notes="notes" 
 		color="color" />
-
 	<EditOrSaveFerment 
 		action = "edit" 
 		brine="editBrine" 
@@ -41,7 +40,9 @@ import EditOrSaveFerment from '../components/EditOrSaveFerment.astro';
 		fermentName="editFermentName" 
 		notes="editNotes" 
 		color="editColor" />
-
+	<ConfirmDeleteAll />
+	<ImportFerments />
+	<!-- End Dialogs -->
 	<GithubStar />
 </Layout>
 

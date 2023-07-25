@@ -26,16 +26,17 @@ const { title } = Astro.props;
 		<meta name="theme-color" content="#4f304d">
 		<meta name="generator" content={Astro.generator} />
 		<link rel="stylesheet" href="/lacto-calculator/iconfont/index.css" />
-		<link rel="stylesheet" href="/lacto-calculator/css/dialog.css" />
 		<link rel="stylesheet" href="/lacto-calculator/css/ferment.css" />
 		<script defer is:inline src="/lacto-calculator/js/global.js"></script>
 		<script defer is:inline src="/lacto-calculator/js/formatters.js"></script>
-		<script defer src="/lacto-calculator/js/Ferments.js"></script>
 		<script defer src="/lacto-calculator/js/dialog.js"></script>
+		<script defer src="/lacto-calculator/js/Calculator.js"></script>
+		<script defer src="/lacto-calculator/js/Ferments.js"></script>
+		<script defer src="/lacto-calculator/js/Filter.js"></script>
 		<script defer src="/lacto-calculator/js/SaveFermentForm.js"></script>
 		<script defer src="/lacto-calculator/js/EditFermentForm.js"></script>
-		<script defer src="/lacto-calculator/js/calculator.js"></script>
-		<script defer src="/lacto-calculator/js/Filter.js"></script>
+		<script defer src="/lacto-calculator/js/ImportFermentsForm.js"></script>
+		<script defer src="/lacto-calculator/js/FermentsMenu.js"></script>
 		<script async defer src="https://buttons.github.io/buttons.js"></script>
 		<title>{title}</title>
 	</head>
@@ -168,11 +169,6 @@ const { title } = Astro.props;
 		color: var(--text-color);
 		background: var(--main-background-color);
 	}
-	button:not([hidden]) {
-		display: flex;
-		align-items: center;
-		gap: 0.25rem;
-	}
 	button > * {
 		pointer-events: none;
 	}
@@ -206,9 +202,6 @@ const { title } = Astro.props;
 	svg > path {
 		fill: var(--text-color);
 	}
-	:any-link {
-		color: var(--link-color);
-	}
 	::selection {
 		background-color: var(--selection-background-color);
 		color: var(--selection-color);
@@ -219,19 +212,24 @@ const { title } = Astro.props;
 			display: none !important;
 		}
 	}
-	.btn-default {
+	:where(.btn-primary, .btn-default) {
+		font-family: var(--font-family);
+		text-decoration: none;
+		cursor: pointer;
 		border: 0;
 		color: var(--text-color);
+	}
+	.btn-default {
 		background: transparent;
-    cursor: pointer;
 	}
 	.btn-primary {
-		border: 0;
     border-radius: 0.5rem;
     padding: 0.5rem 1rem;
-		color: var(--text-color);
 		background: var(--calc-output-background-color);
-    cursor: pointer;
+	}
+	.btn-primary:disabled {
+		opacity: 0.75;
+		cursor: not-allowed;
 	}
 	.visually-hidden {
 		position: absolute!important;
@@ -262,47 +260,6 @@ const { title } = Astro.props;
 </style>
 
 <script>
-	document.addEventListener("DOMContentLoaded", () => {
-		const saveFermentDialog = new Dialog("saveFermentDialog");
-		const myFermentsDialog = new Dialog("myFermentsDialog");
-		const editFermentDialog = new Dialog("editFermentDialog");
-		const saveFermentForm = new SaveFermentForm();
-		const editFermentForm = new EditFermentForm();
-
-		ferments.init();
-		saveFermentDialog.init();
-		myFermentsDialog.init();
-		editFermentDialog.init();
-		filter.init();
-		new Calculator().init();
-		saveFermentForm.init();
-		editFermentForm.init();
-		checkForShowModalParams();
-
-	});
-
-	document.addEventListener("click", e => {
-		if (e.target.matches("button[aria-haspopup='dialog']")) {
-			handleToggleDialog(e);
-		}
-	});
-
-	if (isStandalone()) {
-		// Prevent the PWA from closing when user presses "back" button on Android device
-		window.addEventListener('load', function() {
-			// 1. Add previous history state
-			window.history.pushState({}, '');
-		});
-		window.addEventListener('popstate', function(e) {
-			// 2. Each time users presses 'back' to go to the first entry, we add the new entry back again
-			window.history.pushState({}, '');
-			// Close dialog when pressing "Back" button while a dialog is open
-			if (e.state?.isPopup) {
-				document.querySelector("dialog[open]")?.close();
-			}
-		});
-	}
-
 	// check for SW
 	if (navigator.serviceWorker) {
 		navigator.serviceWorker.register (
@@ -310,5 +267,4 @@ const { title } = Astro.props;
 			{ scope: '/lacto-calculator/' }
 		)
 	}
-	
 </script>

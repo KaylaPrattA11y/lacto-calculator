@@ -16,6 +16,7 @@
   justify-content: space-between;
   align-items: baseline;
   gap: 1rem;
+  padding-block-end: 1rem;
 }
 .ferment-tagged::before {
   position: absolute;
@@ -26,7 +27,7 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  content: "\e007";
+  content: "\e00a";
   color: var(--color);
 }
 .ferment-tagged h3:empty + div {
@@ -45,11 +46,15 @@
   background: var(--calc-output-background-color);
   margin: 0;
 }
+.ferment button {
+  font-size: var(--font-size-sm);
+}
 .ferment button:where([data-share], [data-delete='prompt']),
 .ferment-header h3:empty + button {
   margin-inline: auto 0;
 }
 .ferment-details {
+  padding-block: 1rem;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -83,9 +88,6 @@
 .ferment-details li > div > span:first-child {
   font-size: var(--font-size-lg);
   font-weight: 700;
-}
-.ferment-details {
-  padding-block: 1rem;
 }
 .ferment-tagged h3:empty + time {
   padding-inline-start: 1rem;

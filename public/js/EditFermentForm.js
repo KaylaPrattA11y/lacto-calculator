@@ -11,6 +11,10 @@ class EditFermentForm {
     this.form.addEventListener("submit", e => this.handleSubmit(e));
   }
 
+  reset() {
+    this.form.reset();
+  }
+
   get formData() {
     return new FormData(this.form);
   }
@@ -42,7 +46,13 @@ class EditFermentForm {
 
     ferments.build(myFermentsStorage);
     editFermentDialog.close();
-    myFermentsDialog.showModal();
+    this.form.reset();
 
   }
 }
+
+const editFermentForm = new EditFermentForm();
+
+document.addEventListener("DOMContentLoaded", () => {
+  editFermentForm.init();
+});

@@ -1,0 +1,16 @@
+---
+import Dialog from "../Dialog.astro";
+---
+
+<Dialog id="confirmDeleteAllDialog" heading="Are you sure?">
+  <p>Are you sure you want to delete all of your saved ferments? <em>This action is irreversible.</em></p>
+  <button type="button" class="btn-primary" id="confirmDeleteAll" aria-haspopup="dialog" aria-controls="confirmDeleteAllDialog">Yes, I want to delete my ferments</button>
+  <button type="button" class="btn-default" aria-haspopup="dialog" aria-controls="confirmDeleteAllDialog">Cancel</button>
+
+</Dialog>
+
+<style>
+  button {
+    display: inline-block;
+  }
+</style>
