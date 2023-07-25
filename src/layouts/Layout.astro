@@ -30,7 +30,7 @@ const { title } = Astro.props;
 		<script defer is:inline src="/lacto-calculator/js/global.js"></script>
 		<script defer is:inline src="/lacto-calculator/js/formatters.js"></script>
 		<script defer src="/lacto-calculator/js/dialog.js"></script>
-		<script defer src="/lacto-calculator/js/Calculator.js"></script>
+		<script defer src="/lacto-calculator/js/calculator.js"></script>
 		<script defer src="/lacto-calculator/js/Ferments.js"></script>
 		<script defer src="/lacto-calculator/js/Filter.js"></script>
 		<script defer src="/lacto-calculator/js/SaveFermentForm.js"></script>
@@ -260,6 +260,10 @@ const { title } = Astro.props;
 </style>
 
 <script>
+	// listen for local storage changes
+	// document.addEventListener("localStorageModified", () => {
+	// 	console.log("localStorageModified")
+	// });
 	// check for SW
 	if (navigator.serviceWorker) {
 		navigator.serviceWorker.register (
