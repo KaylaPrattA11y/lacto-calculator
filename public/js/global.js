@@ -1,24 +1,13 @@
 // Constants
-const dialogs = document.querySelectorAll("dialog");
-const deleteFermentButtons = document.querySelectorAll("button[data-delete]");
-const saveFermentButton = document.getElementById("saveFermentButton");
-const fermentNameEl = document.getElementById("fermentName");
-const dateStartedEl = document.getElementById("dateStarted");
 const dateEndEl = document.getElementById("dateEnd");
-const notesEl = document.getElementById("notes");
 const editFermentNameEl = document.getElementById("editFermentName");
 const editDateEndEl = document.getElementById("editDateEnd");
 const editNotesEl = document.getElementById("editNotes");
-const myFermentsList = document.getElementById("myFermentsList");
-const myFermentsFilter = document.getElementById("myFermentsFilter");
+const myFermentsModified = new CustomEvent("myFermentsModified");
 let myFermentsStorage = JSON.parse(localStorage.getItem("saved")) || [];
 
 // PWA
 const isStandalone = () =>  window.matchMedia('(display-mode: standalone)').matches || document.referrer.includes('android-app://');
-
-function getSavedLocalStorage() {
-  return JSON.parse(localStorage.getItem("saved")) || [];
-}
 
 const isIterable = input => {  
   if (input === null || input === undefined) {
@@ -49,3 +38,8 @@ const replaceObjectWithId = (arr, id, newObj) => {
   }
   return arr;
 }
+
+// update the variable every time a change is made to the saved ferments
+document.addEventListener("myFermentsModified", () => {
+  myFermentsStorage = JSON.parse(localStorage.getItem("saved")) || [];
+});

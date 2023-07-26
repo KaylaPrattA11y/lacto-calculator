@@ -54,7 +54,7 @@ class Dialog {
   handleOpen = () => {
     if (this.id === "myFermentsDialog") {
       // refresh the list every time it is opened
-      ferments.build(myFermentsStorage);
+      ferments.build();
     }
     if (this.id === "saveFermentDialog") {
       // disallow end date to be newer than start date

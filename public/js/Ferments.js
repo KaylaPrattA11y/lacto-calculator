@@ -68,10 +68,10 @@ class Ferments {
   }
 
   build() {
-    if (!getSavedLocalStorage()) return;
-    this.all.forEach(li => li.remove());
-    getSavedLocalStorage().forEach((f) => this.add(f));
+    this.list.innerHTML = "";
+    myFermentsStorage.forEach((f) => this.add(f));
     filter.update();
+    document.dispatchEvent(myFermentsModified);
   }
 
   add(f) {
@@ -142,7 +142,7 @@ class Ferments {
           <kay-icon class="carbon:trash-can" aria-hidden="true"></kay-icon> Delete
         </button>
         <div id="${f.id}deleteOptions" class="ferment-delete-options">
-          <p>Are you sure you want to delete this ferment?</p>
+          <p><kay-icon class="carbon:warning" aria-hidden="true"></kay-icon> Are you sure you want to delete this ferment?</p>
           <button 
             type="button" 
             class="btn-primary" 
@@ -155,25 +155,27 @@ class Ferments {
             data-delete="cancel">Cancel</button>
         </div>
       </div>`;
-    myFermentsList.insertAdjacentElement("afterbegin", li);
+    this.list.insertAdjacentElement("afterbegin", li);
     filter.update();
     fermentsMenu.updateExportButtonAttrs();
   }
 
   getFermentData(id) {
-    return getObjectWithId(getSavedLocalStorage(), id);
+    return getObjectWithId(myFermentsStorage, id);
   }
 
   deleteFerment(id) {
     document.getElementById(id).remove();
     removeObjectWithId(myFermentsStorage, id);
     localStorage.setItem("saved", JSON.stringify(myFermentsStorage));
+    document.dispatchEvent(myFermentsModified);
     filter.update();
     fermentsMenu.updateExportButtonAttrs();
   }
 
   deleteAllFerments() {
     localStorage.setItem("saved", "[]");
+    document.dispatchEvent(myFermentsModified);
     this.build();
     fermentsMenu.updateExportButtonAttrs();
   }

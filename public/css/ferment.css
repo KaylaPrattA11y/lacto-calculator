@@ -140,3 +140,19 @@
 [data-delete="prompt"][aria-expanded="false"] + .ferment-delete-options {
   display: none;
 }
+.ferment-import {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1rem;
+}
+.ferment-import:not(:last-child) {
+  border-block-end: 1px solid var(--border-color);
+  padding-block-end: 1rem;
+}
+.ferment-key {
+  flex-basis: 30%;
+  font-weight: 700;
+}
+.ferment-value {
+  flex-basis: calc(70% - 1rem);
+}

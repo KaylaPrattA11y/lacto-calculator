@@ -69,3 +69,7 @@ kay-icon.carbon\:trash-can::before {
 content: "\e00c";
 }
 
+kay-icon.carbon\:warning::before {
+content: "\e00d";
+}
+

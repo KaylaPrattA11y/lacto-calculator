@@ -6,7 +6,7 @@ import Dialog from "../Dialog.astro";
   <form 
     id="importFermentsForm" 
     method="dialog">
-    <p>Importing ferment data will permanently replace the ferment data in your local storage. <em>This action is irreversible.</em></p>
+    <p><kay-icon class="carbon:warning" aria-hidden="true"></kay-icon> Importing ferment data will permanently replace the ferment data in your local storage. <em>This action is irreversible.</em></p>
     <p>Consider first exporting your current ferment data.</p>
 
     <label for="importFermentFile">Import ferments (.JSON)</label>
@@ -18,11 +18,14 @@ import Dialog from "../Dialog.astro";
         <p id="errorMessage" hidden>Invalid import data. Please try another file.</p>
       </div>
       <div>
-        <button type="submit" class="btn-primary" aria-haspopup="dialog" aria-controls="importFermentsDialog">Import</button>
+        <button type="submit" class="btn-primary" aria-haspopup="dialog" aria-controls="importFermentsDialog">
+          <kay-icon class="carbon:document-import" aria-hidden="true"></kay-icon>
+          Import
+        </button>
         <button type="button" class="btn-default" aria-haspopup="dialog" aria-controls="importFermentsDialog">Cancel</button>
       </div>
     </div>
-    <ol id="fileList"></ol>
+    <ol id="fileList" hidden></ol>
 
   </form>
 </Dialog>
@@ -55,9 +58,26 @@ import Dialog from "../Dialog.astro";
 		background: var(--calc-output-background-color);
     cursor: pointer;
 		text-decoration: none;
-  } 
+  }
   ol {
+    position: relative;
+    padding: 0;
+  }
+  ol:not([hidden]) {
     display: grid;
     gap: 1rem;
+    border: 1px solid var(--border-color);
+    padding: 1rem;
+  }
+  ol:empty::after {
+    content: "Warning: No data found."
+  }
+  ol::before {
+    content: attr(data-length) " ferments found.";
+    position: absolute;
+    inset: -1.5rem auto auto 0;
+  }
+  ol[data-length="1"]::before {
+    content: attr(data-length) " ferment found.";
   }
 </style>

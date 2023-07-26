@@ -43,8 +43,9 @@ class EditFermentForm {
     thisFermentObj.weight = weight;
 
     localStorage.setItem("saved", JSON.stringify(replaceObjectWithId(myFermentsStorage, this.targetFerment, thisFermentObj)));
+    document.dispatchEvent(myFermentsModified);
 
-    ferments.build(myFermentsStorage);
+    ferments.build();
     editFermentDialog.close();
     this.form.reset();
 

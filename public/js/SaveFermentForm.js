@@ -44,7 +44,7 @@ class SaveFermentForm {
     myFermentsStorage.push(thisFermentObj);
     localStorage.setItem("saved", JSON.stringify(myFermentsStorage));
 
-    ferments.build(myFermentsStorage);
+    ferments.build();
     saveFermentDialog.close();
     myFermentsDialog.showModal();
     this.form.reset();
