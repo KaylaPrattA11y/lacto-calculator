@@ -54,7 +54,7 @@ class Dialog {
   handleOpen = () => {
     if (this.id === "myFermentsDialog") {
       // refresh the list every time it is opened
-      ferments.build();
+      MyFerments.build();
     }
     if (this.id === "saveFermentDialog") {
       // disallow end date to be newer than start date
@@ -73,7 +73,7 @@ class Dialog {
       this.id === "importFermentsDialog" || 
       this.id === "editFermentDialog" || 
       this.id === "confirmDeleteAllDialog") {
-      myFermentsDialog.showModal();
+      MyFermentsDialog.showModal();
     }
     if (this.hasAForm) {
       this.forms.forEach(f => f.reset());
@@ -93,18 +93,18 @@ class Dialog {
   }
 }
 
-const confirmDeleteAllDialog = new Dialog("confirmDeleteAllDialog");
-const saveFermentDialog = new Dialog("saveFermentDialog");
-const editFermentDialog = new Dialog("editFermentDialog");
-const importFermentsDialog = new Dialog("importFermentsDialog");
-const myFermentsDialog = new Dialog("myFermentsDialog");
+const ConfirmDeleteAllDialog = new Dialog("confirmDeleteAllDialog");
+const SaveFermentDialog = new Dialog("saveFermentDialog");
+const EditFermentDialog = new Dialog("editFermentDialog");
+const ImportFermentsDialog = new Dialog("importFermentsDialog");
+const MyFermentsDialog = new Dialog("myFermentsDialog");
 
 document.addEventListener("DOMContentLoaded", () => {
-  confirmDeleteAllDialog.init();
-  saveFermentDialog.init();
-  editFermentDialog.init();
-  importFermentsDialog.init();
-  myFermentsDialog.init();
+  ConfirmDeleteAllDialog.init();
+  SaveFermentDialog.init();
+  EditFermentDialog.init();
+  ImportFermentsDialog.init();
+  MyFermentsDialog.init();
 });
 
 document.addEventListener("click", e => {

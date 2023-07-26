@@ -1,4 +1,4 @@
-class Filter {
+class FermentsFilter {
   constructor() {
     this.group = document.getElementById("myFermentsFilter");
     this.buttons = this.group.querySelectorAll("[data-value]");
@@ -18,13 +18,13 @@ class Filter {
   updateLengthTexts = () => {
     this.buttons.forEach(button => {
       if (button.dataset.value === "0") {
-        button.setAttribute("data-length", ferments.all.length);
+        button.setAttribute("data-length", MyFerments.all.length);
       }
       if (button.dataset.value === "1") {
-        button.setAttribute("data-length", ferments.current.length);
+        button.setAttribute("data-length", MyFerments.current.length);
       }
       if (button.dataset.value === "2") {
-        button.setAttribute("data-length", ferments.completed.length);
+        button.setAttribute("data-length", MyFerments.completed.length);
       }
     });
   }
@@ -53,17 +53,17 @@ class Filter {
 
   updateVisibility(value) {
     if (value === "0") {
-      ferments.all.forEach(f => f.removeAttribute("hidden"));
+      MyFerments.all.forEach(f => f.removeAttribute("hidden"));
     }
     if (value === "1") {
-      ferments.all.forEach(f => {
+      MyFerments.all.forEach(f => {
         const isInProgress = f.dataset.complete === "false";
 
         f.toggleAttribute("hidden", !isInProgress);
       });
     }
     if (value === "2") {
-      ferments.all.forEach(f => {
+      MyFerments.all.forEach(f => {
         const isComplete = f.dataset.complete === "true";
 
         f.toggleAttribute("hidden", !isComplete);
@@ -103,13 +103,13 @@ class Filter {
   }
 
   get allFermentsHidden() {
-    return [...ferments.all].every(f => f.hasAttribute("hidden"));
+    return [...MyFerments.all].every(f => f.hasAttribute("hidden"));
   }
 
 }
 
-const filter = new Filter();
+const Filter = new FermentsFilter();
 
 document.addEventListener("DOMContentLoaded", () => {
-  filter.init();
+  Filter.init();
 });

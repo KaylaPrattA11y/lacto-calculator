@@ -1,4 +1,4 @@
-class EditFermentForm {
+class Edit {
   constructor() {
     this.form = document.getElementById("editFermentForm");
   }
@@ -7,12 +7,12 @@ class EditFermentForm {
     this.addEventListeners();
   }
 
-  addEventListeners = () => {
-    this.form.addEventListener("submit", e => this.handleSubmit(e));
-  }
-
   reset() {
     this.form.reset();
+  }
+  
+  addEventListeners = () => {
+    this.form.addEventListener("submit", e => this.handleSubmit(e));
   }
 
   get formData() {
@@ -45,15 +45,15 @@ class EditFermentForm {
     localStorage.setItem("saved", JSON.stringify(replaceObjectWithId(myFermentsStorage, this.targetFerment, thisFermentObj)));
     document.dispatchEvent(myFermentsModified);
 
-    ferments.build();
-    editFermentDialog.close();
+    MyFerments.build();
+    EditFermentDialog.close();
     this.form.reset();
 
   }
 }
 
-const editFermentForm = new EditFermentForm();
+const EditFermentForm = new Edit();
 
 document.addEventListener("DOMContentLoaded", () => {
-  editFermentForm.init();
+  EditFermentForm.init();
 });

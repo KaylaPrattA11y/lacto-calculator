@@ -1,4 +1,4 @@
-class ImportFermentsForm {
+class Import {
   constructor() {
     this.form = document.getElementById("importFermentsForm");
     this.fileInput = this.form.querySelector("[type='file']");
@@ -43,34 +43,36 @@ class ImportFermentsForm {
         const toReversed = parsedOutput.toReversed();
 
         this.fileList.dataset.length = parsedOutput.length;
-        [...toReversed].forEach((o) => {
-          const { id, brine, dateStart, fermentName, notes, salt, unit, weight } = o;
-          
-          if (!brine || !dateStart || !salt || !unit || !weight) {
-            this.activateErrorState(true);
-            this.fileList.dataset.length = "0";
-          } else {
-            const li = document.createElement("li");
-
-            li.className = "ferment-import";
-            li.innerHTML = `
-              <div class="ferment-key">ID:</div> <div class="ferment-value">${id}</div>
-              ${fermentName ? "<div class='ferment-key'>Name: </div>" + "<div class='ferment-value'>"+fermentName+"</div>" : ""} 
-              <div class="ferment-key">Started:</div> <div class="ferment-value">${formatDate(dateStart)}</div>
-              <div class="ferment-key">Brine:</div> <div class="ferment-value">${formatDecimal(brine)}%</div> 
-              <div class="ferment-key">Weight:</div> <div class="ferment-value">${formatDecimal(weight)} ${unit}</div> 
-              <div class="ferment-key">Salt:</div> <div class="ferment-value">${formatDecimal(salt)} ${unit}</div> 
-              ${notes ? "<div class='ferment-key'>Notes:</div>" + "<div class='ferment-value'>"+notes+"</div>" : ""}
-            `;
-            this.fileList.appendChild(li);
-            this.activateErrorState(false);
-          }
-        });
+        [...toReversed].forEach((o) => this.buildPreview(o));
       } else {
         this.activateErrorState(true);
         this.fileList.dataset.length = "0";
       }
 
+    }
+  }
+
+  buildPreview = item => {
+    const { id, brine, dateStart, fermentName, notes, salt, unit, weight } = item;
+          
+    if (!id || !brine || !dateStart || !salt || !unit || !weight) {
+      this.activateErrorState(true);
+      this.fileList.dataset.length = "0";
+    } else {
+      const li = document.createElement("li");
+
+      li.className = "ferment-import";
+      li.innerHTML = `
+        <div class="ferment-key">ID:</div> <div class="ferment-value">${id}</div>
+        ${fermentName ? "<div class='ferment-key'>Name: </div>" + "<div class='ferment-value'>"+fermentName+"</div>" : ""} 
+        <div class="ferment-key">Started:</div> <div class="ferment-value">${formatDate(dateStart)}</div>
+        <div class="ferment-key">Brine:</div> <div class="ferment-value">${formatDecimal(brine)}%</div> 
+        <div class="ferment-key">Weight:</div> <div class="ferment-value">${formatDecimal(weight)} ${unit}</div> 
+        <div class="ferment-key">Salt:</div> <div class="ferment-value">${formatDecimal(salt)} ${unit}</div> 
+        ${notes ? "<div class='ferment-key'>Notes:</div>" + "<div class='ferment-value'>"+notes+"</div>" : ""}
+      `;
+      this.fileList.appendChild(li);
+      this.activateErrorState(false);
     }
   }
 
@@ -83,7 +85,7 @@ class ImportFermentsForm {
       
       localStorage.setItem("saved", JSON.stringify(parsedOutput));
       document.dispatchEvent(myFermentsModified);
-      ferments.build();
+      MyFerments.build();
     }
   }
 
@@ -108,8 +110,8 @@ class ImportFermentsForm {
   }
 }
 
-const importFermentsForm = new ImportFermentsForm();
+const ImportFermentsForm = new Import();
 
 document.addEventListener("DOMContentLoaded", () => {
-  importFermentsForm.init();
+  ImportFermentsForm.init();
 });

@@ -15,7 +15,7 @@ class FermentsMenu {
   
   addEventListeners = () => {
     this.menuButtons.forEach(button => button.addEventListener("click", () => this.toggleOptionsMenu()));
-    this.confirmDeleteAllButton.addEventListener("click", () => ferments.deleteAllFerments());
+    this.confirmDeleteAllButton.addEventListener("click", () => MyFerments.deleteAllFerments());
   }
   
   updateExportButtonAttrs = () => {

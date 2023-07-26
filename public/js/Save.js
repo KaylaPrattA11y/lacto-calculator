@@ -1,4 +1,4 @@
-class SaveFermentForm {
+class Save {
   constructor() {
     this.form = document.getElementById("saveFermentForm");
   }
@@ -7,12 +7,12 @@ class SaveFermentForm {
     this.addEventListeners();
   }
 
-  addEventListeners = () => {
-    this.form.addEventListener("submit", e => this.handleSubmit(e));
-  }
-
   reset() {
     this.form.reset();
+  }
+
+  addEventListeners = () => {
+    this.form.addEventListener("submit", e => this.handleSubmit(e));
   }
 
   get formData() {
@@ -44,18 +44,18 @@ class SaveFermentForm {
     myFermentsStorage.push(thisFermentObj);
     localStorage.setItem("saved", JSON.stringify(myFermentsStorage));
 
-    ferments.build();
-    saveFermentDialog.close();
-    myFermentsDialog.showModal();
+    MyFerments.build();
+    SaveFermentDialog.close();
+    MyFermentsDialog.showModal();
     this.form.reset();
 
   }
   
 }
 
-const saveFermentForm = new SaveFermentForm();
+const SaveFermentForm = new Save();
 
 document.addEventListener("DOMContentLoaded", () => {
-  saveFermentForm.init();
+  SaveFermentForm.init();
 });
 

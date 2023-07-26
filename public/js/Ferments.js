@@ -34,7 +34,7 @@ class Ferments {
 
   handleShare = async e => {
     const id = e.target.getAttribute("aria-controls");
-    const { brine, weight, salt, unit, fermentName, dateStart, dateEnd, notes } = ferments.getFermentData(id);
+    const { brine, weight, salt, unit, fermentName, dateStart, dateEnd, notes } = this.getFermentData(id);
     const shareData = {
       title: "Brine Calculator | Lacto-fermentation",
       text: `${fermentName ? fermentName+" | " : ""}Started: ${formatDate(dateStart) || ""}, ${dateEnd !== "" ? "Finishes: " + formatDate(dateEnd) + ", " : ""}Brine: ${formatDecimal(brine)}%, Weight: ${formatDecimal(weight)} ${unit}, Salt: ${formatDecimal(salt)} ${unit}, ${notes ? "Notes: "+notes : ""}`,
@@ -50,7 +50,7 @@ class Ferments {
 
   handleEdit = e => {
     const id = e.target.dataset.edit;
-    const { brine, weight, salt, unit, color, dateEnd, fermentName, notes } = ferments.getFermentData(id);
+    const { brine, weight, salt, unit, color, dateEnd, fermentName, notes } = this.getFermentData(id);
     const todaysdate = addOneDay(new Date()).toISOString().split('T')[0];
     const dateHasPassed = new Date(dateEnd).getTime() < new Date().getTime();
     const editFermentFormEl = document.getElementById("editFermentForm");
@@ -70,7 +70,7 @@ class Ferments {
   build() {
     this.list.innerHTML = "";
     myFermentsStorage.forEach((f) => this.add(f));
-    filter.update();
+    Filter.update();
     document.dispatchEvent(myFermentsModified);
   }
 
@@ -156,7 +156,7 @@ class Ferments {
         </div>
       </div>`;
     this.list.insertAdjacentElement("afterbegin", li);
-    filter.update();
+    Filter.update();
     fermentsMenu.updateExportButtonAttrs();
   }
 
@@ -169,7 +169,7 @@ class Ferments {
     removeObjectWithId(myFermentsStorage, id);
     localStorage.setItem("saved", JSON.stringify(myFermentsStorage));
     document.dispatchEvent(myFermentsModified);
-    filter.update();
+    Filter.update();
     fermentsMenu.updateExportButtonAttrs();
   }
 
@@ -194,8 +194,8 @@ class Ferments {
 
 }
 
-const ferments = new Ferments();
+const MyFerments = new Ferments();
 
 document.addEventListener("DOMContentLoaded", () => {
-  ferments.init();
+  MyFerments.init();
 });
