@@ -97,7 +97,7 @@ class Ferments {
           <button type="button" class="btn-default" aria-controls="editFermentDialog" aria-haspopup="dialog" data-edit="${f.id}">
             <kay-icon class="carbon:edit" aria-hidden="true"></kay-icon> Edit
           </button>
-          <button type="button" class="btn-default" aria-controls="${f.id}" data-share="ferment">
+          <button type="button" class="btn-default" aria-controls="${f.id}" data-share="ferment" ${navigator.canShare ? "" : "hidden"}>
             <kay-icon class="carbon:share" aria-hidden="true"></kay-icon> Share
           </button>
         </div>

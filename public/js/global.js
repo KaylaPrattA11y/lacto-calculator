@@ -4,6 +4,7 @@ const editFermentNameEl = document.getElementById("editFermentName");
 const editDateEndEl = document.getElementById("editDateEnd");
 const editNotesEl = document.getElementById("editNotes");
 const myFermentsModified = new CustomEvent("myFermentsModified");
+const shareButtons = document.querySelectorAll("button[data-share]");
 let myFermentsStorage = JSON.parse(localStorage.getItem("saved")) || [];
 
 // PWA
@@ -42,4 +43,11 @@ const replaceObjectWithId = (arr, id, newObj) => {
 // update the variable every time a change is made to the saved ferments
 document.addEventListener("myFermentsModified", () => {
   myFermentsStorage = JSON.parse(localStorage.getItem("saved")) || [];
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  // check if can share
+  if (navigator.canShare) {
+    shareButtons.forEach(button => button.removeAttribute("hidden"));
+  }
 });

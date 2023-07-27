@@ -69,7 +69,7 @@
   text-align: center;
   width: 1rem;
 }
-.ferment button,
+.ferment button:where([data-delete], [data-edit], [data-share]:not([hidden])),
 .ferment-date > div,
 .ferment-started {
   display: flex;
