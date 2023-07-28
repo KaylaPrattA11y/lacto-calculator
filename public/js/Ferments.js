@@ -58,7 +58,7 @@ class Ferments {
     editFermentFormEl.querySelector("[data-label='weight']").innerText = formatDecimal(weight);
     editFermentFormEl.querySelector("[data-label='salt']").innerText = formatDecimal(salt);
     editFermentFormEl.querySelectorAll("[data-label='unit']").forEach(u => u.innerText = unit);
-    editDateStartEl.value = dateStart;
+    editDateStartEl.value = dateStart.split("T")[0];
     editDateEndEl.value = dateEnd;
     editFermentNameEl.value = fermentName;
     editNotesEl.value = notes;
@@ -70,7 +70,7 @@ class Ferments {
     sortByNewest(myFermentsStorage).forEach((f) => this.add(f));
     Filter.update();
     fermentsMenu.updateExportButtonAttrs();
-    document.dispatchEvent(myFermentsModified);
+    // document.dispatchEvent(myFermentsModified);
   }
 
   add(f) {
@@ -95,7 +95,7 @@ class Ferments {
     const isFuture = !startDateHasPassed && !endDateHasPassed;
 
     if (isPast) {
-      status = "complete";
+      status = "past";
     }
     if (isCurrent) {
       status = "current";
@@ -186,7 +186,7 @@ class Ferments {
     setTimeout(() => {
       document.getElementById(id).remove();
       removeObjectWithId(myFermentsStorage, id);
-      localStorage.setItem("saved", JSON.stringify(sortByNewest(myFermentsStorage)));
+      localStorage.setItem("saved", JSON.stringify(myFermentsStorage));
       document.dispatchEvent(myFermentsModified);
       Filter.update();
       fermentsMenu.updateExportButtonAttrs();
@@ -207,8 +207,8 @@ class Ferments {
     return this.list.querySelectorAll(":scope > [data-status='current']");
   }
 
-  get completed() {
-    return this.list.querySelectorAll(":scope > [data-status='complete']");
+  get past() {
+    return this.list.querySelectorAll(":scope > [data-status='past']");
   }
 
   get upcoming() {

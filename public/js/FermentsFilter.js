@@ -23,7 +23,7 @@ class FermentsFilter {
         button.setAttribute("data-length", MyFerments.current.length);
       }
       if (button.dataset.value === "2") {
-        button.setAttribute("data-length", MyFerments.completed.length);
+        button.setAttribute("data-length", MyFerments.past.length);
       }
       if (button.dataset.value === "3") {
         button.setAttribute("data-length", MyFerments.upcoming.length);
@@ -64,7 +64,7 @@ class FermentsFilter {
     }
     if (value === "2") {
       MyFerments.all.forEach(f => {
-        f.toggleAttribute("hidden", f.dataset.status !== "complete");
+        f.toggleAttribute("hidden", f.dataset.status !== "past");
       });
     }
     if (value === "3") {

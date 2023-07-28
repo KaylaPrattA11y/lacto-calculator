@@ -27,11 +27,22 @@
 
 <style>
   [aria-controls="fermentMenu"] {
+    position: relative;
     border-radius: 0.5rem 0.5rem 0 0;
     font-size: var(--font-size-lg);
   }
-  [aria-expanded="true"] {
-    background: var(--calc-output-background-color);
+  [aria-expanded="true"]::after {
+    inset: auto auto 0 50%;
+    border: solid transparent;
+    content: "";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-color: rgba(136, 183, 213, 0);
+    border-bottom-color: var(--border-color);
+    border-width: 10px;
+    margin-left: -10px;
   }
   [aria-expanded="false"] + [role="menu"] {
     display: none;
@@ -69,8 +80,12 @@
     cursor: pointer;
     text-decoration: none;
   }
-  [role="menu"] [role="menuitem"]:not(:first-child) {
+  [role="menuitem"]:not(:first-child) {
     border-top: 1px solid var(--calc-group-background-color);
+  }
+  [role="menu"], 
+  [role="menuitem"]:last-child {
+    border-bottom-left-radius: 1rem;
   }
 </style>
 <style is:inline>

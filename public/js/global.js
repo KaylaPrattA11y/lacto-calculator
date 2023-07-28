@@ -8,13 +8,9 @@ const editNotesEl = document.getElementById("editNotes");
 const myFermentsModified = new CustomEvent("myFermentsModified");
 const shareButtons = document.querySelectorAll("button[data-share]");
 
-const sortByOldest = data => {
-  if (!data) return;
-  return data.sort(({dateTimeStart: a}, {dateTimeStart: b}) => a < b ? -1 : a > b ? 1 : 0);
-}
 const sortByNewest = data => {
   if (!data) return;
-  return data.sort(({dateTimeStart: a}, {dateTimeStart: b}) => a < b ? -1 : a > b ? 1 : 0).toReversed();
+  return data.sort(({dateStart: a}, {dateStart: b}) => a < b ? -1 : a > b ? 1 : 0).toReversed();
 }
 
 let myFermentsStorage = JSON.parse(localStorage.getItem("saved")) || [];
@@ -54,7 +50,7 @@ const replaceObjectWithId = (arr, id, newObj) => {
 
 // update the variable every time a change is made to the saved ferments
 document.addEventListener("myFermentsModified", () => {
-  myFermentsStorage = sortByNewest(JSON.parse(localStorage.getItem("saved"))) || [];
+  myFermentsStorage = JSON.parse(localStorage.getItem("saved")) || [];
 });
 
 document.addEventListener("DOMContentLoaded", () => {

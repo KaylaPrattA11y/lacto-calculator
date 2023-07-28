@@ -18,7 +18,7 @@ import FermentsMenu from "./FermentsMenu.astro";
   button[data-length]::after {
     content: " (" attr(data-length) ")";
   }
-  /* do not show "current" or "completed" if no ferments exist */
+  /* do not show "current", "past" or "upcoming" if no ferments exist */
   button[data-value="0"][data-length="0"] ~ button {
     display: none;
   }

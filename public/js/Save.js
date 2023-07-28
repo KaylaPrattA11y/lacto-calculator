@@ -37,6 +37,17 @@ class Save {
     return new Date();
   }
 
+  animateFermentLi = id => {
+    // emphasize newly added ferment for a bit
+    const newlyAddedFerment = document.getElementById(id);
+
+    newlyAddedFerment.scrollIntoView();
+    newlyAddedFerment.classList.add("just-added");
+    setTimeout(() => {
+      newlyAddedFerment.classList.remove("just-added");
+    }, 500);
+  }
+
   handleChange = e => {
     if (e.target === this.dateStart) {
       this.updateDateEndMin();
@@ -76,22 +87,15 @@ class Save {
     thisFermentObj.time = time;
 
     myFermentsStorage.push(thisFermentObj);
-    localStorage.setItem("saved", JSON.stringify(sortByNewest(myFermentsStorage)));
+    localStorage.setItem("saved", JSON.stringify(myFermentsStorage));
     document.dispatchEvent(myFermentsModified);
 
     MyFerments.build();
     SaveFermentDialog.close();
     MyFermentsDialog.showModal();
     this.form.reset();
-
-    // emphasize newly added ferment for a bit
-    const newlyAddedFerment = document.getElementById(thisFermentObj.id);
-
-    newlyAddedFerment.scrollIntoView();
-    newlyAddedFerment.classList.add("just-added");
-    setTimeout(() => {
-      newlyAddedFerment.classList.remove("just-added");
-    }, 500);
+    this.animateFermentLi(thisFermentObj.id);
+    
   }
   
 }
