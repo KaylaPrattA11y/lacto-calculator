@@ -69,8 +69,8 @@ class Ferments {
     this.list.innerHTML = "";
     sortByNewest(myFermentsStorage).forEach((f) => this.add(f));
     Filter.update();
+    fermentsMenu.updateExportButtonAttrs();
     document.dispatchEvent(myFermentsModified);
-    console.log("build")
   }
 
   add(f) {
@@ -175,8 +175,6 @@ class Ferments {
         </div>
       </div>`;
     this.list.appendChild(li);
-    Filter.update();
-    fermentsMenu.updateExportButtonAttrs();
   }
 
   getFermentData(id) {
@@ -187,19 +185,18 @@ class Ferments {
     document.getElementById(id).classList.add("just-deleted");
     setTimeout(() => {
       document.getElementById(id).remove();
+      removeObjectWithId(myFermentsStorage, id);
+      localStorage.setItem("saved", JSON.stringify(sortByNewest(myFermentsStorage)));
+      document.dispatchEvent(myFermentsModified);
+      Filter.update();
+      fermentsMenu.updateExportButtonAttrs();
     }, 500);
-    removeObjectWithId(myFermentsStorage, id);
-    localStorage.setItem("saved", JSON.stringify(sortByNewest(myFermentsStorage)));
-    document.dispatchEvent(myFermentsModified);
-    Filter.update();
-    fermentsMenu.updateExportButtonAttrs();
   }
 
   deleteAllFerments() {
     localStorage.setItem("saved", "[]");
     document.dispatchEvent(myFermentsModified);
     this.build();
-    fermentsMenu.updateExportButtonAttrs();
   }
 
   get all() {

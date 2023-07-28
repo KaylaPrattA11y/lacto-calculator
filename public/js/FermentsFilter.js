@@ -6,7 +6,6 @@ class FermentsFilter {
   }
 
   init() {
-    this.update();
     this.addEventListeners();
   }
   
