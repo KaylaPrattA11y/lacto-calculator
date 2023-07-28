@@ -23,19 +23,21 @@ import ImportFerments from '../components/dialogs/ImportFerments.astro';
 	<!-- Start Dialogs -->
 	<MyFerments />
 	<EditOrSaveFerment 
-		action = "save" 
+		action="save" 
 		brine="brine" 
 		weight="weight" 
 		salt="dalt" 
+		dateStart="dateStart" 
 		dateEnd="dateEnd" 
 		fermentName="fermentName" 
 		notes="notes" 
 		color="color" />
 	<EditOrSaveFerment 
-		action = "edit" 
+		action="edit" 
 		brine="editBrine" 
 		weight="editWeight" 
-		salt="editSalt"  
+		salt="editSalt" 
+		dateStart="editDateStart" 
 		dateEnd="editDateEnd" 
 		fermentName="editFermentName" 
 		notes="editNotes" 

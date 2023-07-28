@@ -3,10 +3,24 @@ const formatDecimal = (number) => new Intl.NumberFormat("default", { maximumSign
 const formatDate = (date) => {
   const d = new Date(date);
   return new Intl.DateTimeFormat("default", {
+    weekday: 'short',
     year: "numeric",
     month: "short",
     day: "numeric",
+    hour: 'numeric',
   })?.format(d);
+}
+
+function padTo2Digits(num) {
+  return num.toString().padStart(2, '0');
+}
+
+function formatDateForInputField(date = new Date()) {
+  return [
+    date.getFullYear(),
+    padTo2Digits(date.getMonth() + 1),
+    padTo2Digits(date.getDate()),
+  ].join('-');
 }
 
 const addOneDay = date => {

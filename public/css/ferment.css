@@ -1,3 +1,6 @@
+.ferment {
+  scroll-margin: 150px;
+}
 .ferment:first-of-type {
   padding-block-end: 1.5rem;
 }

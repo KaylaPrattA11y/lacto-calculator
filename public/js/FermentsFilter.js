@@ -26,6 +26,9 @@ class FermentsFilter {
       if (button.dataset.value === "2") {
         button.setAttribute("data-length", MyFerments.completed.length);
       }
+      if (button.dataset.value === "3") {
+        button.setAttribute("data-length", MyFerments.upcoming.length);
+      }
     });
   }
 
@@ -57,16 +60,17 @@ class FermentsFilter {
     }
     if (value === "1") {
       MyFerments.all.forEach(f => {
-        const isInProgress = f.dataset.complete === "false";
-
-        f.toggleAttribute("hidden", !isInProgress);
+        f.toggleAttribute("hidden", f.dataset.status !== "current");
       });
     }
     if (value === "2") {
       MyFerments.all.forEach(f => {
-        const isComplete = f.dataset.complete === "true";
-
-        f.toggleAttribute("hidden", !isComplete);
+        f.toggleAttribute("hidden", f.dataset.status !== "complete");
+      });
+    }
+    if (value === "3") {
+      MyFerments.all.forEach(f => {
+        f.toggleAttribute("hidden", f.dataset.status !== "upcoming");
       });
     }
   }
@@ -81,6 +85,9 @@ class FermentsFilter {
     }
     if (value === "2") {
       this.noFermentsAvailable.innerText = "No ferments completed.";
+    }
+    if (value === "3") {
+      this.noFermentsAvailable.innerText = "No upcoming ferments.";
     }
   }
 

@@ -6,6 +6,7 @@ export interface Props {
   brine: string;
   weight: string;
   salt: string;
+  dateStart: string;
   dateEnd: string;
   fermentName: string;
   notes: string;
@@ -17,6 +18,7 @@ const {
   brine, 
   weight, 
   salt, 
+  dateStart,
   dateEnd, 
   fermentName, 
   notes, 
@@ -48,9 +50,14 @@ const {
       </li>
     </ul>
     <div class="input-group">
+      <label for={dateStart}>Start date</label>
+      <input type="date" id={dateStart} name={dateStart} required />
+      <p data-validate="field">Start date must be earlier than the End date.</p>
+    </div>
+    <div class="input-group">
       <label for={dateEnd}>End date (optional)</label>
       <input type="date" id={dateEnd} name={dateEnd} />
-      <p data-validate="field">End date must be later than today's date.</p>
+      <p data-validate="field">End date must be later than the Start date.</p>
     </div>
     <div class="input-group">
       <label for={fermentName}>Name (optional)</label>

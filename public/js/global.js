@@ -1,10 +1,22 @@
 // Constants
+const dateStartEl = document.getElementById("dateStart");
 const dateEndEl = document.getElementById("dateEnd");
 const editFermentNameEl = document.getElementById("editFermentName");
+const editDateStartEl = document.getElementById("editDateStart");
 const editDateEndEl = document.getElementById("editDateEnd");
 const editNotesEl = document.getElementById("editNotes");
 const myFermentsModified = new CustomEvent("myFermentsModified");
 const shareButtons = document.querySelectorAll("button[data-share]");
+
+const sortByOldest = data => {
+  if (!data) return;
+  return data.sort(({dateTimeStart: a}, {dateTimeStart: b}) => a < b ? -1 : a > b ? 1 : 0);
+}
+const sortByNewest = data => {
+  if (!data) return;
+  return data.sort(({dateTimeStart: a}, {dateTimeStart: b}) => a < b ? -1 : a > b ? 1 : 0).toReversed();
+}
+
 let myFermentsStorage = JSON.parse(localStorage.getItem("saved")) || [];
 
 // PWA
@@ -42,7 +54,7 @@ const replaceObjectWithId = (arr, id, newObj) => {
 
 // update the variable every time a change is made to the saved ferments
 document.addEventListener("myFermentsModified", () => {
-  myFermentsStorage = JSON.parse(localStorage.getItem("saved")) || [];
+  myFermentsStorage = sortByNewest(JSON.parse(localStorage.getItem("saved"))) || [];
 });
 
 document.addEventListener("DOMContentLoaded", () => {

@@ -37,7 +37,7 @@ class Ferments {
     const { brine, weight, salt, unit, fermentName, dateStart, dateEnd, notes } = this.getFermentData(id);
     const shareData = {
       title: "Brine Calculator | Lacto-fermentation",
-      text: `${fermentName ? fermentName+" | " : ""}Started: ${formatDate(dateStart) || ""}, ${dateEnd !== "" ? "Finishes: " + formatDate(dateEnd) + ", " : ""}Brine: ${formatDecimal(brine)}%, Weight: ${formatDecimal(weight)} ${unit}, Salt: ${formatDecimal(salt)} ${unit}, ${notes ? "Notes: "+notes : ""}`,
+      text: `${fermentName ? fermentName+" | " : ""}Start: ${formatDate(dateStart) || ""} | ${dateEnd !== "" ? "End: " + formatDate(dateEnd) + " | " : ""}Brine: ${formatDecimal(brine)}% | Weight: ${formatDecimal(weight)} ${unit} | Salt: ${formatDecimal(salt)} ${unit}${notes ? " | Notes: "+notes : ""}`,
       url: "https://kaylapratta11y.github.io/lacto-calculator/",
     };
 
@@ -50,9 +50,7 @@ class Ferments {
 
   handleEdit = e => {
     const id = e.target.dataset.edit;
-    const { brine, weight, salt, unit, color, dateEnd, fermentName, notes } = this.getFermentData(id);
-    const todaysdate = addOneDay(new Date()).toISOString().split('T')[0];
-    const dateHasPassed = new Date(dateEnd).getTime() < new Date().getTime();
+    const { brine, weight, salt, unit, color, dateStart, dateEnd, fermentName, notes } = this.getFermentData(id);
     const editFermentFormEl = document.getElementById("editFermentForm");
 
     editFermentFormEl.setAttribute("data-edit", id);
@@ -60,8 +58,8 @@ class Ferments {
     editFermentFormEl.querySelector("[data-label='weight']").innerText = formatDecimal(weight);
     editFermentFormEl.querySelector("[data-label='salt']").innerText = formatDecimal(salt);
     editFermentFormEl.querySelectorAll("[data-label='unit']").forEach(u => u.innerText = unit);
+    editDateStartEl.value = dateStart;
     editDateEndEl.value = dateEnd;
-    editDateEndEl.setAttribute("min", dateHasPassed ? dateEnd : todaysdate);
     editFermentNameEl.value = fermentName;
     editNotesEl.value = notes;
     document.querySelector(`[name='editColor'][value='${color}']`).checked = true;
@@ -69,23 +67,44 @@ class Ferments {
 
   build() {
     this.list.innerHTML = "";
-    myFermentsStorage.forEach((f) => this.add(f));
+    sortByNewest(myFermentsStorage).forEach((f) => this.add(f));
     Filter.update();
     document.dispatchEvent(myFermentsModified);
+    console.log("build")
   }
 
   add(f) {
+    // fallback for older versions of ferment data
+    let time = f.time || "T12:00:00";
+    // strip out time for older versions of ferment data
+    const dateStart = new Date(f.dateStart).toISOString().split("T")[0];
     const li = document.createElement("li");
-    const ds = new Date(f.dateStart);
+    const ds = new Date(dateStart+time);
+    const startDateHasPassed = new Date().getTime() > ds.getTime();
     let de;
-    let dateHasPassed = false;
+    let endDateHasPassed = null;
+    let status;
     
     if (f.dateEnd !== "") {
-      de = new Date(f.dateEnd);
-      dateHasPassed = de.getTime() < new Date().getTime();
+      de = new Date(f.dateEnd+time);
+      endDateHasPassed = new Date().getTime() > de.getTime();
+    }
+    
+    const isPast = startDateHasPassed && endDateHasPassed;
+    const isCurrent = startDateHasPassed && !endDateHasPassed;
+    const isFuture = !startDateHasPassed && !endDateHasPassed;
+
+    if (isPast) {
+      status = "complete";
+    }
+    if (isCurrent) {
+      status = "current";
+    }
+    if (isFuture) {
+      status = "upcoming";
     }
   
-    li.setAttribute("data-complete", dateHasPassed);
+    li.setAttribute("data-status", status);
     li.id = f.id;
     li.className = "ferment";
     li.innerHTML = `
@@ -119,13 +138,13 @@ class Ferments {
         </ul>
         <div class="ferment-relative-time">
           <kay-icon class="carbon:time" aria-hidden="true"></kay-icon> 
-          <time datetime="${ds}" class="ferment-started" data-ferment="Started " data-relative="start">${formatTimeAgo(ds)}.</time>
-          <time datetime="${de || ""}" class="ferment-done" data-ferment=" ${dateHasPassed ? "Finished" : "Finishes"} " data-relative="end">${formatTimeAgo(de) !== undefined ? formatTimeAgo(de)+"." : ""}</time>
+          <time datetime="${ds}" class="ferment-started" data-ferment="${startDateHasPassed ? "Started" : "Starts"} " data-relative="start">${formatTimeAgo(ds)}.</time>
+          <time datetime="${de || ""}" class="ferment-done" data-ferment=" ${endDateHasPassed ? "Finished" : "Finishes"} " data-relative="end">${formatTimeAgo(de) !== undefined ? formatTimeAgo(de)+"." : ""}</time>
         </div>
         <div class="ferment-date">
           <kay-icon class="carbon:calendar" aria-hidden="true"></kay-icon> 
-          <time datetime="${ds}">${formatDate(f.dateStart)}</time>
-          <time datetime="${de || ""}">${f.dateEnd === "" ? "" : formatDate(f.dateEnd)}</time>
+          <time datetime="${ds}">${formatDate(ds)}</time>
+          <time datetime="${de || ""}">${f.dateEnd === "" ? "" : formatDate(de)}</time>
         </div>
         <p class="ferment-notes" data-ferment="Notes: ">${f.notes}</p>
         <div class="ferment-notify" ${f.dateEnd === "" ? "hidden" : ""} hidden>
@@ -155,7 +174,7 @@ class Ferments {
             data-delete="cancel">Cancel</button>
         </div>
       </div>`;
-    this.list.insertAdjacentElement("afterbegin", li);
+    this.list.appendChild(li);
     Filter.update();
     fermentsMenu.updateExportButtonAttrs();
   }
@@ -165,9 +184,12 @@ class Ferments {
   }
 
   deleteFerment(id) {
-    document.getElementById(id).remove();
+    document.getElementById(id).classList.add("just-deleted");
+    setTimeout(() => {
+      document.getElementById(id).remove();
+    }, 500);
     removeObjectWithId(myFermentsStorage, id);
-    localStorage.setItem("saved", JSON.stringify(myFermentsStorage));
+    localStorage.setItem("saved", JSON.stringify(sortByNewest(myFermentsStorage)));
     document.dispatchEvent(myFermentsModified);
     Filter.update();
     fermentsMenu.updateExportButtonAttrs();
@@ -185,11 +207,15 @@ class Ferments {
   }
 
   get current() {
-    return this.list.querySelectorAll(":scope > [data-complete='false']");
+    return this.list.querySelectorAll(":scope > [data-status='current']");
   }
 
   get completed() {
-    return this.list.querySelectorAll(":scope > [data-complete='true']");
+    return this.list.querySelectorAll(":scope > [data-status='complete']");
+  }
+
+  get upcoming() {
+    return this.list.querySelectorAll(":scope > [data-status='upcoming']");
   }
 
 }

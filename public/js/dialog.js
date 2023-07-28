@@ -57,11 +57,11 @@ class Dialog {
       MyFerments.build();
     }
     if (this.id === "saveFermentDialog") {
-      // disallow end date to be newer than start date
-      const date = new Date();
-      const todaysdatePlusOne = addOneDay(date).toISOString().split('T')[0];
-
-      dateEndEl.setAttribute("min", todaysdatePlusOne);
+      SaveFermentForm.updateDateStartValue();
+      SaveFermentForm.updateDateEndMin();
+    }
+    if (this.id === "editFermentDialog") {
+      EditFermentForm.updateDateEndMin();
     }
   }
 
