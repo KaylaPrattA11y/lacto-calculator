@@ -34,6 +34,17 @@ class Edit {
     return this.form.dataset.edit;
   }
 
+  animateFermentLi = id => {
+    // emphasize newly edited ferment for a bit
+    const newlyEditedFerment = document.getElementById(id);
+
+    newlyEditedFerment.scrollIntoView();
+    newlyEditedFerment.classList.add("just-edited");
+    setTimeout(() => {
+      newlyEditedFerment.classList.remove("just-edited");
+    }, 1000);
+  }
+
   handleChange = e => {
     if (e.target === this.dateStart) {
       this.updateDateEndMin();
@@ -66,6 +77,7 @@ class Edit {
     MyFerments.build();
     EditFermentDialog.close();
     this.form.reset();
+    this.animateFermentLi(thisFermentObj.id);
 
   }
 }
