@@ -50,6 +50,15 @@ const {
       </li>
     </ul>
     <div class="input-group">
+      <label for={fermentName}>Name</label>
+      <input 
+      type="text" 
+      id={fermentName} 
+      maxlength="30" 
+      name={fermentName} 
+      required />
+    </div>
+    <div class="input-group">
       <label for={dateStart}>Start date</label>
       <input type="date" id={dateStart} name={dateStart} required />
       <p data-validate="field">Start date must be earlier than the End date.</p>
@@ -60,16 +69,8 @@ const {
       <p data-validate="field">End date must be later than the Start date.</p>
     </div>
     <div class="input-group">
-      <label for={fermentName}>Name (optional)</label>
-      <input 
-      type="text" 
-      id={fermentName} 
-      maxlength="30" 
-      name={fermentName} />
-    </div>
-    <div class="input-group">
       <label for={notes}>Notes (optional)</label>
-      <textarea id={notes} name={notes} maxlength="100"></textarea>
+      <textarea id={notes} name={notes} maxlength="300"></textarea>
     </div>
     <fieldset class="input-group">
       <legend>Tag with a color (optional)</legend>
@@ -107,7 +108,11 @@ const {
       </label>
     </fieldset>
     <div class="input-group actions">
-      <button type="submit" class="btn-primary">Save</button>
+      <button 
+        type="submit" 
+        class="btn-primary"
+        disabled={action === "edit"}
+        >Save</button>
       <button 
         type="button" 
         aria-controls={action === "save" ? "saveFermentDialog" : "editFermentDialog"} 
