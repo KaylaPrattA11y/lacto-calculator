@@ -64,7 +64,7 @@ class Import {
       li.className = "ferment-import";
       li.innerHTML = `
         <div class="ferment-key">ID:</div> <div class="ferment-value">${id}</div>
-        ${fermentName ? "<div class='ferment-key'>Name: </div>" + "<div class='ferment-value'>"+fermentName+"</div>" : ""} 
+        <div class='ferment-key'>Name:</div> <div class='ferment-value'>${fermentName}</div> 
         <div class="ferment-key">Started:</div> <div class="ferment-value">${formatDate(dateStart)}</div>
         <div class="ferment-key">Brine:</div> <div class="ferment-value">${formatDecimal(brine)}%</div> 
         <div class="ferment-key">Weight:</div> <div class="ferment-value">${formatDecimal(weight)} ${unit}</div> 

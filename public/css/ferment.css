@@ -1,4 +1,5 @@
 .ferment {
+  position: relative;
   scroll-margin: 150px;
 }
 .ferment:first-of-type {
@@ -32,9 +33,6 @@
   content: "\e00a";
   color: var(--color);
 }
-.ferment-tagged h3:empty + div {
-  padding-inline-start: 0.75rem;
-}
 :where(.ferment-heading, .ferment-relative-time, .ferment-date, .ferment-options) {
   display: flex;
   align-items: center;
@@ -47,6 +45,7 @@
   padding: 0.25rem 1rem;
   background: var(--calc-output-background-color);
   margin: 0;
+  word-break: break-word;
 }
 .ferment button {
   font-size: var(--font-size-sm);
@@ -79,9 +78,6 @@
   align-items: center;
   gap: 0.25rem;
 }
-.ferment {
-  position: relative;
-}
 .ferment *:not(kay-icon, input, button):empty {
   display: none;
 }
@@ -93,7 +89,7 @@
   padding-inline-start: 1rem;
 }
 .ferment-notes {
-  margin: 0;
+  margin: 0 0 0.25rem 0;
   display: flex;
   align-items: baseline;
   gap: 0.25rem;
