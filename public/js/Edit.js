@@ -1,8 +1,12 @@
 class Edit {
   constructor() {
     this.form = document.getElementById("editFermentForm");
+    this.fermentName = document.getElementById("editFermentName");
+    this.fermentName = document.getElementById("editFermentName");
     this.dateStart = document.getElementById("editDateStart");
     this.dateEnd = document.getElementById("editDateEnd");
+    this.notes = document.getElementById("editNotes");
+    this.submitButton = this.form.querySelector("button[type='submit']");
   }
 
   init() {
@@ -11,19 +15,34 @@ class Edit {
 
   reset() {
     this.form.reset();
+    this.submitButton.toggleAttribute("disabled", true);
+  }
+  
+  updateDateEndMin() {
+    // set to one day ahead of Start Date
+    const ds = new Date(this.dateStart.value);
+    this.dateEnd.setAttribute("min", formatDateForInputField(addOneDay(ds)));
+  }
+
+  populateFormFields() {
+    const { brine, weight, salt, unit, color, dateStart, dateEnd, fermentName, notes } = MyFerments.getFermentData(this.targetFerment);
+
+    this.form.querySelector("[data-label='brine']").innerText = formatDecimal(brine);
+    this.form.querySelector("[data-label='weight']").innerText = formatDecimal(weight);
+    this.form.querySelector("[data-label='salt']").innerText = formatDecimal(salt);
+    this.form.querySelectorAll("[data-label='unit']").forEach(u => u.innerText = unit);
+    this.dateStart.value = dateStart.split("T")[0];
+    this.dateEnd.value = dateEnd;
+    this.fermentName.value = fermentName;
+    this.notes.value = notes;
+    document.querySelector(`[name='editColor'][value='${color}']`).checked = true;
   }
   
   addEventListeners = () => {
     this.form.addEventListener("submit", e => this.handleSubmit(e));
     this.form.addEventListener("change", e => this.handleChange(e));
-  }
-
-  updateDateEndMin() {
-    this.dateEnd.setAttribute("min", this.dateStartValue);
-  }
-
-  get dateStartValue() {
-    return this.dateStart.value;
+    this.form.addEventListener("input", () => this.handleInput());
+    this.form.addEventListener("reset", () => this.reset());
   }
 
   get formData() {
@@ -51,6 +70,10 @@ class Edit {
     }
   }
 
+  handleInput = () => {
+    this.submitButton.removeAttribute("disabled");
+  }
+
   handleSubmit = e => {
     e.preventDefault();
 
@@ -62,7 +85,7 @@ class Edit {
       notes: this.formData.get("editNotes"),
     };
   
-    const { brine, salt, unit, weight, time } = getObjectWithId(myFermentsStorage, this.targetFerment);
+    const { brine, salt, unit, weight, time } = MyFerments.getFermentData(this.targetFerment);
 
     thisFermentObj.brine = brine;
     thisFermentObj.id = this.targetFerment;

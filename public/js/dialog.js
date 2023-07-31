@@ -61,6 +61,7 @@ class Dialog {
       SaveFermentForm.updateDateEndMin();
     }
     if (this.id === "editFermentDialog") {
+      EditFermentForm.populateFormFields();
       EditFermentForm.updateDateEndMin();
     }
   }

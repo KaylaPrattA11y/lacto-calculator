@@ -13,28 +13,23 @@ class Save {
     this.form.reset();
   }
 
+  updateDateStartValue() {
+    this.dateStart.value = formatDateForInputField();
+  }
+
+  updateDateEndMin() {
+    // set to one day ahead of Start Date
+    const ds = new Date(this.dateStart.value);
+    this.dateEnd.setAttribute("min", formatDateForInputField(addOneDay(ds)));
+  }
+
   addEventListeners = () => {
     this.form.addEventListener("submit", e => this.handleSubmit(e));
     this.form.addEventListener("change", e => this.handleChange(e));
   }
 
-  updateDateStartValue() {
-    this.dateStart.value = new Date().toISOString().split("T")[0];
-  }
-
-  updateDateEndMin() {
-    this.dateEnd.setAttribute("min", this.dateStartValue);
-  }
-
-  get dateStartValue() {
-    return this.dateStart.value;
-  }
-
   get formData() {
     return new FormData(this.form);
-  }
-  get todaysDate() {
-    return new Date();
   }
 
   animateFermentLi = id => {
