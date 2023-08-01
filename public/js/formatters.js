@@ -11,18 +11,6 @@ const formatDate = (date) => {
   })?.format(d);
 }
 
-function padTo2Digits(num) {
-  return num.toString().padStart(2, '0');
-}
-
-function formatDateForInputField(date = new Date()) {
-  return [
-    date.getFullYear(),
-    padTo2Digits(date.getMonth() + 1),
-    padTo2Digits(date.getDate()),
-  ].join('-');
-}
-
 const addOneDay = date => {
   date.setDate(date.getDate() + 1);
   return date;
@@ -30,7 +18,7 @@ const addOneDay = date => {
 
 const formatter = new Intl.RelativeTimeFormat(undefined, {
   numeric: "auto",
-})
+});
 const DIVISIONS = [
   { amount: 60, name: "seconds" },
   { amount: 60, name: "minutes" },
@@ -39,7 +27,7 @@ const DIVISIONS = [
   { amount: 4.34524, name: "weeks" },
   { amount: 12, name: "months" },
   { amount: Number.POSITIVE_INFINITY, name: "years" },
-]
+];
 function formatTimeAgo(date) {
   let duration = (date - new Date()) / 1000
 

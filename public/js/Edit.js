@@ -21,7 +21,7 @@ class Edit {
   updateDateEndMin() {
     // set to one day ahead of Start Date
     const ds = new Date(this.dateStart.value);
-    this.dateEnd.setAttribute("min", formatDateForInputField(addOneDay(ds)));
+    this.dateEnd.setAttribute("min", addOneDay(ds).toISOString().split("T")[0]);
   }
 
   populateFormFields() {

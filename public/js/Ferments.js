@@ -21,7 +21,7 @@ class Ferments {
 
   add(f) {
     let time = f.time || "T12:00:00"; // fallback for older versions of ferment data
-    const dateStart = formatDateForInputField(new Date(f.dateStart)); // strip out time for older versions of ferment data
+    const dateStart = new Date(f.dateStart).toISOString().split("T")[0]; // strip out time for older versions of ferment data
     const li = document.createElement("li");
     const ds = new Date(dateStart+time);
     const startDateHasPassed = new Date().getTime() > ds.getTime();
@@ -117,8 +117,8 @@ class Ferments {
       </ul>
       <div class="ferment-relative-time">
         <kay-icon class="carbon:time" aria-hidden="true"></kay-icon> 
-        <time datetime="${ds}" class="ferment-started" data-ferment="${startDateHasPassed ? "Started" : "Starts"} " data-relative="start">${formatTimeAgo(ds)}.</time>
-        <time datetime="${de || ""}" class="ferment-done" data-ferment=" ${endDateHasPassed ? "Finished" : "Finishes"} " data-relative="end">${formatTimeAgo(de) !== undefined ? formatTimeAgo(de)+"." : ""}</time>
+        <div class="ferment-started" data-ferment="${startDateHasPassed ? "Started" : "Starts"} " data-relative="start">${formatTimeAgo(ds)}.</div>
+        <div class="ferment-done" data-ferment=" ${endDateHasPassed ? "Finished" : "Finishes"} " data-relative="end">${formatTimeAgo(de) !== undefined ? formatTimeAgo(de)+"." : ""}</div>
       </div>
       <div class="ferment-date">
         <kay-icon class="carbon:calendar" aria-hidden="true"></kay-icon> 

@@ -14,13 +14,13 @@ class Save {
   }
 
   updateDateStartValue() {
-    this.dateStart.value = formatDateForInputField();
+    this.dateStart.value = new Date().toISOString().split("T")[0];
   }
 
   updateDateEndMin() {
     // set to one day ahead of Start Date
     const ds = new Date(this.dateStart.value);
-    this.dateEnd.setAttribute("min", formatDateForInputField(addOneDay(ds)));
+    this.dateEnd.setAttribute("min", addOneDay(ds).toISOString().split("T")[0]);
   }
 
   addEventListeners = () => {

@@ -100,6 +100,7 @@
 [data-ferment]:not(:empty)::before {
   content: attr(data-ferment);
   font-weight: 700;
+  flex-shrink: 0;
 }
 .ferment-unit {
   color: var(--link-color);
