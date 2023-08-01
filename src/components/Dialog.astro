@@ -2,13 +2,13 @@
 export interface Props {
   id: string;
   heading: string;
-  backToTop?: boolean;
+  showBackToTop?: boolean;
 }
 
 const { 
   id,
   heading, 
-  backToTop = false,
+  showBackToTop = false,
 } = Astro.props;
 ---
 
@@ -22,11 +22,11 @@ const {
   <div class="dialog-main" id=`${id}Main`>
     <slot />
   </div>
-  <a href=`#${id}Main` class="btn-primary" hidden={backToTop === false}>Top</a>
+  <a href=`#${id}Main` class="btn-primary" hidden={showBackToTop === false}>Top</a>
 </dialog>
 
 <style>
-  .btn-primary {
+  .btn-primary:not([hidden]) {
     position: sticky;
     bottom: 0;
     display: inline-block;
