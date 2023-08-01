@@ -10,6 +10,7 @@ class FermentsFilter {
   }
   
   update() {
+    this.updateVisibility(this.selectedFilter);
     this.updateLengthTexts();
     this.updateNoFermentsAvailableText();
   }
@@ -110,6 +111,10 @@ class FermentsFilter {
 
   get allFermentsHidden() {
     return [...MyFerments.all].every(f => f.hasAttribute("hidden"));
+  }
+
+  get selectedFilter() {
+    return this.group.querySelector("[aria-checked='true']").dataset.value;
   }
 
 }
